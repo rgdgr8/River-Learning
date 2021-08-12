@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">River Learning</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="my_tasks">My Tasks</string>
+    <string name="tasks_allocated_by_me">Tasks Allocated By Me</string>
+    <string name="my_closed_tasks">My Closed Tasks</string>
+    <string name="assess_closed_tasks">Assess Closed Tasks</string>
+
+    <string name="my_appraisal">My Appraisal</string>
+    <string name="my_evaluation">My Evaluation</string>
+
+    <string name="my_trainings">My Trainings</string>
+
+    <string name="mission">Mission</string>
+
+    <string name="tasks">Tasks</string>
+    <string name="assessments">Assessments</string>
+    <string name="trainings">Trainings</string>
+    <string name="organization">Organization</string>
+</resources>

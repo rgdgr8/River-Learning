@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tasks_drawer_nav_graph"
+    app:startDestination="@id/myTasksFragment">
+
+    <fragment
+        android:id="@+id/myTasksFragment"
+        android:name="com.rgdgr8.riverlearning.MyTasksFragment"
+        android:label="@string/my_tasks"
+        tools:layout="@layout/fragment_my_tasks" />
+    <fragment
+        android:id="@+id/tasksAllocatedFragment"
+        android:name="com.rgdgr8.riverlearning.TasksAllocatedFragment"
+        android:label="@string/tasks_allocated_by_me"
+        tools:layout="@layout/fragment_tasks_allocated" />
+    <fragment
+        android:id="@+id/closedTasksFragment"
+        android:name="com.rgdgr8.riverlearning.ClosedTasksFragment"
+        android:label="@string/my_closed_tasks"
+        tools:layout="@layout/fragment_closed_tasks" />
+    <fragment
+        android:id="@+id/assessTasksFragment"
+        android:name="com.rgdgr8.riverlearning.AssessTasksFragment"
+        android:label="@string/assess_closed_tasks"
+        tools:layout="@layout/fragment_assess_tasks" />
+    <fragment
+        android:id="@+id/myAppraisalFragment"
+        android:name="com.rgdgr8.riverlearning.MyAppraisalFragment"
+        android:label="@string/my_appraisal"
+        tools:layout="@layout/fragment_my_appraisal" />
+    <fragment
+        android:id="@+id/myEvaluationFragment"
+        android:name="com.rgdgr8.riverlearning.MyEvaluationFragment"
+        android:label="@string/my_evaluation"
+        tools:layout="@layout/fragment_my_evaluation" />
+    <fragment
+        android:id="@+id/myTrainingsFragment"
+        android:name="com.rgdgr8.riverlearning.MyTrainingsFragment"
+        android:label="@string/my_trainings"
+        tools:layout="@layout/fragment_my_trainings" />
+    <fragment
+        android:id="@+id/missionFragment"
+        android:name="com.rgdgr8.riverlearning.MissionFragment"
+        android:label="@string/mission"
+        tools:layout="@layout/fragment_mission" />
+</navigation>
