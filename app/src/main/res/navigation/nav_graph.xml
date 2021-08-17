@@ -26,15 +26,20 @@
         android:label="@string/assess_closed_tasks"
         tools:layout="@layout/fragment_assess_tasks" />
     <fragment
-        android:id="@+id/myAppraisalFragment"
-        android:name="com.rgdgr8.riverlearning.MyAppraisalFragment"
-        android:label="@string/my_appraisal"
-        tools:layout="@layout/fragment_my_appraisal" />
-    <fragment
         android:id="@+id/myEvaluationFragment"
         android:name="com.rgdgr8.riverlearning.MyEvaluationFragment"
         android:label="@string/my_evaluation"
         tools:layout="@layout/fragment_my_evaluation" />
+    <fragment
+        android:id="@+id/reportKpiFragment"
+        android:name="com.rgdgr8.riverlearning.ReportKpiFragment"
+        android:label="@string/report_kpi_data"
+        tools:layout="@layout/fragment_report_kpi" />
+    <fragment
+        android:id="@+id/quickFeedbackFragment"
+        android:name="com.rgdgr8.riverlearning.QuickFeedbackFragment"
+        android:label="@string/quick_feedback"
+        tools:layout="@layout/fragment_quick_feedback" />
     <fragment
         android:id="@+id/myTrainingsFragment"
         android:name="com.rgdgr8.riverlearning.MyTrainingsFragment"

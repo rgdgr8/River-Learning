@@ -7,8 +7,9 @@
     <string name="my_closed_tasks">My Closed Tasks</string>
     <string name="assess_closed_tasks">Assess Closed Tasks</string>
 
-    <string name="my_appraisal">My Appraisal</string>
     <string name="my_evaluation">My Evaluation</string>
+    <string name="quick_feedback">Quick Feedback</string>
+    <string name="report_kpi_data">Report KPI Data</string>
 
     <string name="my_trainings">My Trainings</string>
 

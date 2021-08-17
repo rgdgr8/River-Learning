@@ -3,14 +3,11 @@ package com.rgdgr8.riverlearning;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -47,8 +44,9 @@ public class MainActivity extends AppCompatActivity {
                 R.id.closedTasksFragment,
                 R.id.assessTasksFragment,
 
-                R.id.myAppraisalFragment,
                 R.id.myEvaluationFragment,
+                R.id.reportKpiFragment,
+                R.id.quickFeedbackFragment,
 
                 R.id.myTrainingsFragment,
 
@@ -67,10 +65,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onOptionsItemSelected: Tasks");
                         navView.inflateMenu(R.menu.tasks_drawer_menu);
                         break;
-                    case R.id.myAppraisalFragment:
+                    case R.id.myEvaluationFragment:
                         Log.d(TAG, "onOptionsItemSelected: Assessments");
                         navView.inflateMenu(R.menu.assessments_drawer_menu);
                         break;
+                    case R.id.myTrainingsFragment: break;
                 }
             }
         });
@@ -78,16 +77,4 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupWithNavController(botNavView, navController);
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.tasks_drawer_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(this, "Options", Toast.LENGTH_LONG).show();
-        return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
-    }*/
 }
