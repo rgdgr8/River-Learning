@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +36,9 @@ public class MyTasksFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_my_tasks, container, false);
         RecyclerView recyclerView = root.findViewById(R.id.rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(rvLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), rvLayoutManager.getOrientation()));
         adapter = new OpenTasksAdapter(getActivity(), tasks, R.layout.open_task_item);
         recyclerView.setAdapter(adapter);
         ViewCompat.setNestedScrollingEnabled(recyclerView, false);
