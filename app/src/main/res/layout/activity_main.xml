@@ -23,10 +23,10 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/my_nav_host_container"
-                android:background="@color/background_blue"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/background_blue"
                 app:defaultNavHost="true"
                 app:navGraph="@navigation/nav_graph"
                 tools:context=".MainActivity" />
@@ -49,8 +49,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         android:background="@color/theme_blue"
+        android:fitsSystemWindows="true"
         app:itemTextColor="@color/white"
         app:menu="@menu/tasks_drawer_menu" />
     <!--app:headerLayout="@layout/drawer_header" /-->

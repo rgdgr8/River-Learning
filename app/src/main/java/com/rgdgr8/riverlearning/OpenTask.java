@@ -1,19 +1,22 @@
 package com.rgdgr8.riverlearning;
 
 public class OpenTask {
-    private final int sr;
-    private String task;
-    private String allocTo;
-    private String allocDate;
-    private String targetDate;
-    private boolean status;
+    public static final String OPEN = "OPEN";
+    public static final String CLOSED = "CLOSED";
 
-    public OpenTask(int sr, String task, String allocTo, String allocDate, String targetDate, boolean status) {
-        this.sr = sr;
+    private final Integer id;
+    private String task;
+    private String allocated_to;
+    private String allocation_date;
+    private String target_end;
+    private String  status;
+
+    public OpenTask(int id, String task, String allocated_to, String allocation_date, String target_end, String  status) {
+        this.id = id;
         this.task = task;
-        this.allocTo = allocTo;
-        this.allocDate = allocDate;
-        this.targetDate = targetDate;
+        this.allocated_to = allocated_to;
+        this.allocation_date = allocation_date;
+        this.target_end = target_end;
         this.status = status;
     }
 
@@ -21,43 +24,43 @@ public class OpenTask {
         this.task = task;
     }
 
-    public void setAllocTo(String allocTo) {
-        this.allocTo = allocTo;
+    public void setAllocated_to(String allocated_to) {
+        this.allocated_to = allocated_to;
     }
 
-    public void setAllocDate(String allocDate) {
-        this.allocDate = allocDate;
+    public void setAllocation_date(String allocation_date) {
+        this.allocation_date = allocation_date;
     }
 
-    public void setTargetDate(String targetDate) {
-        this.targetDate = targetDate;
+    public void setTarget_end(String target_end) {
+        this.target_end = target_end;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public int getSr() {
-        return sr;
+    public int getId() {
+        return id;
     }
 
     public String getTask() {
         return task;
     }
 
-    public String getAllocTo() {
-        return allocTo;
+    public String getAllocated_to() {
+        return allocated_to;
     }
 
-    public String getAllocDate() {
-        return allocDate;
+    public String getAllocation_date() {
+        return allocation_date;
     }
 
-    public String getTargetDate() {
-        return targetDate;
+    public String getTarget_end() {
+        return target_end;
     }
 
-    public boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 }

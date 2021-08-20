@@ -17,11 +17,13 @@ public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
     private final List<OpenTask> tasks;
     private final Activity context;
     private final int layoutId;
+    private final boolean hideDelBtn;
 
-    public OpenTasksAdapter(Activity context, List<OpenTask> tasks, int layoutId) {
+    public OpenTasksAdapter(Activity context, List<OpenTask> tasks, int layoutId, boolean hideDelBtn) {
         this.tasks = tasks;
         this.context = context;
         this.layoutId = layoutId;
+        this.hideDelBtn = hideDelBtn;
     }
 
     @NonNull
@@ -29,7 +31,7 @@ public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
     @Override
     public OpenTaskHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View v = context.getLayoutInflater().inflate(layoutId,parent,false);
-        return new OpenTaskHolder(v);
+        return new OpenTaskHolder(v,hideDelBtn);
     }
 
     @Override

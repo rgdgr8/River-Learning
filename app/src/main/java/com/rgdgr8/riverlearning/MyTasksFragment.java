@@ -17,16 +17,16 @@ import java.util.List;
 
 public class MyTasksFragment extends Fragment {
     private OpenTasksAdapter adapter;
-    private List<OpenTask> tasks;
+    private final List<OpenTask> tasks = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tasks = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
             String x = String.valueOf(i + 1);
-            tasks.add(new OpenTask(i + 1, x, x, x, x, true));
+            String status = i % 2 == 0 ? OpenTask.OPEN : OpenTask.CLOSED;
+            tasks.add(new OpenTask(i + 1, x, x, x, x, status));
         }
     }
 
@@ -35,13 +35,23 @@ public class MyTasksFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_my_tasks, container, false);
+
         RecyclerView recyclerView = root.findViewById(R.id.rv);
         LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(rvLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), rvLayoutManager.getOrientation()));
-        adapter = new OpenTasksAdapter(getActivity(), tasks, R.layout.open_task_item);
+        setAdapter();
         recyclerView.setAdapter(adapter);
         ViewCompat.setNestedScrollingEnabled(recyclerView, false);
+
         return root;
+    }
+
+    public void setAdapter() {
+        if (adapter == null) {
+            adapter = new OpenTasksAdapter(getActivity(), tasks, R.layout.open_task_item, true);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 }

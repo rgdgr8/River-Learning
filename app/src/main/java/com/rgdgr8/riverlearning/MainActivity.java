@@ -2,6 +2,8 @@ package com.rgdgr8.riverlearning;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -35,7 +37,20 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.main_menu);
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.logout:
+                    Toast.makeText(MainActivity.this, "Logout func to be added", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+                    return false;
+            }
+        });
+        //Button logout = findViewById(R.id.logout);
+        //logout.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show());
         navView = findViewById(R.id.nav_view);
+        navView.setItemIconTintList(null);
         BottomNavigationView botNavView = findViewById(R.id.bot_nav_view);
 
         AppBarConfiguration barConfiguration = new AppBarConfiguration
@@ -69,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onOptionsItemSelected: Assessments");
                         navView.inflateMenu(R.menu.assessments_drawer_menu);
                         break;
-                    case R.id.myTrainingsFragment: break;
+                    case R.id.myTrainingsFragment:
+                        break;
                 }
             }
         });

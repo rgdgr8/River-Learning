@@ -1,15 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TasksAllocatedFragment">
+    android:fillViewport="true"
+    tools:context=".MyTasksFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/tasks_allocated_by_me" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/new_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Create New Task"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/theme_blue"
+                android:textSize="15sp"
+                android:gravity="start|center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/table_header_gray"
+                android:orientation="horizontal"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:text="Sr."
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:text="Task"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:text="Allocated To"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:text="Allocation Date"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:text="Target End Date"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:text="Status"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:text="Action"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="15dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</HorizontalScrollView>
