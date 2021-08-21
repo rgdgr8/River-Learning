@@ -1,9 +1,11 @@
 package com.rgdgr8.riverlearning;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -15,7 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MyTasksFragment extends Fragment {
+    private static final String TAG = "MyTasksFragment";
     private OpenTasksAdapter adapter;
     private final List<OpenTask> tasks = new ArrayList<>();
 
@@ -23,11 +32,41 @@ public class MyTasksFragment extends Fragment {
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        for (int i = 0; i < 30; i++) {
+        /*for (int i = 0; i < 30; i++) {
             String x = String.valueOf(i + 1);
             String status = i % 2 == 0 ? OpenTask.OPEN : OpenTask.CLOSED;
             tasks.add(new OpenTask(i + 1, x, x, x, x, status));
-        }
+        }*/
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(TaskFetcher.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TaskFetcher taskFetcher = retrofit.create(TaskFetcher.class);
+        taskFetcher.getTasks().enqueue(new Callback<List<OpenTask>>() {
+            @Override
+            public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
+                if (!response.isSuccessful()) {
+                    Log.i(TAG, "onResponse: " + response.code() + " " + response.message());
+                }
+
+                List<OpenTask> t = response.body();
+                if (t != null) {
+                    tasks.clear();
+                    tasks.addAll(t);
+                } else {
+                    Log.i(TAG, "onResponse: empty body");
+                }
+
+                setAdapter();
+            }
+
+            @Override
+            public void onFailure(Call<List<OpenTask>> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+            }
+        });
     }
 
     @Override

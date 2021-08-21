@@ -12,9 +12,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-public interface DataFetcher {
-    public static final String TAG = "DataFetcher";
-    public static String urlString = "https://gamma.riverlearning.in/api/tasks/";
+import retrofit2.Call;
+import retrofit2.http.GET;
 
+public interface TaskFetcher {
+    public static final String TAG = "TaskFetcher";
+    public static String BASE_URL = "https://gamma.riverlearning.in/api/";
 
+    @GET("tasks")
+    Call<List<OpenTask>> getTasks();
 }

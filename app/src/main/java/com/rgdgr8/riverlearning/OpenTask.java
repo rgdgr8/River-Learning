@@ -1,20 +1,23 @@
 package com.rgdgr8.riverlearning;
 
+import com.google.gson.annotations.SerializedName;
+
 public class OpenTask {
     public static final String OPEN = "OPEN";
     public static final String CLOSED = "CLOSED";
 
     private final Integer id;
     private String task;
-    private String allocated_to;
+    @SerializedName(value = "allocated_by", alternate = {"allocated_to"})
+    private String alloc;
     private String allocation_date;
     private String target_end;
     private String  status;
 
-    public OpenTask(int id, String task, String allocated_to, String allocation_date, String target_end, String  status) {
+    public OpenTask(int id, String task, String alloc, String allocation_date, String target_end, String  status) {
         this.id = id;
         this.task = task;
-        this.allocated_to = allocated_to;
+        this.alloc = alloc;
         this.allocation_date = allocation_date;
         this.target_end = target_end;
         this.status = status;
@@ -24,8 +27,8 @@ public class OpenTask {
         this.task = task;
     }
 
-    public void setAllocated_to(String allocated_to) {
-        this.allocated_to = allocated_to;
+    public void setAlloc(String alloc) {
+        this.alloc = alloc;
     }
 
     public void setAllocation_date(String allocation_date) {
@@ -48,8 +51,8 @@ public class OpenTask {
         return task;
     }
 
-    public String getAllocated_to() {
-        return allocated_to;
+    public String getAlloc() {
+        return alloc;
     }
 
     public String getAllocation_date() {

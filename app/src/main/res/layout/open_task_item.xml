@@ -11,6 +11,7 @@
         android:id="@+id/sr"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:ellipsize="end"
         android:gravity="start"
         android:textColor="@color/black" />
@@ -19,7 +20,9 @@
         android:id="@+id/task"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
         android:ellipsize="end"
+        android:maxLines="1"
         android:gravity="start"
         android:textColor="@color/purple_500" />
 
@@ -27,6 +30,7 @@
         android:id="@+id/alloc"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:ellipsize="end"
         android:gravity="start"
         android:textColor="@color/black" />
@@ -35,6 +39,7 @@
         android:id="@+id/allocD"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:ellipsize="end"
         android:gravity="start"
         android:textColor="@color/black" />
@@ -43,6 +48,7 @@
         android:id="@+id/targetD"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:ellipsize="end"
         android:gravity="start"
         android:textColor="@color/black" />
@@ -51,6 +57,7 @@
         android:id="@+id/status"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:ellipsize="end"
         android:gravity="start"
         android:textColor="@color/black" />

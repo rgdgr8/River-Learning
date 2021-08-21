@@ -38,6 +38,7 @@
                 <TextView
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:text="Sr."
@@ -47,6 +48,7 @@
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:text="Task"
@@ -56,6 +58,7 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:text="Allocated To"
@@ -65,6 +68,7 @@
                 <TextView
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:text="Allocation Date"
@@ -74,6 +78,7 @@
                 <TextView
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:text="Target End Date"
@@ -83,6 +88,7 @@
                 <TextView
                     android:layout_width="125dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:text="Status"
@@ -92,9 +98,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:ellipsize="end"
                     android:gravity="start"
-                    android:text="Action"
+                    android:text="Actions"
                     android:textAllCaps="false"
                     android:textColor="@color/black" />
 

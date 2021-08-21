@@ -36,7 +36,7 @@ public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull OpenTaskHolder holder, int position) {
-        holder.bind(tasks.get(position));
+        holder.bind(tasks.get(position),position);
     }
 
     @Override

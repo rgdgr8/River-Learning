@@ -63,10 +63,10 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public void bind(OpenTask tsk) {
-        sr.setText(String.valueOf(tsk.getId()));
+    public void bind(OpenTask tsk,int pos) {
+        sr.setText(pos+"");
         task.setText(tsk.getTask());
-        alloc.setText(tsk.getAllocated_to());
+        alloc.setText(tsk.getAlloc());
         allocDate.setText(tsk.getAllocation_date());
         targetDate.setText(tsk.getTarget_end());
         status.setText(tsk.getStatus());
