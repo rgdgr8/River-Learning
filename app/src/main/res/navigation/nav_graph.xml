@@ -9,12 +9,23 @@
         android:id="@+id/myTasksFragment"
         android:name="com.rgdgr8.riverlearning.MyTasksFragment"
         android:label="@string/my_tasks"
-        tools:layout="@layout/fragment_my_tasks" />
+        tools:layout="@layout/fragment_my_tasks" >
+        <action
+            android:id="@+id/action_myTasksFragment_to_commentTaskFragment"
+            app:destination="@id/commentTaskFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tasksAllocatedFragment"
         android:name="com.rgdgr8.riverlearning.TasksAllocatedFragment"
         android:label="@string/tasks_allocated_by_me"
-        tools:layout="@layout/fragment_tasks_allocated" />
+        tools:layout="@layout/fragment_tasks_allocated" >
+        <action
+            android:id="@+id/action_tasksAllocatedFragment_to_editTaskFragment"
+            app:destination="@id/editTaskFragment" />
+        <action
+            android:id="@+id/action_tasksAllocatedFragment_to_commentTaskFragment"
+            app:destination="@id/commentTaskFragment" />
+    </fragment>
     <fragment
         android:id="@+id/closedTasksFragment"
         android:name="com.rgdgr8.riverlearning.ClosedTasksFragment"
@@ -50,4 +61,14 @@
         android:name="com.rgdgr8.riverlearning.MissionFragment"
         android:label="@string/mission"
         tools:layout="@layout/fragment_mission" />
+    <fragment
+        android:id="@+id/editTaskFragment"
+        android:name="com.rgdgr8.riverlearning.EditAllocatedTaskFragment"
+        android:label="Update Task"
+        tools:layout="@layout/fragment_edit_allocated_task" />
+    <fragment
+        android:id="@+id/commentTaskFragment"
+        android:name="com.rgdgr8.riverlearning.CommentTaskFragment"
+        android:label="fragment_comment_task"
+        tools:layout="@layout/fragment_comment_task" />
 </navigation>

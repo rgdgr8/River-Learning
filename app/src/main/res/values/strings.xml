@@ -19,4 +19,21 @@
     <string name="assessments">Assessments</string>
     <string name="trainings">Trainings</string>
     <string name="organization">Organization</string>
+    
+    <string-array name="repeat_task_spinner">
+        <item>Never</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+    <string-array name="allocatedto_task_spinner">
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
+    <string-array name="task_status_spinner">
+        <item>OPEN</item>
+        <item>CLOSED</item>
+        <item>WAITING</item>
+        <item>IN PROGRESS</item>
+    </string-array>
 </resources>

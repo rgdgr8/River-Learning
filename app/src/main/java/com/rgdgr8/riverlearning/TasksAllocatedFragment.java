@@ -21,10 +21,17 @@ import java.util.List;
 public class TasksAllocatedFragment extends Fragment {
     private OpenTasksAdapter adapter;
     private final List<OpenTask> tasks = new ArrayList<>();
+    private View root;
+
+    public View getRoot() {
+        return root;
+    }
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
 
         for (int i = 0; i < 20; i++) {
             String x = String.valueOf(i + 1);
@@ -37,7 +44,7 @@ public class TasksAllocatedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_tasks_allocated, container, false);
+        root = inflater.inflate(R.layout.fragment_tasks_allocated, container, false);
 
         Button newTask = root.findViewById(R.id.new_task);
         newTask.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +67,7 @@ public class TasksAllocatedFragment extends Fragment {
 
     public void setAdapter() {
         if (adapter == null) {
-            adapter = new OpenTasksAdapter(getActivity(), tasks, R.layout.open_task_item, false);
+            adapter = new OpenTasksAdapter(this, tasks, R.layout.open_task_item, false);
         } else {
             adapter.notifyDataSetChanged();
         }

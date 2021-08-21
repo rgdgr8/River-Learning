@@ -19,7 +19,19 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/feedback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quick Feedback"
+                    android:backgroundTint="@android:color/holo_green_dark"
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="5dp"
+                    android:textSize="12sp"
+                    android:layout_gravity="end" />
+            </androidx.appcompat.widget.Toolbar>
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/my_nav_host_container"

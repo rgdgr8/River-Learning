@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 public class OpenTask {
     public static final String OPEN = "OPEN";
     public static final String CLOSED = "CLOSED";
+    public static final String WAITING = "CLOSED";
+    public static final String IN_PROGRESS = "CLOSED";
 
     private final Integer id;
     private String task;

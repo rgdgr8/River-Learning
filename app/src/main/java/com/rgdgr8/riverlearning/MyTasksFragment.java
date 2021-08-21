@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -31,6 +30,8 @@ public class MyTasksFragment extends Fragment {
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
 
         /*for (int i = 0; i < 30; i++) {
             String x = String.valueOf(i + 1);
@@ -88,7 +89,7 @@ public class MyTasksFragment extends Fragment {
 
     public void setAdapter() {
         if (adapter == null) {
-            adapter = new OpenTasksAdapter(getActivity(), tasks, R.layout.open_task_item, true);
+            adapter = new OpenTasksAdapter(this, tasks, R.layout.open_task_item, true);
         } else {
             adapter.notifyDataSetChanged();
         }

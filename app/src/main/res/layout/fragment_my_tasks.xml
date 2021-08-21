@@ -29,78 +29,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/table_header_gray"
+                android:orientation="horizontal"
                 android:paddingHorizontal="25dp"
-                android:paddingVertical="10dp"
-                android:orientation="horizontal">
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
+                    style="@style/list_text_view"
                     android:text="Sr."
-                    android:textAllCaps="false"
                     android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
+                    android:layout_marginEnd="40dp"
+                    style="@style/list_text_view"
                     android:text="Task"
-                    android:textAllCaps="false"
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:layout_width="150dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="20dp"
+                    style="@style/list_text_view"
                     android:text="Allocated By"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:textAllCaps="false"
                     android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
+                    style="@style/list_text_view"
                     android:text="Allocation Date"
-                    android:textAllCaps="false"
                     android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
+                    style="@style/list_text_view"
                     android:text="Target End Date"
-                    android:textAllCaps="false"
                     android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="125dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
+                    style="@style/list_text_view"
                     android:text="Status"
-                    android:textAllCaps="false"
                     android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
+                    style="@style/list_text_view"
                     android:text="Actions"
-                    android:textAllCaps="false"
                     android:textColor="@color/black" />
 
             </LinearLayout>

@@ -6,6 +6,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,9 +24,12 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
     private final ImageButton actionEdit;
     private final ImageButton actionComment;
     private final ImageButton actionDelete;
+    private final View view;
 
-    public OpenTaskHolder(@NonNull @NotNull View itemView, boolean hideDelBtn) {
+    public OpenTaskHolder(@NonNull @NotNull View itemView, boolean hideDelBtn, View view) {
         super(itemView);
+
+        this.view = view;
         sr = itemView.findViewById(R.id.sr);
         task = itemView.findViewById(R.id.task);
         alloc = itemView.findViewById(R.id.alloc);
@@ -39,7 +45,7 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         actionEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(itemView.getContext(), "Update Task", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(OpenTaskHolder.this.view).navigate(R.id.action_tasksAllocatedFragment_to_editTaskFragment);
             }
         });
 
@@ -64,11 +70,17 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(OpenTask tsk,int pos) {
-        sr.setText(pos+"");
+        sr.setText(pos+"");//id is getting artificially filled, might need to change this
         task.setText(tsk.getTask());
         alloc.setText(tsk.getAlloc());
         allocDate.setText(tsk.getAllocation_date());
         targetDate.setText(tsk.getTarget_end());
         status.setText(tsk.getStatus());
+
+        if(tsk.getStatus().equals(OpenTask.CLOSED)){
+            actionEdit.setEnabled(false);
+            actionComment.setEnabled(false);
+            actionDelete.setEnabled(false);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.rgdgr8.riverlearning;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
                     return false;
             }
         });
-        //Button logout = findViewById(R.id.logout);
-        //logout.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show());
+        Button feedback = findViewById(R.id.feedback);
+        feedback.setOnClickListener(v -> Toast.makeText(MainActivity.this, "feedback", Toast.LENGTH_SHORT).show());
+
         navView = findViewById(R.id.nav_view);
         navView.setItemIconTintList(null);
         BottomNavigationView botNavView = findViewById(R.id.bot_nav_view);
