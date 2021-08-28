@@ -1,8 +1,7 @@
 package com.rgdgr8.riverlearning;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -75,18 +74,26 @@ public class MainActivity extends AppCompatActivity {
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (!feedback.isEnabled()) {//condition is subject to modification
+                feedback.setVisibility(View.VISIBLE);
+                feedback.setEnabled(true);
+            }
             if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                navView.getMenu().clear();
                 switch (destination.getId()) {
                     case R.id.myTasksFragment:
-                        Log.d(TAG, "onOptionsItemSelected: Tasks");
+                        navView.getMenu().clear();
                         navView.inflateMenu(R.menu.tasks_drawer_menu);
                         break;
                     case R.id.myEvaluationFragment:
-                        Log.d(TAG, "onOptionsItemSelected: Assessments");
+                        navView.getMenu().clear();
                         navView.inflateMenu(R.menu.assessments_drawer_menu);
                         break;
                     case R.id.myTrainingsFragment:
+                        break;
+                    case R.id.editAllocatedTaskFragment:
+                    case R.id.commentTaskFragment:
+                        feedback.setVisibility(View.INVISIBLE);
+                        feedback.setEnabled(false);
                         break;
                 }
             }

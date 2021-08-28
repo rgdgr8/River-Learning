@@ -33,12 +33,6 @@ public class MyTasksFragment extends Fragment {
 
         setRetainInstance(true);
 
-        /*for (int i = 0; i < 30; i++) {
-            String x = String.valueOf(i + 1);
-            String status = i % 2 == 0 ? OpenTask.OPEN : OpenTask.CLOSED;
-            tasks.add(new OpenTask(i + 1, x, x, x, x, status));
-        }*/
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TaskFetcher.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -50,6 +44,13 @@ public class MyTasksFragment extends Fragment {
             public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
                 if (!response.isSuccessful()) {
                     Log.i(TAG, "onResponse: " + response.code() + " " + response.message());
+                    for (int i = 0; i < 30; i++) {
+                        String x = String.valueOf(i + 1);
+                        String status = i % 2 == 0 ? OpenTask.OPEN : OpenTask.CLOSED;
+                        tasks.add(new OpenTask(i + 1, x, x, x, x, status));
+                    }
+                    setAdapter();
+                    return;
                 }
 
                 List<OpenTask> t = response.body();

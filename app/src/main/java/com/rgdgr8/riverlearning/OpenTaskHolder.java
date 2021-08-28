@@ -1,20 +1,21 @@
 package com.rgdgr8.riverlearning;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
 public class OpenTaskHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "OpenTaskHolder";
+    public static final String COMMENT_FROM = "comment_from";
     private final TextView sr;
     private final TextView task;
     private final TextView alloc;
@@ -42,17 +43,20 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
 
         task.setOnClickListener(v -> Toast.makeText(itemView.getContext(), "Task Details", Toast.LENGTH_SHORT).show());
 
-        actionEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(OpenTaskHolder.this.view).navigate(R.id.action_tasksAllocatedFragment_to_editTaskFragment);
-            }
+        NavController navController = Navigation.findNavController(this.view);
+
+        actionEdit.setOnClickListener(v -> {
+            if (!hideDelBtn)
+                navController.navigate(R.id.action_tasksAllocatedFragment_to_editTaskFragment);
         });
 
-        actionComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(itemView.getContext(), "Comment on Task", Toast.LENGTH_SHORT).show();
+        actionComment.setOnClickListener(v -> {
+            Bundle b = new Bundle();
+            b.putBoolean(COMMENT_FROM, hideDelBtn);
+            if (hideDelBtn) {//event happened from my task frag
+                navController.navigate(R.id.action_myTasksFragment_to_commentTaskFragment, b);
+            } else {
+                navController.navigate(R.id.action_tasksAllocatedFragment_to_commentTaskFragment, b);
             }
         });
 
@@ -69,15 +73,15 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public void bind(OpenTask tsk,int pos) {
-        sr.setText(pos+"");//id is getting artificially filled, might need to change this
+    public void bind(OpenTask tsk, int pos) {
+        sr.setText(pos + "");//id is getting artificially filled, might need to change this
         task.setText(tsk.getTask());
         alloc.setText(tsk.getAlloc());
         allocDate.setText(tsk.getAllocation_date());
         targetDate.setText(tsk.getTarget_end());
         status.setText(tsk.getStatus());
 
-        if(tsk.getStatus().equals(OpenTask.CLOSED)){
+        if (tsk.getStatus().equals(OpenTask.CLOSED)) {
             actionEdit.setEnabled(false);
             actionComment.setEnabled(false);
             actionDelete.setEnabled(false);

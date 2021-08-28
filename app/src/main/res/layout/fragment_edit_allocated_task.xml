@@ -29,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:paddingVertical="10dp"
         android:text="Repeat"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp" />
@@ -36,6 +37,8 @@
     <Spinner
         android:id="@+id/repeat_spinner"
         android:layout_width="match_parent"
+        android:background="@color/white"
+        android:paddingVertical="5dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp" />
 
@@ -43,6 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:paddingVertical="10dp"
         android:text="Allocated To"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp" />
@@ -50,6 +54,8 @@
     <Spinner
         android:id="@+id/allocTo_spinner"
         android:layout_width="match_parent"
+        android:background="@color/white"
+        android:paddingVertical="5dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp" />
 
@@ -57,15 +63,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:paddingVertical="10dp"
         android:text="Target End Date"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/task"
+        android:id="@+id/target_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:text="dd/mm/yy"
+        android:padding="5dp"
+        android:background="@color/white"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
@@ -73,6 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:paddingVertical="10dp"
         android:text="Status"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp" />
@@ -80,6 +91,18 @@
     <Spinner
         android:id="@+id/status_spinner"
         android:layout_width="match_parent"
+        android:background="@color/white"
+        android:paddingVertical="5dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="15dp"
+        android:text="SUBMIT"
+        android:backgroundTint="@android:color/holo_green_dark"/>
 </LinearLayout>
