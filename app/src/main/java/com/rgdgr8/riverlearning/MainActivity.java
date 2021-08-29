@@ -92,9 +92,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.editAllocatedTaskFragment:
                     case R.id.commentTaskFragment:
+                    case R.id.editMyTaskFragment:
+                    default:
                         feedback.setVisibility(View.INVISIBLE);
                         feedback.setEnabled(false);
-                        break;
                 }
             }
         });

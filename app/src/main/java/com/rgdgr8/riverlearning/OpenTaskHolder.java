@@ -48,15 +48,18 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         actionEdit.setOnClickListener(v -> {
             if (!hideDelBtn)
                 navController.navigate(R.id.action_tasksAllocatedFragment_to_editTaskFragment);
+            else
+                navController.navigate(R.id.action_myTasksFragment_to_editMyTaskFragment);
         });
 
         actionComment.setOnClickListener(v -> {
-            Bundle b = new Bundle();
-            b.putBoolean(COMMENT_FROM, hideDelBtn);
+            /*Bundle b = new Bundle();
+            b.putBoolean(COMMENT_FROM, hideDelBtn);*/
+
             if (hideDelBtn) {//event happened from my task frag
-                navController.navigate(R.id.action_myTasksFragment_to_commentTaskFragment, b);
+                navController.navigate(R.id.action_myTasksFragment_to_commentTaskFragment);
             } else {
-                navController.navigate(R.id.action_tasksAllocatedFragment_to_commentTaskFragment, b);
+                navController.navigate(R.id.action_tasksAllocatedFragment_to_commentTaskFragment);
             }
         });
 
@@ -64,12 +67,7 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
             actionDelete.setVisibility(View.INVISIBLE);
             actionDelete.setEnabled(false);
         } else {
-            actionDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(), "Delete Task", Toast.LENGTH_SHORT).show();
-                }
-            });
+            actionDelete.setOnClickListener(v -> Toast.makeText(itemView.getContext(), "Delete Task", Toast.LENGTH_SHORT).show());
         }
     }
 

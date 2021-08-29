@@ -20,23 +20,19 @@ public class CommentTaskFragment extends Fragment {
 
         root = inflater.inflate(R.layout.fragment_comment_task, container, false);
 
-        boolean isFromMyTasks = getArguments().getBoolean(OpenTaskHolder.COMMENT_FROM);
-
-        Button done = root.findViewById(R.id.done);
+        Button done = root.findViewById(R.id.submit);
         done.setOnClickListener(v -> {
-            if (isFromMyTasks)
-                Navigation.findNavController(root).navigate(R.id.action_commentTaskFragment_to_myTasksFragment);
-            else
-                navController.navigate(R.id.action_commentTaskFragment_to_tasksAllocatedFragment);
+            navController.navigateUp();
         });
 
-        Button cancel = root.findViewById(R.id.cancel);
+        /*Button cancel = root.findViewById(R.id.cancel);
         cancel.setOnClickListener(v -> {
-            if (isFromMyTasks)
-                navController.navigate(R.id.action_commentTaskFragment_to_myTasksFragment);
-            else
-                navController.navigate(R.id.action_commentTaskFragment_to_tasksAllocatedFragment);
-        });
+            //if (isFromMyTasks)
+                //navController.navigate(R.id.action_commentTaskFragment_to_myTasksFragment);
+            //else
+                //navController.navigate(R.id.action_commentTaskFragment_to_tasksAllocatedFragment);
+            navController.navigateUp();
+        });*/
 
         return root;
     }

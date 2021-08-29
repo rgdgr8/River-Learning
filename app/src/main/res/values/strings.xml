@@ -19,7 +19,7 @@
     <string name="assessments">Assessments</string>
     <string name="trainings">Trainings</string>
     <string name="organization">Organization</string>
-    
+
     <string-array name="repeat_task_spinner">
         <item>Never</item>
         <item>Weekly</item>

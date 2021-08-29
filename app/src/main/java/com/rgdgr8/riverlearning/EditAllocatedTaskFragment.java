@@ -66,7 +66,7 @@ public class EditAllocatedTaskFragment extends Fragment {
         status.setAdapter(adapter);
 
         Button submit = root.findViewById(R.id.submit);
-        submit.setOnClickListener(v -> Navigation.findNavController(root).navigate(R.id.action_editAllocatedTaskFragment_to_tasksAllocatedFragment));
+        submit.setOnClickListener(v -> Navigation.findNavController(root).navigateUp());
 
         return root;
     }
