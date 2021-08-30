@@ -8,16 +8,14 @@ public class OpenTask {
     public static final String WAITING = "CLOSED";
     public static final String IN_PROGRESS = "CLOSED";
 
-    private final Integer id;
     private String task;
-    @SerializedName(value = "allocated_by", alternate = {"allocated_to"})
+    @SerializedName(value = "allocatedby_name", alternate = {"allocatedto_name"})
     private String alloc;
     private String allocation_date;
     private String target_end;
     private String  status;
 
-    public OpenTask(int id, String task, String alloc, String allocation_date, String target_end, String  status) {
-        this.id = id;
+    public OpenTask(String task, String alloc, String allocation_date, String target_end, String status) {
         this.task = task;
         this.alloc = alloc;
         this.allocation_date = allocation_date;
@@ -43,10 +41,6 @@ public class OpenTask {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getTask() {

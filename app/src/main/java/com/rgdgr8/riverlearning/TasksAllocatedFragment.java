@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.GET;
+
 public class TasksAllocatedFragment extends Fragment {
+    private static final String TAG = "TasksAllocatedFrag";
     private OpenTasksAdapter adapter;
     private final List<OpenTask> tasks = new ArrayList<>();
     private View root;
@@ -33,11 +40,36 @@ public class TasksAllocatedFragment extends Fragment {
 
         setRetainInstance(true);
 
-        for (int i = 0; i < 20; i++) {
-            String x = String.valueOf(i + 1);
-            String status = i%2==0 ? OpenTask.OPEN : OpenTask.CLOSED;
-            tasks.add(new OpenTask(i + 1, x, x, x, x, status));
-        }
+        LoginActivity.dataFetcher.getAllocatedTasks().enqueue(new Callback<List<OpenTask>>() {
+            @Override
+            public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
+                Log.i(TAG, "onResponseAllocTaskFetcher: " + response.code() + " " + response.message());
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getActivity(), "Request unsuccessful", Toast.LENGTH_SHORT).show();
+                    /*for (int i = 0; i < 30; i++) {
+                        String x = String.valueOf(i + 1);
+                        String status = i % 2 == 0 ? OpenTask.OPEN : OpenTask.CLOSED;
+                        tasks.add(new OpenTask(x, x, x, x, status));
+                    }
+                    setAdapter();*/
+                    return;
+                }
+
+                List<OpenTask> t = response.body();
+                if (t != null) {
+                    tasks.clear();
+                    tasks.addAll(t);
+                    setAdapter();
+                } else {
+                    Log.i(TAG, "onResponseAllocTasks: empty body");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<OpenTask>> call, Throwable t) {
+                Log.e(TAG, "onFailureAllocTasks: ", t.getCause());
+            }
+        });
     }
 
     @Override

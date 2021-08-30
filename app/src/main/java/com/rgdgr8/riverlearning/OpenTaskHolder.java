@@ -79,7 +79,7 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         targetDate.setText(tsk.getTarget_end());
         status.setText(tsk.getStatus());
 
-        if (tsk.getStatus().equals(OpenTask.CLOSED)) {
+        if (tsk.getStatus()!=null && tsk.getStatus().equals(OpenTask.CLOSED)) {
             actionEdit.setEnabled(false);
             actionComment.setEnabled(false);
             actionDelete.setEnabled(false);

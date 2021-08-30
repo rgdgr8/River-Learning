@@ -1,6 +1,8 @@
 package com.rgdgr8.riverlearning;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,6 +18,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -41,7 +47,25 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.logout:
-                    Toast.makeText(MainActivity.this, "Logout func to be added", Toast.LENGTH_SHORT).show();
+                    LoginActivity.dataFetcher.destroyToken().enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Log.i(TAG, "onLogoutResponse: " + response.message());
+                            if (!response.isSuccessful()) {
+                                Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            } else {
+                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                        .edit().putString(LoginActivity.TAG, null).apply();
+
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e(TAG, "onFailure: ", t.getCause());
+                        }
+                    });
                     return true;
                 default:
                     return false;

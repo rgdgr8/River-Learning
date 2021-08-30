@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -19,8 +20,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyTasksFragment extends Fragment {
     private static final String TAG = "MyTasksFragment";
@@ -33,23 +32,18 @@ public class MyTasksFragment extends Fragment {
 
         setRetainInstance(true);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(TaskFetcher.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        TaskFetcher taskFetcher = retrofit.create(TaskFetcher.class);
-        taskFetcher.getTasks().enqueue(new Callback<List<OpenTask>>() {
+        LoginActivity.dataFetcher.getTasks().enqueue(new Callback<List<OpenTask>>() {
             @Override
             public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
+                Log.i(TAG, "onResponseTaskFetcher: " + response.code() + " " + response.message());
                 if (!response.isSuccessful()) {
-                    Log.i(TAG, "onResponse: " + response.code() + " " + response.message());
-                    for (int i = 0; i < 30; i++) {
+                    Toast.makeText(getActivity(), "Request unsuccessful", Toast.LENGTH_SHORT).show();
+                    /*for (int i = 0; i < 30; i++) {
                         String x = String.valueOf(i + 1);
                         String status = i % 2 == 0 ? OpenTask.OPEN : OpenTask.CLOSED;
-                        tasks.add(new OpenTask(i + 1, x, x, x, x, status));
+                        tasks.add(new OpenTask(x, x, x, x, status));
                     }
-                    setAdapter();
+                    setAdapter();*/
                     return;
                 }
 
@@ -57,16 +51,15 @@ public class MyTasksFragment extends Fragment {
                 if (t != null) {
                     tasks.clear();
                     tasks.addAll(t);
+                    setAdapter();
                 } else {
-                    Log.i(TAG, "onResponse: empty body");
+                    Log.i(TAG, "onResponseTaskFetcher: empty body");
                 }
-
-                setAdapter();
             }
 
             @Override
             public void onFailure(Call<List<OpenTask>> call, Throwable t) {
-                Log.e(TAG, "onFailure: ", t);
+                Log.e(TAG, "onTaskFetchFailure: ", t.getCause());
             }
         });
     }
