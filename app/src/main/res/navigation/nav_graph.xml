@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_tasksAllocatedFragment_to_commentTaskFragment"
             app:destination="@id/commentTaskFragment" />
+        <action
+            android:id="@+id/action_tasksAllocatedFragment_to_createNewTaskFragment"
+            app:destination="@id/createNewTaskFragment" />
     </fragment>
     <fragment
         android:id="@+id/closedTasksFragment"
@@ -82,4 +85,9 @@
         android:label="Update Task"
         tools:layout="@layout/fragment_edit_my_task" >
     </fragment>
+    <fragment
+        android:id="@+id/createNewTaskFragment"
+        android:name="com.rgdgr8.riverlearning.CreateNewTaskFragment"
+        android:label="Create New Task"
+        tools:layout="@layout/fragment_create_new_task" />
 </navigation>

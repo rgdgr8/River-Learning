@@ -33,4 +33,10 @@ public interface DataFetcher {
 
     @POST("token/logout")
     Call<Void> destroyToken();
+
+    @POST("tasks-create/")
+    Call<Void> createNewTask(@Body NewTask task);
+
+    @GET("tasks-closed")
+    Call<List<ClosedTasksFragment.ClosedTask>> getClosedTasks();
 }

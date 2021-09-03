@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -15,7 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 public class EditAllocatedTaskFragment extends Fragment {
-    public static final String RESULT_DATE = "result_date";
+    private String setDt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,7 +26,7 @@ public class EditAllocatedTaskFragment extends Fragment {
                 R.array.repeat_task_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         repeat.setAdapter(adapter);
-        repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -37,7 +36,7 @@ public class EditAllocatedTaskFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
         Spinner alloc = root.findViewById(R.id.allocTo_spinner);
         adapter = ArrayAdapter.createFromResource(getActivity(),
@@ -46,14 +45,14 @@ public class EditAllocatedTaskFragment extends Fragment {
         alloc.setAdapter(adapter);
 
         TextView date = root.findViewById(R.id.target_date);
+        setDt = "01-01-2001";//subject to change
         date.setOnClickListener(v -> {
-            DatePickerFragment dpf = DatePickerFragment.newInstance("01/01/2001");
-            //dpf.setTargetFragment();
+            DatePickerFragment dpf = DatePickerFragment.newInstance(setDt);//format and date to be changed
             FragmentManager fm = getParentFragmentManager();
-            fm.setFragmentResultListener(RESULT_DATE, dpf, (requestKey, result) -> {
-                if (requestKey.equals(RESULT_DATE)) {
-                    String dt = result.getString(DatePickerFragment.ARG_DATE);
-                    date.setText(dt);
+            fm.setFragmentResultListener(DatePickerFragment.RESULT_DATE, dpf, (requestKey, result) -> {
+                if (requestKey.equals(DatePickerFragment.RESULT_DATE)) {
+                    setDt = result.getString(DatePickerFragment.ARG_DATE);
+                    date.setText(setDt);
                 }
             });
             dpf.show(fm, "DateDialog");//show dialog

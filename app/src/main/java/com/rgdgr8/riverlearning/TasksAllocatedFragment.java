@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +30,6 @@ public class TasksAllocatedFragment extends Fragment {
     private OpenTasksAdapter adapter;
     private final List<OpenTask> tasks = new ArrayList<>();
     private View root;
-
-    public View getRoot() {
-        return root;
-    }
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -82,7 +79,7 @@ public class TasksAllocatedFragment extends Fragment {
         newTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Create New task", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(root).navigate(R.id.action_tasksAllocatedFragment_to_createNewTaskFragment);
             }
         });
 

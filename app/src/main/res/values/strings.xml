@@ -20,17 +20,21 @@
     <string name="trainings">Trainings</string>
     <string name="organization">Organization</string>
 
+    <string name="blank_spinner">------</string>
+
     <string-array name="repeat_task_spinner">
-        <item>Never</item>
+        <item>------</item>
         <item>Weekly</item>
         <item>Monthly</item>
     </string-array>
     <string-array name="allocatedto_task_spinner">
+        <item>------</item>
         <item>X</item>
         <item>Y</item>
         <item>Z</item>
     </string-array>
     <string-array name="task_status_spinner">
+        <item>------</item>
         <item>OPEN</item>
         <item>CLOSED</item>
         <item>WAITING</item>

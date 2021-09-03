@@ -72,7 +72,7 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(OpenTask tsk, int pos) {
-        sr.setText(pos + "");//id is getting artificially filled, might need to change this
+        sr.setText((pos+1) + "");//id is getting artificially filled, might need to change this
         task.setText(tsk.getTask());
         alloc.setText(tsk.getAlloc());
         allocDate.setText(tsk.getAllocation_date());
