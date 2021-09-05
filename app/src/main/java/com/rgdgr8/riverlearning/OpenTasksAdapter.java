@@ -1,5 +1,6 @@
 package com.rgdgr8.riverlearning;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
+    private static final String TAG = "OpenTaskAdapter";
     private final List<OpenTask> tasks;
     private final Fragment fragment;
     private final int layoutId;
@@ -34,7 +36,8 @@ public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull OpenTaskHolder holder, int position) {
-        holder.bind(tasks.get(position), position);////id is getting artificially filled with pos, might need to change this
+        //Log.d(TAG, "onBindViewHolder: "+tasks.get(position));
+        holder.bind(tasks.get(position));
     }
 
     @Override

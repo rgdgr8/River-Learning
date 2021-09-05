@@ -22,6 +22,7 @@ public class CommentTaskFragment extends Fragment {
 
         Button done = root.findViewById(R.id.submit);
         done.setOnClickListener(v -> {
+
             navController.navigateUp();
         });
 

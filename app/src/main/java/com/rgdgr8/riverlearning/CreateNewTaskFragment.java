@@ -37,23 +37,11 @@ public class CreateNewTaskFragment extends Fragment {
                 R.array.repeat_task_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         repeat.setAdapter(adapter);
-        /*repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
 
         Spinner alloc = root.findViewById(R.id.allocTo_spinner);
-        adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.allocatedto_task_spinner, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        alloc.setAdapter(adapter);
+        ArrayAdapter<String> allocAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.employeeList);
+        allocAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        alloc.setAdapter(allocAdapter);
 
         TextView date = root.findViewById(R.id.target_date);
         Calendar calendar = Calendar.getInstance();

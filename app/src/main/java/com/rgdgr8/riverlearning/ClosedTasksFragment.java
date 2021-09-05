@@ -28,7 +28,7 @@ import retrofit2.Response;
 public class ClosedTasksFragment extends Fragment {
     private static final String TAG = "ClosedTasksFrag";
 
-    class ClosedTask {
+    static class ClosedTask {
         private String task;
         private String allocatedby_name;
         private String allocation_date;
@@ -75,11 +75,6 @@ public class ClosedTasksFragment extends Fragment {
                 Log.i(TAG, "onResponseClosedTasksFetcher: " + response.code() + " " + response.message());
                 if (!response.isSuccessful()) {
                     Toast.makeText(getActivity(), "Request unsuccessful", Toast.LENGTH_SHORT).show();
-                    for (int i = 0; i < 30; i++) {
-                        String x = String.valueOf(i + 1);
-                        closedTasks.add(new ClosedTask(x, x, x, x));
-                    }
-                    setAdapter();
                     return;
                 }
 

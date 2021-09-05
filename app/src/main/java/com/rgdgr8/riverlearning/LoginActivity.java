@@ -1,6 +1,7 @@
 package com.rgdgr8.riverlearning;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -8,9 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -47,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request originalRequest = chain.request();
-                    if(originalRequest.url().toString().equals(DataFetcher.BASE_URL+"token/login")){
+                    if (originalRequest.url().toString().equals(DataFetcher.BASE_URL + "token/login")) {
                         return chain.proceed(originalRequest);
                     }
 

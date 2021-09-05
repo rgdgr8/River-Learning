@@ -2,6 +2,7 @@ package com.rgdgr8.riverlearning;
 
 import org.jetbrains.annotations.NotNull;
 
+//TODO is used for both new task and updating allocated task
 public class NewTask {
     private String task;
     private String description;

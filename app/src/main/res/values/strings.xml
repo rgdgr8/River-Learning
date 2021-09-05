@@ -27,12 +27,6 @@
         <item>Weekly</item>
         <item>Monthly</item>
     </string-array>
-    <string-array name="allocatedto_task_spinner">
-        <item>------</item>
-        <item>X</item>
-        <item>Y</item>
-        <item>Z</item>
-    </string-array>
     <string-array name="task_status_spinner">
         <item>------</item>
         <item>OPEN</item>
