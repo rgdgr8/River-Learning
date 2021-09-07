@@ -23,6 +23,7 @@ import retrofit2.Response;
 public class OpenTaskHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "OpenTaskHolder";
     public static final String EDIT_OPEN_TASK = "open_task";
+    public static final String COMM_OPEN_TASK = "comm_task";
     private final TextView sr;
     private final TextView task;
     private final TextView alloc;
@@ -63,13 +64,13 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         });
 
         actionComment.setOnClickListener(v -> {
-            /*Bundle b = new Bundle();
-            b.putBoolean(COMMENT_FROM, hideDelBtn);*/
+            Bundle b = new Bundle();
+            b.putInt(COMM_OPEN_TASK, openTask.getId());
 
             if (hideDelBtn) {//event happened from my task frag
-                navController.navigate(R.id.action_myTasksFragment_to_commentTaskFragment);
+                navController.navigate(R.id.action_myTasksFragment_to_commentTaskFragment,b);
             } else {
-                navController.navigate(R.id.action_tasksAllocatedFragment_to_commentTaskFragment);
+                navController.navigate(R.id.action_tasksAllocatedFragment_to_commentTaskFragment,b);
             }
         });
 

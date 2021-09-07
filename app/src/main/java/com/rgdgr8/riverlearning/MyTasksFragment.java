@@ -43,7 +43,7 @@ public class MyTasksFragment extends Fragment {
         LoginActivity.dataFetcher.getTasks().enqueue(new Callback<List<OpenTask>>() {
             @Override
             public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
-                Log.i(TAG, "onResponseTaskFetcher: " + response.code() + " " + response.message());
+                Log.d(TAG, "onResponseTaskFetcher: " + response.code() + " " + response.message());
                 if (!response.isSuccessful()) {
                     Toast.makeText(getActivity(), "Request unsuccessful", Toast.LENGTH_SHORT).show();
                     /*for (int i = 0; i < 30; i++) {
@@ -61,7 +61,7 @@ public class MyTasksFragment extends Fragment {
                     tasks.addAll(t);
                     setAdapter();
                 } else {
-                    Log.i(TAG, "onResponseTaskFetcher: empty body");
+                    Log.d(TAG, "onResponseTaskFetcher: empty body");
                 }
             }
 

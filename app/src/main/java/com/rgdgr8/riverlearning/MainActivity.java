@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         LoginActivity.dataFetcher.getEmployeeList().enqueue(new Callback<List<Employee>>() {
             @Override
             public void onResponse(Call<List<Employee>> call, Response<List<Employee>> response) {
-                Log.i(TAG, "onResponseEmpListFetcher: " + response.message());
+                Log.d(TAG, "onResponseEmpListFetcher: " + response.message());
                 if (response.isSuccessful()) {
                     List<Employee> list = response.body();
                     if (list != null) {
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     LoginActivity.dataFetcher.destroyToken().enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
-                            Log.i(TAG, "onLogoutResponse: " + response.message());
+                            Log.d(TAG, "onLogoutResponse: " + response.message());
                             if (!response.isSuccessful()) {
                                 Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                             } else {

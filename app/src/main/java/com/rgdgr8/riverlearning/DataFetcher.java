@@ -22,6 +22,9 @@ public interface DataFetcher {
     @GET("tasks-allocated")
     Call<List<OpenTask>> getAllocatedTasks();
 
+    @POST("add-comment/{id}")
+    Call<Void> submitComment(@Path("id") int id, @Body CommentTaskFragment.Comment comment);
+
     @POST("token/login")
     Call<LoginToken> getToken(@Body User user);
 

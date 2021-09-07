@@ -72,7 +72,7 @@ public class ClosedTasksFragment extends Fragment {
         LoginActivity.dataFetcher.getClosedTasks().enqueue(new Callback<List<ClosedTask>>() {
             @Override
             public void onResponse(Call<List<ClosedTask>> call, Response<List<ClosedTask>> response) {
-                Log.i(TAG, "onResponseClosedTasksFetcher: " + response.code() + " " + response.message());
+                Log.d(TAG, "onResponseClosedTasksFetcher: " + response.code() + " " + response.message());
                 if (!response.isSuccessful()) {
                     Toast.makeText(getActivity(), "Request unsuccessful", Toast.LENGTH_SHORT).show();
                     return;
@@ -84,7 +84,7 @@ public class ClosedTasksFragment extends Fragment {
                     closedTasks.addAll(t);
                     setAdapter();
                 } else {
-                    Log.i(TAG, "onResponseClosedTasks: empty body");
+                    Log.d(TAG, "onResponseClosedTasks: empty body");
                 }
             }
 
