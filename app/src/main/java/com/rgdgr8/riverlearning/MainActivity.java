@@ -1,5 +1,7 @@
 package com.rgdgr8.riverlearning;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -32,9 +34,11 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
     private NavigationView navView;
     private DrawerLayout drawerLayout;
-    public static List<String> employeeList = null;
+    public static List<String> spinnerEmployeeList = null;
+    public static List<Integer> employeeIdList = null;
 
     static class Employee implements Comparable<Employee> {
         private static class User {
@@ -114,10 +118,18 @@ public class MainActivity extends AppCompatActivity {
                     List<Employee> list = response.body();
                     if (list != null) {
                         Collections.sort(list);
-                        employeeList = new ArrayList<>(list.size() + 1);
-                        employeeList.add(getResources().getString(R.string.blank_spinner));
+
+                        employeeIdList = new ArrayList<>(list.size());
+
+                        spinnerEmployeeList = new ArrayList<>(list.size() + 1);
+                        spinnerEmployeeList.add(getResources().getString(R.string.blank_spinner));
+
+                        //TODO GET THIS EMP NAME
+
                         for (Employee e : list) {
-                            employeeList.add(e.getUser().getFname()+" "+e.getUser().getLname());
+                            Log.d(TAG, "onResponse: " + e.toString());
+                            spinnerEmployeeList.add(e.getUser().getFname() + " " + e.getUser().getLname());
+                            employeeIdList.add(e.getUser().getId());
                         }
                     } else {
                         Toast.makeText(MainActivity.this, "Empty employee list", Toast.LENGTH_SHORT).show();
@@ -144,10 +156,11 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             Log.d(TAG, "onLogoutResponse: " + response.message());
                             if (!response.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Problem Occurred", Toast.LENGTH_SHORT).show();
                             } else {
-                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                        .edit().putString(LoginActivity.TAG, null).apply();
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                preferences.edit().putString(LoginActivity.TAG, null).apply();
+                                preferences.edit().putString(LoginActivity.SP_TENANT, null).apply();
 
                                 finish();
                             }
@@ -164,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Button feedback = findViewById(R.id.feedback);
-        feedback.setOnClickListener(v -> Toast.makeText(MainActivity.this, "feedback", Toast.LENGTH_SHORT).show());
+        feedback.setOnClickListener(v -> {
+            startActivity(new Intent(this, QuickFeedBackActivity.class));
+        });
 
         navView = findViewById(R.id.nav_view);
         navView.setItemIconTintList(null);
@@ -178,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
                 R.id.myEvaluationFragment,
                 R.id.reportKpiFragment,
-                R.id.quickFeedbackFragment,
+                R.id.iFeelFragment,
 
                 R.id.myTrainingsFragment,
 
@@ -195,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 feedback.setVisibility(View.VISIBLE);
                 feedback.setEnabled(true);
             }
+
             if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 switch (destination.getId()) {
                     case R.id.myTasksFragment:
@@ -206,11 +222,15 @@ public class MainActivity extends AppCompatActivity {
                         navView.inflateMenu(R.menu.assessments_drawer_menu);
                         break;
                     case R.id.myTrainingsFragment:
+                        navView.getMenu().clear();
+                        navView.inflateMenu(R.menu.training_menu);
                         break;
 
                     case R.id.tasksAllocatedFragment:
                     case R.id.closedTasksFragment:
                     case R.id.assessTasksFragment:
+                    case R.id.reportKpiFragment:
+                    case R.id.iFeelFragment:
                         break;
 
                     default:

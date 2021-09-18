@@ -1,0 +1,17 @@
+{
+  "tasks": {
+    "id": 3,
+    "task": "Finish documentation",
+    "description": "finish documentation asap",
+    "allocatedby_name": "John Doe",
+    "allocation_date": "2021-05-11",
+    "status": "CLOSED"
+  },
+
+  "assessed": {
+    "work_quality": 2,
+    "comment": "Very nicely written documentation.",
+  },
+
+  "closing_date": null
+}

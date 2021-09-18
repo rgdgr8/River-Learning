@@ -58,7 +58,7 @@ public class EditAllocatedTaskFragment extends Fragment {
         });*/
 
         Spinner alloc = root.findViewById(R.id.allocTo_spinner);
-        ArrayAdapter<String> allocAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.employeeList);
+        ArrayAdapter<String> allocAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.spinnerEmployeeList);
         allocAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         alloc.setAdapter(allocAdapter);
         String al = openTask.getAlloc();
@@ -104,17 +104,19 @@ public class EditAllocatedTaskFragment extends Fragment {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     Log.d(TAG, "onUpdateAllocTResponse: " + response.code());
                     if (!response.isSuccessful()) {
-                        Toast.makeText(getActivity(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
+
+                    Navigation.findNavController(root).navigateUp();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(root).navigateUp();
                     Log.e(TAG, "onUpdateAllocTFailure: ", t.getCause());
                 }
             });
-
-            Navigation.findNavController(root).navigateUp();
         });
 
         return root;

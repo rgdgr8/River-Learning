@@ -22,7 +22,8 @@ import retrofit2.Response;
 
 public class OpenTaskHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "OpenTaskHolder";
-    public static final String EDIT_OPEN_TASK = "open_task";
+    public static final String EDIT_OPEN_TASK = "edit_task";
+    public static final String VIEW_OPEN_TASK = "view_task";
     public static final String COMM_OPEN_TASK = "comm_task";
     private final TextView sr;
     private final TextView task;
@@ -50,9 +51,16 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         actionComment = itemView.findViewById(R.id.comm_task);
         actionDelete = itemView.findViewById(R.id.del_task);
 
-        task.setOnClickListener(v -> Toast.makeText(itemView.getContext(), "Task Details", Toast.LENGTH_SHORT).show());
-
         NavController navController = Navigation.findNavController(this.view);
+
+        task.setOnClickListener(v -> {
+            Bundle b = new Bundle();
+            b.putSerializable(VIEW_OPEN_TASK, openTask);
+            if (hideDelBtn)
+                navController.navigate(R.id.action_myTasksFragment_to_taskDetailsFragment, b);
+            else
+                navController.navigate(R.id.action_tasksAllocatedFragment_to_taskDetailsFragment, b);
+        });
 
         actionEdit.setOnClickListener(v -> {
             Bundle b = new Bundle();
@@ -68,9 +76,9 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
             b.putInt(COMM_OPEN_TASK, openTask.getId());
 
             if (hideDelBtn) {//event happened from my task frag
-                navController.navigate(R.id.action_myTasksFragment_to_commentTaskFragment,b);
+                navController.navigate(R.id.action_myTasksFragment_to_commentTaskFragment, b);
             } else {
-                navController.navigate(R.id.action_tasksAllocatedFragment_to_commentTaskFragment,b);
+                navController.navigate(R.id.action_tasksAllocatedFragment_to_commentTaskFragment, b);
             }
         });
 

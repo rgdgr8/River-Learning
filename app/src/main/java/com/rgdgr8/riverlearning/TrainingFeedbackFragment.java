@@ -1,0 +1,94 @@
+package com.rgdgr8.riverlearning;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class TrainingFeedbackFragment extends Fragment {
+    private static final String TAG = "TrainingFeedBackFrag";
+
+    static class TrainingFeedback {
+        private Integer score;
+        private String comment;
+
+        public TrainingFeedback(Integer score, String comment) {
+            this.score = score;
+            this.comment = comment;
+
+            if (this.score < 1) {
+                score = null;
+            }
+        }
+
+        public Integer getScore() {
+            return score;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View root = inflater.inflate(R.layout.fragment_training_feedback, container, false);
+
+        int trainingId = getArguments().getInt(MyTrainingsFragment.TAG);
+
+        Spinner score = root.findViewById(R.id.score_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.rating_spinner, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        score.setAdapter(adapter);
+
+        EditText comment = root.findViewById(R.id.comment);
+
+        Button submit = root.findViewById(R.id.submit);
+        submit.setOnClickListener(v -> {
+            if(score.getSelectedItemPosition()<1){
+                Toast.makeText(getContext(), "Invalid score", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            TrainingFeedback trainingFeedback = new TrainingFeedback(score.getSelectedItemPosition(), comment.getText().toString());
+            LoginActivity.dataFetcher.submitTrainingFeedback(trainingId, trainingFeedback).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Log.d(TAG, "onResponse: " + response.code());
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Feedback Submitted", Toast.LENGTH_LONG).show();
+                    }
+
+                    Navigation.findNavController(root).navigateUp();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(root).navigateUp();
+                    Log.e(TAG, "onFailure: ", t.getCause());
+                }
+            });
+        });
+
+        return root;
+    }
+}

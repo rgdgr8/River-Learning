@@ -1,20 +1,18 @@
 package com.rgdgr8.riverlearning;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +21,7 @@ import retrofit2.Response;
 public class EditMyTaskFragment extends Fragment {
     private static final String TAG = "EditMyTaskFrag";
 
-    static class UpdatedTask{
+    static class UpdatedTask {
         private String task;
         private String description;
         private String status;
@@ -76,22 +74,23 @@ public class EditMyTaskFragment extends Fragment {
         submit.setOnClickListener(v -> {
             UpdatedTask updatedTask = new UpdatedTask(name.getText().toString(), desc.getText().toString(), status.getSelectedItem().toString());
 
-            LoginActivity.dataFetcher.updateMyTask(openTask.getId(),updatedTask).enqueue(new Callback<Void>() {
+            LoginActivity.dataFetcher.updateMyTask(openTask.getId(), updatedTask).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
-                    Log.d(TAG, "onResponse: "+response.code());
-                    if (!response.isSuccessful()){
-                        Toast.makeText(getActivity(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: " + response.code());
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
+                    Navigation.findNavController(root).navigateUp();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(root).navigateUp();
                     Log.e(TAG, "onFailure: ", t.getCause());
                 }
             });
-
-            Navigation.findNavController(root).navigateUp();
         });
 
         return root;

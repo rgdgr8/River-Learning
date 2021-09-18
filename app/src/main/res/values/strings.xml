@@ -34,4 +34,20 @@
         <item>WAITING</item>
         <item>IN PROGRESS</item>
     </string-array>
+    <string-array name="rating_spinner">
+        <item>------</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="performance_spinner">
+        <item>------</item>
+        <item>Excellent</item>
+        <item>Very Good</item>
+        <item>Good</item>
+        <item>Average</item>
+        <item>Needs Improvement</item>
+    </string-array>
 </resources>

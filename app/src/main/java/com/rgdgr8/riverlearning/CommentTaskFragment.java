@@ -55,26 +55,19 @@ public class CommentTaskFragment extends Fragment {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     Log.d(TAG, "onResponse: " + response.code());
                     if (!response.isSuccessful()) {
-                        Toast.makeText(getActivity(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
+                    navController.navigateUp();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    navController.navigateUp();
                     Log.e(TAG, "onFailure: ", t.getCause());
                 }
             });
-            navController.navigateUp();
         });
-
-        /*Button cancel = root.findViewById(R.id.cancel);
-        cancel.setOnClickListener(v -> {
-            //if (isFromMyTasks)
-                //navController.navigate(R.id.action_commentTaskFragment_to_myTasksFragment);
-            //else
-                //navController.navigate(R.id.action_commentTaskFragment_to_tasksAllocatedFragment);
-            navController.navigateUp();
-        });*/
 
         return root;
     }

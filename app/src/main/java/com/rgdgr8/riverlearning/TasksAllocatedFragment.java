@@ -48,7 +48,7 @@ public class TasksAllocatedFragment extends Fragment {
             public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
                 Log.d(TAG, "onResponseAllocTaskFetcher: " + response.code() + " " + response.message());
                 if (!response.isSuccessful()) {
-                    Toast.makeText(getActivity(), "Request unsuccessful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     /*for (int i = 0; i < 30; i++) {
                         String x = String.valueOf(i + 1);
                         String status = i % 2 == 0 ? OpenTask.OPEN : OpenTask.CLOSED;
@@ -64,12 +64,13 @@ public class TasksAllocatedFragment extends Fragment {
                     tasks.addAll(t);
                     setAdapter();
                 } else {
-                    Log.d(TAG, "onResponseAllocTasks: empty body");
+                    Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<OpenTask>> call, Throwable t) {
+                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailureAllocTasks: ", t.getCause());
             }
         });

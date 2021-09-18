@@ -74,7 +74,7 @@ public class ClosedTasksFragment extends Fragment {
             public void onResponse(Call<List<ClosedTask>> call, Response<List<ClosedTask>> response) {
                 Log.d(TAG, "onResponseClosedTasksFetcher: " + response.code() + " " + response.message());
                 if (!response.isSuccessful()) {
-                    Toast.makeText(getActivity(), "Request unsuccessful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -84,12 +84,13 @@ public class ClosedTasksFragment extends Fragment {
                     closedTasks.addAll(t);
                     setAdapter();
                 } else {
-                    Log.d(TAG, "onResponseClosedTasks: empty body");
+                    Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ClosedTask>> call, Throwable t) {
+                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailureClosedTasks: ", t.getCause());
             }
         });

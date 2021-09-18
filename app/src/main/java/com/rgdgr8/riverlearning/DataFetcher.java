@@ -7,11 +7,11 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface DataFetcher {
     String TAG = "DataFetcher";
-    String BASE_URL = "https://gamma.riverlearning.in/api/";
 
     @GET("employee-list")
     Call<List<MainActivity.Employee>> getEmployeeList();
@@ -45,4 +45,25 @@ public interface DataFetcher {
 
     @PATCH("task-update-view-mytasks/{id}")
     Call<Void> updateMyTask(@Path("id") int id, @Body EditMyTaskFragment.UpdatedTask body);
+
+    @GET("assess-closed-task-view")
+    Call<List<AssessTasksFragment.AssessTask>> getAssessTasks();
+
+    @PUT("assess-task/{id}")
+    Call<Void> submitTaskAssessment(@Path("id") int id, @Body AssessmentOfTaskFragment.AssessedTask assessedTask);
+
+    @GET("task-detail/{id}")
+    Call<TaskDetailsFragment.TaskDetails> getTaskDetails(@Path("id") int id);
+
+    @GET("training-list")
+    Call<MyTrainingsFragment.Trainings> getTrainings();
+
+    @POST("training-feedback/{id}")
+    Call<Void> submitTrainingFeedback(@Path("id") int id, @Body TrainingFeedbackFragment.TrainingFeedback trainingFeedback);
+
+    @POST("enroll-training/{id}")
+    Call<Void> enrollInTraining(@Path("id") int id, @Body TrainingEnrollFragment.Enrollment userId);
+
+    @POST("quick-feedback-create/")
+    Call<Void> iFeel(@Body QuickFeedBackActivity.Feedback feedback);
 }

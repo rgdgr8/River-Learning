@@ -1,7 +1,7 @@
 package com.rgdgr8.riverlearning;
 
 import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -9,18 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,6 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
+    public static final String SP_TENANT = "tenant";
+    public static String BASE_URL = "";
     public static User user;
     public static String token;
     public static DataFetcher dataFetcher;
@@ -46,25 +39,42 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText email = findViewById(R.id.login_email);
         EditText pass = findViewById(R.id.login_pass);
+        EditText tenant = findViewById(R.id.tenant);
         Button login = findViewById(R.id.login);
         login.setOnClickListener(v -> {
             user = new User(email.getText().toString(), pass.getText().toString());
-            fetchToken();
+            String t = tenant.getText().toString().toLowerCase();
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(SP_TENANT, t).apply();
+            fetchToken(t);
         });
+
+        intent = new Intent(this, MainActivity.class);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        token = preferences.getString(TAG, null);
+        String t = preferences.getString(SP_TENANT, null);
+        if (token != null && t != null) {
+            initializeDataFetcher(t);
+            startActivity(intent);
+        }
+    }
+
+    private void initializeDataFetcher(String tenant) {
+        BASE_URL = "https://" + tenant + ".riverlearning.in/api/";
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request originalRequest = chain.request();
-                    if (originalRequest.url().toString().equals(DataFetcher.BASE_URL + "token/login")) {
+                    if (originalRequest.url().toString().equals(BASE_URL + "token/login")) {
                         return chain.proceed(originalRequest);
                     }
 
                     String t = token;
                     if (t == null) t = "";
 
-                    Request newRequest = ((Request) originalRequest).newBuilder()
+                    Request newRequest = originalRequest.newBuilder()
                             .header("Authorization", "Token " + t)
                             .build();
                     return chain.proceed(newRequest);
@@ -73,24 +83,17 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(DataFetcher.BASE_URL)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
                 .client(okHttpClient)
                 .build();
 
         dataFetcher = retrofit.create(DataFetcher.class);
-
-        intent = new Intent(this, MainActivity.class);
-
-        token = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .getString(TAG, null);
-
-        if (token != null) {
-            startActivity(intent);
-        }
     }
 
-    public void fetchToken() {
+    private void fetchToken(String tenant) {
+        initializeDataFetcher(tenant);
+
         dataFetcher.getToken(user).enqueue(new Callback<LoginToken>() {
             @Override
             public void onResponse(Call<LoginToken> call, Response<LoginToken> response) {

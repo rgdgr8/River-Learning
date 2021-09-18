@@ -8,7 +8,7 @@
             android:id="@+id/reportKpiFragment"
             android:title="@string/report_kpi_data" />
         <item
-            android:id="@+id/quickFeedbackFragment"
-            android:title="@string/quick_feedback" />
+            android:id="@+id/iFeelFragment"
+            android:title="iFeel" />
     </group>
 </menu>

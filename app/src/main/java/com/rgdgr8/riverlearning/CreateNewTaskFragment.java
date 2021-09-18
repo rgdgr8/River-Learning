@@ -39,16 +39,16 @@ public class CreateNewTaskFragment extends Fragment {
         repeat.setAdapter(adapter);
 
         Spinner alloc = root.findViewById(R.id.allocTo_spinner);
-        ArrayAdapter<String> allocAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.employeeList);
+        ArrayAdapter<String> allocAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.spinnerEmployeeList);
         allocAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         alloc.setAdapter(allocAdapter);
 
         TextView date = root.findViewById(R.id.target_date);
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH)+1;
+        int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        setDt = DatePickerFragment.getFormattedDate(day,month,year);
+        setDt = DatePickerFragment.getFormattedDate(day, month, year);
         date.setText(setDt);
         date.setOnClickListener(v -> {
             //DatePickerFragment dpf = DatePickerFragment.newInstance(month + " " + day + ", " + year);
@@ -82,17 +82,19 @@ public class CreateNewTaskFragment extends Fragment {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     Log.d(TAG, "onResponse: " + response.code());
                     if (!response.isSuccessful()) {
-                        Toast.makeText(getActivity(), "Task Creation Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Problem occurred", Toast.LENGTH_SHORT).show();
                     }
+
+                    Navigation.findNavController(root).navigateUp();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(root).navigateUp();
                     Log.e(TAG, "onFailure: ", t.getCause());
                 }
             });
-
-            Navigation.findNavController(root).navigateUp();
         });
 
         return root;

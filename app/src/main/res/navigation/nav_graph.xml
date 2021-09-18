@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_myTasksFragment_to_editMyTaskFragment"
             app:destination="@id/editMyTaskFragment" />
+        <action
+            android:id="@+id/action_myTasksFragment_to_taskDetailsFragment"
+            app:destination="@id/taskDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/tasksAllocatedFragment"
@@ -31,6 +34,9 @@
         <action
             android:id="@+id/action_tasksAllocatedFragment_to_createNewTaskFragment"
             app:destination="@id/createNewTaskFragment" />
+        <action
+            android:id="@+id/action_tasksAllocatedFragment_to_taskDetailsFragment"
+            app:destination="@id/taskDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/closedTasksFragment"
@@ -41,7 +47,11 @@
         android:id="@+id/assessTasksFragment"
         android:name="com.rgdgr8.riverlearning.AssessTasksFragment"
         android:label="@string/assess_closed_tasks"
-        tools:layout="@layout/fragment_assess_tasks" />
+        tools:layout="@layout/fragment_assess_tasks" >
+        <action
+            android:id="@+id/action_assessTasksFragment_to_assessmentOfTaskFragment"
+            app:destination="@id/assessmentOfTaskFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myEvaluationFragment"
         android:name="com.rgdgr8.riverlearning.MyEvaluationFragment"
@@ -53,15 +63,17 @@
         android:label="@string/report_kpi_data"
         tools:layout="@layout/fragment_report_kpi" />
     <fragment
-        android:id="@+id/quickFeedbackFragment"
-        android:name="com.rgdgr8.riverlearning.QuickFeedbackFragment"
-        android:label="@string/quick_feedback"
-        tools:layout="@layout/fragment_quick_feedback" />
-    <fragment
         android:id="@+id/myTrainingsFragment"
         android:name="com.rgdgr8.riverlearning.MyTrainingsFragment"
         android:label="@string/my_trainings"
-        tools:layout="@layout/fragment_my_trainings" />
+        tools:layout="@layout/fragment_my_trainings" >
+        <action
+            android:id="@+id/action_myTrainingsFragment_to_trainingFeedbackFragment"
+            app:destination="@id/trainingFeedbackFragment" />
+        <action
+            android:id="@+id/action_myTrainingsFragment_to_trainingEnrollFragment"
+            app:destination="@id/trainingEnrollFragment" />
+    </fragment>
     <fragment
         android:id="@+id/missionFragment"
         android:name="com.rgdgr8.riverlearning.MissionFragment"
@@ -89,5 +101,31 @@
         android:id="@+id/createNewTaskFragment"
         android:name="com.rgdgr8.riverlearning.CreateNewTaskFragment"
         android:label="Create New Task"
-        tools:layout="@layout/fragment_create_new_task" />
+        tools:layout="@layout/fragment_create_new_task" >
+    </fragment>
+    <fragment
+        android:id="@+id/assessmentOfTaskFragment"
+        android:name="com.rgdgr8.riverlearning.AssessmentOfTaskFragment"
+        android:label="Assess Task"
+        tools:layout="@layout/fragment_assessment_of_task" />
+    <fragment
+        android:id="@+id/taskDetailsFragment"
+        android:name="com.rgdgr8.riverlearning.TaskDetailsFragment"
+        android:label="Task Details"
+        tools:layout="@layout/fragment_task_details" />
+    <fragment
+        android:id="@+id/trainingFeedbackFragment"
+        android:name="com.rgdgr8.riverlearning.TrainingFeedbackFragment"
+        android:label="Training Feedback"
+        tools:layout="@layout/fragment_training_feedback" />
+    <fragment
+        android:id="@+id/trainingEnrollFragment"
+        android:name="com.rgdgr8.riverlearning.TrainingEnrollFragment"
+        android:label="Enroll"
+        tools:layout="@layout/fragment_training_enroll" />
+    <fragment
+        android:id="@+id/iFeelFragment"
+        android:name="com.rgdgr8.riverlearning.iFeelFragment"
+        android:label="fragment_i_feel"
+        tools:layout="@layout/fragment_i_feel" />
 </navigation>
