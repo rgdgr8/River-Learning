@@ -75,10 +75,10 @@
             app:destination="@id/trainingEnrollFragment" />
     </fragment>
     <fragment
-        android:id="@+id/missionFragment"
-        android:name="com.rgdgr8.riverlearning.MissionFragment"
-        android:label="@string/mission"
-        tools:layout="@layout/fragment_mission" />
+        android:id="@+id/profileFragment"
+        android:name="com.rgdgr8.riverlearning.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/editAllocatedTaskFragment"
         android:name="com.rgdgr8.riverlearning.EditAllocatedTaskFragment"

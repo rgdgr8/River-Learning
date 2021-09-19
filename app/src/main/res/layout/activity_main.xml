@@ -65,6 +65,7 @@
         android:background="@color/theme_blue"
         android:fitsSystemWindows="true"
         app:itemTextColor="@color/white"
+        app:headerLayout="@layout/drawer_header"
         app:menu="@menu/tasks_drawer_menu" />
     <!--app:headerLayout="@layout/drawer_header" /-->
 

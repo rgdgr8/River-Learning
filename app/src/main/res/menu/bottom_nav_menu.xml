@@ -2,15 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item android:id="@+id/myTasksFragment"
+            android:icon="@drawable/icon_task"
             android:title="@string/tasks"/>
         <item
             android:id="@+id/myEvaluationFragment"
+            android:icon="@drawable/icon_feedback"
             android:title="@string/assessments" />
         <item
             android:id="@+id/myTrainingsFragment"
+            android:icon="@drawable/icons_treadmill"
             android:title="@string/trainings" />
         <item
-            android:id="@+id/missionFragment"
-            android:title="@string/organization" />
+            android:id="@+id/profileFragment"
+            android:icon="@drawable/icons_profile"
+            android:title="@string/profile" />
     </group>
 </menu>

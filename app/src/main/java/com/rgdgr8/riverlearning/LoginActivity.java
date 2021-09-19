@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         if (token != null && t != null) {
             initializeDataFetcher(t);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -105,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                 .edit().putString(TAG, token).apply();
                         startActivity(intent);
+                        finish();
                     } else
                         Toast.makeText(LoginActivity.this, "Invalid Token", Toast.LENGTH_SHORT).show();
                 } else {

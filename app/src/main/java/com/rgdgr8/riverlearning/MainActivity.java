@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
                                 preferences.edit().putString(LoginActivity.TAG, null).apply();
                                 preferences.edit().putString(LoginActivity.SP_TENANT, null).apply();
 
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
                                 finish();
                             }
                         }
@@ -197,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
                 R.id.myTrainingsFragment,
 
-                R.id.missionFragment)
+                R.id.profileFragment)
                 .setOpenableLayout(drawerLayout)
                 .build();
 
@@ -233,6 +235,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.iFeelFragment:
                         break;
 
+                    case R.id.profileFragment:
+                        navView.getMenu().clear();
                     default:
                         feedback.setVisibility(View.INVISIBLE);
                         feedback.setEnabled(false);
