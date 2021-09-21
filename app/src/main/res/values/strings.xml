@@ -19,6 +19,7 @@
     <string name="profile">Profile</string>
 
     <string name="blank_spinner">------</string>
+    <string name="ifeel">iFeel</string>
 
     <string-array name="repeat_task_spinner">
         <item>------</item>

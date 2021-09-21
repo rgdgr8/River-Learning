@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.assessTasksFragment,
 
                 R.id.myEvaluationFragment,
+                //R.id.ownerEvaluation
                 R.id.reportKpiFragment,
                 R.id.iFeelFragment,
 
@@ -233,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.assessTasksFragment:
                     case R.id.reportKpiFragment:
                     case R.id.iFeelFragment:
+                        //case R.id.ownerEvaluation
                         break;
 
                     case R.id.profileFragment:

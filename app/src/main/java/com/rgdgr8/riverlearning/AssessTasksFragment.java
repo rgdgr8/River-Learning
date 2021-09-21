@@ -50,7 +50,8 @@ public class AssessTasksFragment extends Fragment {
             return id;
         }
 
-        public AssessTask(String task, String status, Integer performance, String comments) {
+        public AssessTask(int id, String task, String status, Integer performance, String comments) {
+            this.id = id;
             this.task = task;
             this.status = status;
             this.performance = performance;

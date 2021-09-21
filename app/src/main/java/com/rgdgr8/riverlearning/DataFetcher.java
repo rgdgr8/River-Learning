@@ -34,6 +34,9 @@ public interface DataFetcher {
     @POST("tasks-create/")
     Call<Void> createNewTask(@Body NewTask task);
 
+    @GET("quick-feedback")
+    Call<List<iFeelFragment.iFeel>> getiFeels();
+
     @GET("tasks-closed")
     Call<List<ClosedTasksFragment.ClosedTask>> getClosedTasks();
 
@@ -66,4 +69,10 @@ public interface DataFetcher {
 
     @POST("quick-feedback-create/")
     Call<Void> iFeel(@Body QuickFeedBackActivity.Feedback feedback);
+
+    @GET("my-evaluation")
+    Call<List<MyEvaluationFragment.MyEvaluation>> getMyEvaluations();
+
+    @PUT("my-evaluation/{id}")
+    Call<Void> submitMyEvaluation(@Path("id") int id, @Body EvaluateFragment.Evaluation evaluation);
 }

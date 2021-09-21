@@ -56,7 +56,11 @@
         android:id="@+id/myEvaluationFragment"
         android:name="com.rgdgr8.riverlearning.MyEvaluationFragment"
         android:label="@string/my_evaluation"
-        tools:layout="@layout/fragment_my_evaluation" />
+        tools:layout="@layout/fragment_my_evaluation" >
+        <action
+            android:id="@+id/action_myEvaluationFragment_to_evaluateFragment"
+            app:destination="@id/evaluateFragment" />
+    </fragment>
     <fragment
         android:id="@+id/reportKpiFragment"
         android:name="com.rgdgr8.riverlearning.ReportKpiFragment"
@@ -126,6 +130,11 @@
     <fragment
         android:id="@+id/iFeelFragment"
         android:name="com.rgdgr8.riverlearning.iFeelFragment"
-        android:label="fragment_i_feel"
+        android:label="@string/ifeel"
         tools:layout="@layout/fragment_i_feel" />
+    <fragment
+        android:id="@+id/evaluateFragment"
+        android:name="com.rgdgr8.riverlearning.EvaluateFragment"
+        android:label="Evaluate"
+        tools:layout="@layout/fragment_evaluate" />
 </navigation>

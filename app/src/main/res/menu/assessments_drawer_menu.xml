@@ -3,12 +3,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/myEvaluationFragment"
+            android:icon="@drawable/ic_baseline_eval_white_24"
             android:title="@string/my_evaluation" />
         <item
             android:id="@+id/reportKpiFragment"
+            android:icon="@drawable/ic_baseline_event_note_white_24"
             android:title="@string/report_kpi_data" />
         <item
             android:id="@+id/iFeelFragment"
-            android:title="iFeel" />
+            android:icon="@drawable/icon_feedback"
+            android:title="@string/ifeel" />
     </group>
 </menu>

@@ -222,6 +222,7 @@ public class MyTrainingsFragment extends Fragment {
             enroll = itemView.findViewById(R.id.enroll);
             enroll.setOnClickListener(v -> {
                 if (training.isEnrolled()) {
+                    Toast.makeText(getContext(), "Already enrolled", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

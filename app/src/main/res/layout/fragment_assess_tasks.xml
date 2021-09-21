@@ -15,16 +15,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!--This textview must match_parent, because this is the direct statically sized child of horizontalscrollview-->
-            <!--<TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="Hi, John"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
