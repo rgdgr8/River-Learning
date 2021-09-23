@@ -75,4 +75,13 @@ public interface DataFetcher {
 
     @PUT("my-evaluation/{id}")
     Call<Void> submitMyEvaluation(@Path("id") int id, @Body EvaluateFragment.Evaluation evaluation);
+
+    @GET("user-profile-view")
+    Call<ProfileFragment.Profile> getUserProfile();
+
+    @GET("my-kpis")
+    Call<List<ReportKpiFragment.Kpi>> getReportKpis();
+
+    @PUT("my-kpis/{id}")
+    Call<Void> submitKpiReport(@Path("id") int id, @Body UpdateReportKpiFragment.UpdatedKpi updatedKpi);
 }

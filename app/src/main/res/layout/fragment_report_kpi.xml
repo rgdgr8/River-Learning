@@ -1,15 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ReportKpiFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/report_kpi_data" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/table_header_gray"
+                android:orientation="horizontal"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    style="@style/list_text_view"
+                    android:text="Sr."
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="40dp"
+                    style="@style/list_text_view"
+                    android:text="KPI"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    style="@style/list_text_view"
+                    android:text="UOM"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    style="@style/list_text_view"
+                    android:text="Direction"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    style="@style/list_text_view"
+                    android:text="Month"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    style="@style/list_text_view"
+                    android:text="Target"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/list_text_view"
+                    android:text="Actual Value"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="15dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</HorizontalScrollView>

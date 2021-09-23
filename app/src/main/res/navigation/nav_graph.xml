@@ -65,7 +65,11 @@
         android:id="@+id/reportKpiFragment"
         android:name="com.rgdgr8.riverlearning.ReportKpiFragment"
         android:label="@string/report_kpi_data"
-        tools:layout="@layout/fragment_report_kpi" />
+        tools:layout="@layout/fragment_report_kpi" >
+        <action
+            android:id="@+id/action_reportKpiFragment_to_updateReportKpiFragment"
+            app:destination="@id/updateReportKpiFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myTrainingsFragment"
         android:name="com.rgdgr8.riverlearning.MyTrainingsFragment"
@@ -81,7 +85,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.rgdgr8.riverlearning.ProfileFragment"
-        android:label="@string/profile"
+        android:label="My Profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/editAllocatedTaskFragment"
@@ -137,4 +141,9 @@
         android:name="com.rgdgr8.riverlearning.EvaluateFragment"
         android:label="Evaluate"
         tools:layout="@layout/fragment_evaluate" />
+    <fragment
+        android:id="@+id/updateReportKpiFragment"
+        android:name="com.rgdgr8.riverlearning.UpdateReportKpiFragment"
+        android:label="Update Kpi Report"
+        tools:layout="@layout/fragment_update_report_kpi" />
 </navigation>
