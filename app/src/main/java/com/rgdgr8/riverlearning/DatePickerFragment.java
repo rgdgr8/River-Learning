@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class DatePickerFragment extends DialogFragment {
     public static String ARG_DATE = "date";
@@ -45,7 +46,7 @@ public class DatePickerFragment extends DialogFragment {
         DatePicker mDatePicker = v.findViewById(R.id.date_picker);
         mDatePicker.init(year, month, day, null);
 
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(requireActivity())
                 .setView(v)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

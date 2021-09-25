@@ -142,7 +142,7 @@ public class MyTrainingsFragment extends Fragment {
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     Trainings training = response.body();
-                    if (training == null) {
+                    if (training == null || ((training.getEnrolled() == null || training.getEnrolled().isEmpty()) && (training.getTrainings() == null || training.getTrainings().isEmpty()))) {
                         Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
                     } else {
                         trainingList.clear();
@@ -180,6 +180,8 @@ public class MyTrainingsFragment extends Fragment {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_my_trainings, container, false);
 
+        ((MainActivity) requireActivity()).setDrawerEnabled(false);
+
         RecyclerView recyclerView = root.findViewById(R.id.rv);
         LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(rvLayoutManager);
@@ -200,27 +202,26 @@ public class MyTrainingsFragment extends Fragment {
     }
 
     private class TrainingHolder extends RecyclerView.ViewHolder {
-        private TextView topic;
-        private TextView trainer;
-        private TextView date;
-        private TextView startTime;
-        private TextView endTime;
-        private TextView venue;
-        private ImageButton enroll;
-        private ImageButton feedback;
-        private Trainings.Training training;
+        private final TextView topic;
+        private final TextView trainer;
+        private final TextView date;
+        private final TextView startTime;
+        private final TextView endTime;
+        private final TextView venue;
 
         public TrainingHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             topic = itemView.findViewById(R.id.topic);
+            topic.setOnClickListener(v -> Toast.makeText(getActivity(), topic.getText().toString(), Toast.LENGTH_SHORT).show());
             trainer = itemView.findViewById(R.id.trainer);
             date = itemView.findViewById(R.id.date);
             startTime = itemView.findViewById(R.id.start_time);
             endTime = itemView.findViewById(R.id.end_time);
             venue = itemView.findViewById(R.id.venue);
-            enroll = itemView.findViewById(R.id.enroll);
+            ImageButton enroll = itemView.findViewById(R.id.enroll);
             enroll.setOnClickListener(v -> {
+                Trainings.Training training = trainingList.get(getAdapterPosition());
                 if (training.isEnrolled()) {
                     Toast.makeText(getContext(), "Already enrolled", Toast.LENGTH_SHORT).show();
                     return;
@@ -230,8 +231,9 @@ public class MyTrainingsFragment extends Fragment {
                 b.putSerializable(ENROLL, training);
                 Navigation.findNavController(root).navigate(R.id.action_myTrainingsFragment_to_trainingEnrollFragment, b);
             });
-            feedback = itemView.findViewById(R.id.feedback);
+            ImageButton feedback = itemView.findViewById(R.id.feedback);
             feedback.setOnClickListener(v -> {
+                Trainings.Training training = trainingList.get(getAdapterPosition());
                 Bundle b = new Bundle();
                 b.putInt(TAG, training.getId());
                 Navigation.findNavController(root).navigate(R.id.action_myTrainingsFragment_to_trainingFeedbackFragment, b);
@@ -239,15 +241,13 @@ public class MyTrainingsFragment extends Fragment {
         }
 
         public void bind(int pos) {
-            training = trainingList.get(pos);
+            Trainings.Training training = trainingList.get(pos);
             topic.setText(training.getTopic_name());
             trainer.setText(training.getTrainer_name());
             date.setText(training.getDate());
             startTime.setText(training.getStart_time());
             endTime.setText(training.getEnd_time());
             venue.setText(training.getVenue());
-            //if (training.isEnrolled())
-            //enroll.setEnabled(false);
         }
     }
 
@@ -257,7 +257,7 @@ public class MyTrainingsFragment extends Fragment {
         @NotNull
         @Override
         public TrainingHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-            View view = getActivity().getLayoutInflater().inflate(R.layout.training_item, parent, false);
+            View view = requireActivity().getLayoutInflater().inflate(R.layout.training_item, parent, false);
             return new TrainingHolder(view);
         }
 
@@ -270,5 +270,12 @@ public class MyTrainingsFragment extends Fragment {
         public int getItemCount() {
             return trainingList.size();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        ((MainActivity) requireActivity()).setDrawerEnabled(true);
     }
 }

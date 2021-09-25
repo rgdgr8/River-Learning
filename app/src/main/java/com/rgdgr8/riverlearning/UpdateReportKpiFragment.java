@@ -18,6 +18,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,7 +56,7 @@ public class UpdateReportKpiFragment extends Fragment {
         if (kpi.getTarget_value() != null)
             target.setText(kpi.getTarget_value() + "");
         else
-            target.setText(getActivity().getResources().getString(R.string.blank_spinner));
+            target.setText(requireActivity().getResources().getString(R.string.blank_spinner));
 
         EditText actual = root.findViewById(R.id.actual);
         if (kpi.getActual_value() != null)

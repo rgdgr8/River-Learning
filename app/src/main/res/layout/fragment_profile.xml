@@ -190,17 +190,6 @@
                     android:layout_marginBottom="10dp"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
-
-                <Button
-                    android:id="@+id/ch_pass"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:backgroundTint="@android:color/holo_green_dark"
-                    android:text="Change Password"
-                    android:textColor="@color/white" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

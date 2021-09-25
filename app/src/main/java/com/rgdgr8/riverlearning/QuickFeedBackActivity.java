@@ -17,10 +17,16 @@ import retrofit2.Response;
 public class QuickFeedBackActivity extends AppCompatActivity {
     public static final String TAG = "FeedbackActivity";
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
     static class Feedback {
-        private Integer feedback_to;
-        private Integer rating;
-        private String details;
+        private final Integer feedback_to;
+        private final Integer rating;
+        private final String details;
 
         public Feedback(Integer feedback_to, Integer rating, String details) {
             this.feedback_to = feedback_to;
@@ -76,8 +82,11 @@ public class QuickFeedBackActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: " + response.code());
                     if (!response.isSuccessful()) {
                         Toast.makeText(getApplicationContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Feedback submitted", Toast.LENGTH_SHORT).show();
                     }
                     finish();
+                    //TODO: send back to appropriate page
                 }
 
                 @Override

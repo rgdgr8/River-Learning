@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private NavigationView navView;
+    private NavController navController;
     private DrawerLayout drawerLayout;
     public static List<String> spinnerEmployeeList = null;
     public static List<Integer> employeeIdList = null;
@@ -105,6 +107,17 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
     }
 
+    private Toolbar toolbar;
+
+    public void setDrawerEnabled(boolean enabled) {
+        if (enabled) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        } else {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            toolbar.setNavigationIcon(null);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -155,21 +168,19 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             Log.d(TAG, "onLogoutResponse: " + response.message());
-                            if (!response.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "Problem Occurred", Toast.LENGTH_SHORT).show();
-                            } else {
-                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                preferences.edit().putString(LoginActivity.TAG, null).apply();
-                                preferences.edit().putString(LoginActivity.SP_TENANT, null).apply();
 
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            preferences.edit().putString(LoginActivity.TAG, null).apply();
+                            preferences.edit().putString(LoginActivity.SP_TENANT, null).apply();
+
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(MainActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
                             Log.e(TAG, "onFailure: ", t.getCause());
                         }
                     });
@@ -179,13 +190,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Button feedback = findViewById(R.id.feedback);
-        feedback.setOnClickListener(v -> {
-            startActivity(new Intent(this, QuickFeedBackActivity.class));
-        });
 
         navView = findViewById(R.id.nav_view);
         navView.setItemIconTintList(null);
         BottomNavigationView botNavView = findViewById(R.id.bot_nav_view);
+        botNavView.setItemIconTintList(null);
 
         AppBarConfiguration barConfiguration = new AppBarConfiguration
                 .Builder(R.id.myTasksFragment,
@@ -206,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.my_nav_host_container);
         assert navHostFragment != null;
-        NavController navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             //Toast.makeText(this, "dest changed", Toast.LENGTH_SHORT).show();
             if (!feedback.isEnabled()) {//condition is subject to modification
@@ -234,11 +243,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.assessTasksFragment:
                     case R.id.reportKpiFragment:
                     case R.id.iFeelFragment:
-                        //case R.id.ownerEvaluation
                         break;
 
-                    case R.id.profileFragment:
-                        navView.getMenu().clear();
+                    //case R.id.profileFragment:
+                    //navView.getMenu().clear();
                     default:
                         feedback.setVisibility(View.INVISIBLE);
                         feedback.setEnabled(false);
@@ -248,5 +256,21 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(toolbar, navController, barConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupWithNavController(botNavView, navController);
+
+        feedback.setOnClickListener(v -> {
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .edit().putInt(TAG, navController.getCurrentDestination().getId()).apply();
+            startActivityForResult(new Intent(this, QuickFeedBackActivity.class), 1);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            int lastFragment = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt(TAG, R.id.myTasksFragment);
+            navController.navigate(lastFragment);
+        }
     }
 }

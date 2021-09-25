@@ -1,17 +1,58 @@
-{
-  "tasks": {
-    "id": 3,
-    "task": "Finish documentation",
-    "description": "finish documentation asap",
-    "allocatedby_name": "John Doe",
-    "allocation_date": "2021-05-11",
-    "status": "CLOSED"
+[
+  {
+    "user": {
+      "id": 2,
+      "first_name": "John",
+      "last_name": "Doe"
+    }
   },
-
-  "assessed": {
-    "work_quality": 2,
-    "comment": "Very nicely written documentation.",
+  {
+    "user": {
+      "id": 3,
+      "first_name": "Jenny",
+      "last_name": "Thomas"
+    }
   },
-
-  "closing_date": null
-}
+  {
+    "user": {
+      "id": 1,
+      "first_name": "Dexter",
+      "last_name": ""
+    }
+  },
+  {
+    "user": {
+      "id": 6,
+      "first_name": "Betty",
+      "last_name": "Cooper"
+    }
+  },
+  {
+    "user": {
+      "id": 5,
+      "first_name": "Alice",
+      "last_name": "Cooper"
+    }
+  },
+  {
+    "user": {
+      "id": 4,
+      "first_name": "River",
+      "last_name": "Learning"
+    }
+  },
+  {
+    "user": {
+      "id": 7,
+      "first_name": "Shyam",
+      "last_name": "rathod"
+    }
+  },
+  {
+    "user": {
+      "id": 8,
+      "first_name": "Mihika",
+      "last_name": "S"
+    }
+  }
+]

@@ -83,7 +83,7 @@ public class MyEvaluationFragment extends Fragment {
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     List<MyEvaluation> t = response.body();
-                    if (t == null) {
+                    if (t == null || t.isEmpty()) {
                         Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
                     } else {
                         myEvaluationList.clear();

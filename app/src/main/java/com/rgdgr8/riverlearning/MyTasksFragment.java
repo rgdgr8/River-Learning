@@ -50,7 +50,7 @@ public class MyTasksFragment extends Fragment {
                 }
 
                 List<OpenTask> t = response.body();
-                if (t != null) {
+                if (t != null && !t.isEmpty()) {
                     tasks.clear();
                     tasks.addAll(t);
                     setAdapter();

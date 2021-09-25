@@ -25,7 +25,7 @@
 
                 <TextView
                     style="@style/list_text_view"
-                    android:layout_width="200dp"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="40dp"
                     android:text="Topic"

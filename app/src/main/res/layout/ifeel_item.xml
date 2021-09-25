@@ -15,15 +15,15 @@
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/fto"
+        android:id="@+id/ffrom"
         style="@style/list_text_view"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
-        android:textColor="@color/purple_500" />
+        android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/ffrom"
+        android:id="@+id/fto"
         style="@style/list_text_view"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
     <TextView
         android:id="@+id/comment"
         style="@style/list_text_view"
-        android:layout_width="175dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:textColor="@color/black" />

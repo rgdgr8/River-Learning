@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,7 +80,7 @@ public class ClosedTasksFragment extends Fragment {
                 }
 
                 List<ClosedTask> t = response.body();
-                if (t != null) {
+                if (t != null && !t.isEmpty()) {
                     closedTasks.clear();
                     closedTasks.addAll(t);
                     setAdapter();
@@ -133,6 +134,7 @@ public class ClosedTasksFragment extends Fragment {
 
             sr = itemView.findViewById(R.id.sr);
             task = itemView.findViewById(R.id.task);
+            task.setOnClickListener(v-> Toast.makeText(getActivity(), task.getText().toString(), Toast.LENGTH_SHORT).show());
             alloc = itemView.findViewById(R.id.alloc);
             alloc_date = itemView.findViewById(R.id.allocD);
             close_date = itemView.findViewById(R.id.closeD);
@@ -153,7 +155,7 @@ public class ClosedTasksFragment extends Fragment {
         @NotNull
         @Override
         public ClosedTaskHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-            View v = getActivity().getLayoutInflater().inflate(R.layout.closed_task_item, parent, false);
+            View v = requireActivity().getLayoutInflater().inflate(R.layout.closed_task_item, parent, false);
             return new ClosedTaskHolder(v);
         }
 

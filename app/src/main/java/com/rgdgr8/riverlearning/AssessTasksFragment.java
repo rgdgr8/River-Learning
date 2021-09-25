@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +33,7 @@ import retrofit2.Response;
 public class AssessTasksFragment extends Fragment {
     public static final String TAG = "AssessTasksFrag";
     private AssessTaskAdapter adapter;
-    private List<AssessTask> assessTaskList = new ArrayList<>();
+    private final List<AssessTask> assessTaskList = new ArrayList<>();
     private View root;
 
     static class AssessTask implements Serializable {
@@ -81,7 +82,7 @@ public class AssessTasksFragment extends Fragment {
 
         setRetainInstance(true);
 
-        score_scale = getActivity().getResources().getStringArray(R.array.performance_spinner);
+        score_scale = requireActivity().getResources().getStringArray(R.array.performance_spinner);
     }
 
     @Override
@@ -94,7 +95,7 @@ public class AssessTasksFragment extends Fragment {
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     List<AssessTask> t = response.body();
-                    if (t == null) {
+                    if (t == null || t.isEmpty()) {
                         Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
                     } else {
                         assessTaskList.clear();
@@ -183,7 +184,7 @@ public class AssessTasksFragment extends Fragment {
         @NotNull
         @Override
         public AssessTaskHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-            View v = getActivity().getLayoutInflater().inflate(R.layout.assess_task_item, parent, false);
+            View v = requireActivity().getLayoutInflater().inflate(R.layout.assess_task_item, parent, false);
             return new AssessTaskHolder(v);
         }
 

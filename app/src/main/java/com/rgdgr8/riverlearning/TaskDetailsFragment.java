@@ -67,7 +67,7 @@ public class TaskDetailsFragment extends Fragment {
                             taskAssess.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
                         } else {
                             TextView score = root.findViewById(R.id.score);
-                            score.setText(taskDetails.getWork_quality());
+                            score.setText(String.valueOf(taskDetails.getWork_quality()));
                             TextView comment = root.findViewById(R.id.comment);
                             comment.setText(taskDetails.getComment());
                         }

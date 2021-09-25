@@ -49,17 +49,11 @@ public class TasksAllocatedFragment extends Fragment {
                 Log.d(TAG, "onResponseAllocTaskFetcher: " + response.code() + " " + response.message());
                 if (!response.isSuccessful()) {
                     Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    /*for (int i = 0; i < 30; i++) {
-                        String x = String.valueOf(i + 1);
-                        String status = i % 2 == 0 ? OpenTask.OPEN : OpenTask.CLOSED;
-                        tasks.add(new OpenTask(x, x, x, x, status));
-                    }
-                    setAdapter();*/
                     return;
                 }
 
                 List<OpenTask> t = response.body();
-                if (t != null) {
+                if (t != null && !t.isEmpty()) {
                     tasks.clear();
                     tasks.addAll(t);
                     setAdapter();

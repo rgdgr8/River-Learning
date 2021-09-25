@@ -104,7 +104,7 @@ public class ReportKpiFragment extends Fragment {
                 }
 
                 List<Kpi> t = response.body();
-                if (t != null) {
+                if (t != null && !t.isEmpty()) {
                     kpis.clear();
                     kpis.addAll(t);
                     setAdapter();
@@ -184,11 +184,11 @@ public class ReportKpiFragment extends Fragment {
             dir.setText(k.getDirection_name());
             month.setText(k.getMonth_name());
             if (k.getTarget_value() == null)
-                target.setText(getActivity().getResources().getString(R.string.blank_spinner));
+                target.setText(requireActivity().getResources().getString(R.string.blank_spinner));
             else
                 target.setText(String.valueOf(k.getTarget_value()));
             if (k.getActual_value() == null)
-                actual.setText(getActivity().getResources().getString(R.string.blank_spinner));
+                actual.setText(requireActivity().getResources().getString(R.string.blank_spinner));
             else
                 actual.setText(String.valueOf(k.getActual_value()));
         }

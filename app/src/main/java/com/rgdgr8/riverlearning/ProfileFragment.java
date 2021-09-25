@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -218,6 +219,8 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        ((MainActivity) requireActivity()).setDrawerEnabled(false);
+
         name = root.findViewById(R.id.name);
         email = root.findViewById(R.id.email);
         dept = root.findViewById(R.id.dept);
@@ -247,14 +250,21 @@ public class ProfileFragment extends Fragment {
 
         Button jobReqs = root.findViewById(R.id.job_req);
         jobReqs.setOnClickListener(v -> {
-
+            Navigation.findNavController(root).navigate(R.id.action_profileFragment_to_userJobReqFragment);
         });
 
         Button kpis = root.findViewById(R.id.kpis);
         kpis.setOnClickListener(v -> {
-
+            Navigation.findNavController(root).navigate(R.id.action_profileFragment_to_userKpisFragment);
         });
 
         return root;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        ((MainActivity) requireActivity()).setDrawerEnabled(true);
     }
 }

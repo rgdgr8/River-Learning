@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
     private static final String TAG = "OpenTaskAdapter";
@@ -30,7 +31,7 @@ public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
     @NotNull
     @Override
     public OpenTaskHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View v = fragment.getActivity().getLayoutInflater().inflate(layoutId, parent, false);
+        View v = fragment.requireActivity().getLayoutInflater().inflate(layoutId, parent, false);
         return new OpenTaskHolder(v, hideDelBtn, fragment.getView());
     }
 

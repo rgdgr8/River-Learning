@@ -84,4 +84,10 @@ public interface DataFetcher {
 
     @PUT("my-kpis/{id}")
     Call<Void> submitKpiReport(@Path("id") int id, @Body UpdateReportKpiFragment.UpdatedKpi updatedKpi);
+
+    @GET("user-job-requirements")
+    Call<List<UserJobReqFragment.JobReq>> getUserJobRequirements();
+
+    @GET("user-kpis")
+    Call<List<UserKpisFragment.Kpi>> getUserKpis();
 }

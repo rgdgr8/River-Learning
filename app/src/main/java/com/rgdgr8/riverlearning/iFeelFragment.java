@@ -1,5 +1,6 @@
 package com.rgdgr8.riverlearning;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,11 +31,11 @@ public class iFeelFragment extends Fragment {
     private static final String TAG = "iFeelFrag";
 
     static class iFeel {
-        private Integer id;
-        private String fto_name;
-        private String ffrom_name;
-        private String date_created;
-        private String details;
+        private final Integer id;
+        private final String fto_name;
+        private final String ffrom_name;
+        private final String date_created;
+        private final String details;
 
         public iFeel(Integer id, String fto_name, String ffrom_name, String date_created, String details) {
             this.id = id;
@@ -74,6 +76,11 @@ public class iFeelFragment extends Fragment {
         setRetainInstance(true);
 
         iFeels = new ArrayList<>();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         LoginActivity.dataFetcher.getiFeels().enqueue(new Callback<List<iFeel>>() {
             @Override
@@ -85,7 +92,7 @@ public class iFeelFragment extends Fragment {
                 }
 
                 List<iFeel> t = response.body();
-                if (t != null) {
+                if (t != null && !t.isEmpty()) {
                     iFeels.clear();
                     iFeels.addAll(t);
                     setAdapter();
@@ -128,11 +135,11 @@ public class iFeelFragment extends Fragment {
     }
 
     private class iFeelHolder extends RecyclerView.ViewHolder {
-        private TextView sr;
-        private TextView fto;
-        private TextView ffrom;
-        private TextView date;
-        private TextView comment;
+        private final TextView sr;
+        private final TextView fto;
+        private final TextView ffrom;
+        private final TextView date;
+        private final TextView comment;
 
         public iFeelHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -144,6 +151,7 @@ public class iFeelFragment extends Fragment {
             comment = itemView.findViewById(R.id.comment);
         }
 
+        @SuppressLint("SetTextI18n")
         public void bind(int pos) {
             iFeel i = iFeels.get(pos);
             sr.setText((pos + 1) + "");
@@ -159,7 +167,7 @@ public class iFeelFragment extends Fragment {
         @NotNull
         @Override
         public iFeelFragment.iFeelHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-            View v = getActivity().getLayoutInflater().inflate(R.layout.ifeel_item, parent, false);
+            View v = requireActivity().getLayoutInflater().inflate(R.layout.ifeel_item, parent, false);
             return new iFeelHolder(v);
         }
 
