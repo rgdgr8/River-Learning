@@ -9,6 +9,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface DataFetcher {
     String TAG = "DataFetcher";
@@ -17,7 +18,7 @@ public interface DataFetcher {
     Call<List<MainActivity.Employee>> getEmployeeList();
 
     @GET("tasks")
-    Call<List<OpenTask>> getTasks();
+    Call<List<OpenTask>> getTasks(@Query("search") String params);
 
     @GET("tasks-allocated")
     Call<List<OpenTask>> getAllocatedTasks();

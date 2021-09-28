@@ -35,6 +35,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    public static final String SP_USER_FNAME = "user_fname";
 
     private NavigationView navView;
     private NavController navController;
@@ -44,16 +45,22 @@ public class MainActivity extends AppCompatActivity {
 
     static class Employee implements Comparable<Employee> {
         private static class User {
-            private int id;
+            private final int id;
             @SerializedName("first_name")
-            private String fname;
+            private final String fname;
             @SerializedName("last_name")
-            private String lname;
+            private final String lname;
+            private final String email;
 
-            public User(int id, String fname, String lname) {
+            public User(int id, String fname, String lname, String email) {
                 this.id = id;
                 this.fname = fname;
                 this.lname = lname;
+                this.email = email;
+            }
+
+            public String getEmail() {
+                return email;
             }
 
             public int getId() {
@@ -69,11 +76,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public String toString() {
+            public @NotNull String toString() {
                 return "User{" +
                         "id=" + id +
                         ", fname='" + fname + '\'' +
                         ", lname='" + lname + '\'' +
+                        ", email='" + email + '\'' +
                         '}';
             }
         }
@@ -139,11 +147,18 @@ public class MainActivity extends AppCompatActivity {
 
                         //TODO GET THIS EMP NAME
 
+                        String loginEmail = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(LoginActivity.SP_EMAIL, "");
+                        String fname = "";
                         for (Employee e : list) {
                             Log.d(TAG, "onResponse: " + e.toString());
+                            if (e.getUser().getEmail().equals(loginEmail)) {
+                                fname = e.getUser().getFname();
+                            }
                             spinnerEmployeeList.add(e.getUser().getFname() + " " + e.getUser().getLname());
                             employeeIdList.add(e.getUser().getId());
                         }
+                        PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit()
+                                .putString(SP_USER_FNAME, fname).apply();
                     } else {
                         Toast.makeText(MainActivity.this, "Empty employee list", Toast.LENGTH_SHORT).show();
                     }
@@ -172,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             preferences.edit().putString(LoginActivity.TAG, null).apply();
                             preferences.edit().putString(LoginActivity.SP_TENANT, null).apply();
+                            preferences.edit().putString(SP_USER_FNAME, null).apply();
 
                             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(intent);

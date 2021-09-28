@@ -24,10 +24,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
-    public static final String SP_TENANT = "tenant";
-    public static String BASE_URL = "";
-    public static User user;
-    public static String token;
+    public static final String SP_TENANT = "login_tenant";
+    public static final String SP_EMAIL = "login_email";
+    public String BASE_URL = "";
+    private User user;
+    private String token;
     public static DataFetcher dataFetcher;
     private Intent intent;
 
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             user = new User(email.getText().toString(), pass.getText().toString());
             String t = tenant.getText().toString().toLowerCase();
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(SP_TENANT, t).apply();
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(SP_EMAIL, user.getEmail()).apply();
             fetchToken(t);
         });
 

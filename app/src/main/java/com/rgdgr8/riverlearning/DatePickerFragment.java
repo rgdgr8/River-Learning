@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class DatePickerFragment extends DialogFragment {
-    public static String ARG_DATE = "date";
+    public static final String ARG_DATE = "date";
     public static final String RESULT_DATE = "result_date";
 
     @NonNull
