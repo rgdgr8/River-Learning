@@ -1,6 +1,5 @@
 package com.rgdgr8.riverlearning;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
 public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
     private static final String TAG = "OpenTaskAdapter";
@@ -19,6 +17,10 @@ public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
     private final Fragment fragment;
     private final int layoutId;
     private final boolean hideDelBtn;
+
+    public List<OpenTask> getTasks() {
+        return tasks;
+    }
 
     public OpenTasksAdapter(Fragment fragment, List<OpenTask> tasks, int layoutId, boolean hideDelBtn) {
         this.tasks = tasks;
@@ -32,7 +34,7 @@ public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
     @Override
     public OpenTaskHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View v = fragment.requireActivity().getLayoutInflater().inflate(layoutId, parent, false);
-        return new OpenTaskHolder(v, hideDelBtn, fragment.getView());
+        return new OpenTaskHolder(v, hideDelBtn, fragment.getView(), this);
     }
 
     @Override

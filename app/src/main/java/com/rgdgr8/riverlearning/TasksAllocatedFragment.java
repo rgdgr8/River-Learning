@@ -1,17 +1,20 @@
 package com.rgdgr8.riverlearning;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +34,7 @@ public class TasksAllocatedFragment extends Fragment {
     private OpenTasksAdapter adapter;
     private final List<OpenTask> tasks = new ArrayList<>();
     private View root;
+    private String params = "";
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class TasksAllocatedFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LoginActivity.dataFetcher.getAllocatedTasks().enqueue(new Callback<List<OpenTask>>() {
+        LoginActivity.dataFetcher.getAllocatedTasks(params).enqueue(new Callback<List<OpenTask>>() {
             @Override
             public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
                 Log.d(TAG, "onResponseAllocTaskFetcher: " + response.code() + " " + response.message());
@@ -77,11 +81,51 @@ public class TasksAllocatedFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_tasks_allocated, container, false);
 
         Button newTask = root.findViewById(R.id.new_task);
-        newTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(root).navigate(R.id.action_tasksAllocatedFragment_to_createNewTaskFragment);
-            }
+        newTask.setOnClickListener(v -> Navigation.findNavController(root).navigate(R.id.action_tasksAllocatedFragment_to_createNewTaskFragment));
+
+        ImageButton filter = root.findViewById(R.id.filter);
+        filter.setOnClickListener(v -> {
+            SearchFragment<OpenTask> searchFragment = new SearchFragment<>(R.layout.filter_status_and_target_end, TAG);
+            FragmentManager fm = getParentFragmentManager();
+            fm.setFragmentResultListener(SearchFragment.FILTER_RESULT, searchFragment, (requestKey, result) -> {
+                if (requestKey.equals(SearchFragment.FILTER_RESULT)) {
+                    String status = result.getString(TAG + SearchFragment.STATUS);
+                    params = "";
+                    if (status != null && !status.equals(getActivity().getResources().getString(R.string.blank_spinner)))
+                        params = status;
+                    String date = result.getString(TAG + SearchFragment.DATE);
+                    if (date != null && !date.equals(getActivity().getResources().getString(R.string.blank_spinner)))
+                        params = params + "," + date;
+
+                    LoginActivity.dataFetcher.getAllocatedTasks(params)
+                            .enqueue(new Callback<List<OpenTask>>() {
+                                @Override
+                                public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
+                                    Log.d(TAG, "onResponseFilterAllocTasks: " + response.code());
+                                    if (!response.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
+                                    List<OpenTask> t = response.body();
+                                    tasks.clear();
+                                    if (t != null && !t.isEmpty()) {
+                                        tasks.addAll(t);
+                                    } else {
+                                        Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                                    }
+                                    setAdapter();
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<OpenTask>> call, Throwable t) {
+                                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "onFilterAllocTaskFetchFailure: ", t.getCause());
+                                }
+                            });
+                }
+            });
+            searchFragment.show(getParentFragmentManager(), "FilterAllocTasks");
         });
 
         RecyclerView recyclerView = root.findViewById(R.id.rv);
@@ -101,5 +145,12 @@ public class TasksAllocatedFragment extends Fragment {
         } else {
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        getActivity().getSharedPreferences(SearchFragment.TAG + TAG, Context.MODE_PRIVATE).edit().clear().apply();
     }
 }

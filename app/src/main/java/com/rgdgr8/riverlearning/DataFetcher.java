@@ -4,6 +4,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -21,7 +22,7 @@ public interface DataFetcher {
     Call<List<OpenTask>> getTasks(@Query("search") String params);
 
     @GET("tasks-allocated")
-    Call<List<OpenTask>> getAllocatedTasks();
+    Call<List<OpenTask>> getAllocatedTasks(@Query("search") String params);
 
     @POST("add-comment/{id}")
     Call<Void> submitComment(@Path("id") int id, @Body CommentTaskFragment.Comment comment);
@@ -41,7 +42,7 @@ public interface DataFetcher {
     @GET("tasks-closed")
     Call<List<ClosedTasksFragment.ClosedTask>> getClosedTasks();
 
-    @GET("task-delete/{id}")
+    @DELETE("task-delete/{id}")
     Call<Void> deleteTask(@Path("id") int id);
 
     @PATCH("task-update-view/{id}")

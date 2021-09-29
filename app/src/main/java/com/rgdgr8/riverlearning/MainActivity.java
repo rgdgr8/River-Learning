@@ -145,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
                         spinnerEmployeeList = new ArrayList<>(list.size() + 1);
                         spinnerEmployeeList.add(getResources().getString(R.string.blank_spinner));
 
-                        //TODO GET THIS EMP NAME
-
                         String loginEmail = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(LoginActivity.SP_EMAIL, "");
                         String fname = "";
                         for (Employee e : list) {

@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -168,14 +167,17 @@ public class AssessTasksFragment extends Fragment {
         }
 
         public void bind(int pos) {
-            AssessTask ct = assessTaskList.get(pos);
+            AssessTask at = assessTaskList.get(pos);
             sr.setText((pos + 1) + "");
-            task.setText(ct.getTask());
-            status.setText(ct.getStatus());
-            Integer score = ct.getPerformance();
+            task.setText(at.getTask());
+            status.setText(at.getStatus());
+            Integer score = at.getPerformance();
             if (score == null || score < 1) score = score_scale.length;
             perf.setText(score_scale[score_scale.length - score]);
-            comm.setText(ct.getComments());
+            if (at.getComments() == null)
+                comm.setText(getActivity().getResources().getString(R.string.blank_spinner));
+            else
+                comm.setText(at.getComments());
         }
     }
 

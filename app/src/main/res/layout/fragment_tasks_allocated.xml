@@ -15,17 +15,35 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/new_task"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="Create New Task"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
-                android:backgroundTint="@color/theme_blue"
-                android:textSize="15sp"
-                android:gravity="start|center"/>
+                android:elevation="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/new_task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:backgroundTint="@color/theme_blue"
+                    android:gravity="start|center"
+                    android:text="Create New Task"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/table_header_gray"
+                    android:contentDescription="Filter"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_baseline_filter_alt_black_24" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,57 +54,57 @@
                 android:paddingVertical="10dp">
 
                 <TextView
+                    style="@style/list_text_view"
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    style="@style/list_text_view"
                     android:text="Sr."
                     android:textColor="@color/black" />
 
                 <TextView
+                    style="@style/list_text_view"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="40dp"
-                    style="@style/list_text_view"
                     android:text="Task"
                     android:textColor="@color/black" />
 
                 <TextView
+                    style="@style/list_text_view"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
-                    style="@style/list_text_view"
                     android:text="Allocated To"
                     android:textColor="@color/black" />
 
                 <TextView
+                    style="@style/list_text_view"
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    style="@style/list_text_view"
                     android:text="Allocation Date"
                     android:textColor="@color/black" />
 
                 <TextView
+                    style="@style/list_text_view"
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    style="@style/list_text_view"
                     android:text="Target End Date"
                     android:textColor="@color/black" />
 
                 <TextView
+                    style="@style/list_text_view"
                     android:layout_width="125dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    style="@style/list_text_view"
                     android:text="Status"
                     android:textColor="@color/black" />
 
                 <TextView
+                    style="@style/list_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/list_text_view"
                     android:text="Actions"
                     android:textColor="@color/black" />
 

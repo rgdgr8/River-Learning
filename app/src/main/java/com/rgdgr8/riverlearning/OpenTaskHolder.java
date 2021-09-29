@@ -1,6 +1,5 @@
 package com.rgdgr8.riverlearning;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,13 +34,11 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
     private final ImageButton actionEdit;
     private final ImageButton actionComment;
     private final ImageButton actionDelete;
-    private final View view;
     private OpenTask openTask;
 
-    public OpenTaskHolder(@NonNull @NotNull View itemView, boolean hideDelBtn, View view) {
+    public OpenTaskHolder(@NonNull @NotNull View itemView, boolean hideDelBtn, View view, OpenTasksAdapter adapter) {
         super(itemView);
 
-        this.view = view;
         sr = itemView.findViewById(R.id.sr);
         task = itemView.findViewById(R.id.task);
         alloc = itemView.findViewById(R.id.alloc);
@@ -51,7 +49,7 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         actionComment = itemView.findViewById(R.id.comm_task);
         actionDelete = itemView.findViewById(R.id.del_task);
 
-        NavController navController = Navigation.findNavController(this.view);
+        NavController navController = Navigation.findNavController(view);
 
         task.setOnClickListener(v -> {
             Bundle b = new Bundle();
@@ -87,31 +85,34 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
             actionDelete.setEnabled(false);
         } else {
             actionDelete.setOnClickListener(v -> {
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("Are you sure?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
+                        .setTitle("Delete task?")
+                        .setPositiveButton("Yes", (dialog, which) -> LoginActivity.dataFetcher.deleteTask(openTask.getId()).enqueue(new Callback<Void>() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                LoginActivity.dataFetcher.deleteTask(openTask.getId()).enqueue(new Callback<Void>() {
-                                    @Override
-                                    public void onResponse(Call<Void> call, Response<Void> response) {
-                                        Log.d(TAG, "onDelResponse: " + response.code());
-                                        if (!response.isSuccessful()) {
-                                            Toast.makeText(v.getContext(), "Problem occurred", Toast.LENGTH_SHORT).show();
-                                        }
-
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<Void> call, Throwable t) {
-                                        Log.e(TAG, "onFailure: ", t.getCause());
-                                    }
-                                });
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                Log.d(TAG, "onDelResponse: " + response.code());
+                                if (!response.isSuccessful()) {
+                                    Toast.makeText(v.getContext(), "Problem occurred", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    int pos = getAdapterPosition();
+                                    adapter.getTasks().remove(pos);
+                                    adapter.notifyItemRemoved(pos);
+                                }
                             }
-                        })
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(v.getContext(), "Problem occurred", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "onFailure: ", t.getCause());
+                            }
+                        }))
                         .setNegativeButton("No", null)
-                        .show();
+                        .create();
+
+                alertDialog.show();
+
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(view.getContext().getResources().getColor(R.color.black));
+                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(view.getContext().getResources().getColor(R.color.black));
             });
         }
     }
