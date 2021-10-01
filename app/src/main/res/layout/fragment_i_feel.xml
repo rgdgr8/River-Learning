@@ -15,6 +15,22 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <ImageButton
+                    android:id="@+id/filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:background="@color/table_header_gray"
+                    android:contentDescription="Filter"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_baseline_filter_alt_black_24" />
+            </FrameLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

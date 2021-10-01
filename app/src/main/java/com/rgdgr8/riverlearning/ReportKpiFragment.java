@@ -98,25 +98,33 @@ public class ReportKpiFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<Kpi>> call, @NotNull Response<List<Kpi>> response) {
                 Log.d(TAG, "onResponse: " + response.code() + " " + response.message());
-                if (!response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                try {
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                List<Kpi> t = response.body();
-                if (t != null && !t.isEmpty()) {
-                    kpis.clear();
-                    kpis.addAll(t);
-                    setAdapter();
-                } else {
-                    Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                    List<Kpi> t = response.body();
+                    if (t != null && !t.isEmpty()) {
+                        kpis.clear();
+                        kpis.addAll(t);
+                        setAdapter();
+                    } else {
+                        Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<List<Kpi>> call, @NotNull Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

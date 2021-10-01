@@ -2,6 +2,7 @@ package com.rgdgr8.riverlearning;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 
 public class DatePickerFragment extends DialogFragment {
     public static final String ARG_DATE = "date";
@@ -55,7 +55,7 @@ public class DatePickerFragment extends DialogFragment {
                         int month = (mDatePicker.getMonth() + 1);
                         int day = mDatePicker.getDayOfMonth();
                         //sendResult(day,month,year);
-                        sendResult(getFormattedDate(day,month,year));
+                        sendResult(getFormattedDate(day, month, year));
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -65,17 +65,25 @@ public class DatePickerFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.theme_blue));
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.theme_blue));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
     public static String getFormattedDate(int day, int month, int year) {
         String m = month + "";
         if (month < 10)
-            m = "0"+m;
+            m = "0" + m;
         String d = day + "";
         if (day < 10)
-            d = "0"+d;
+            d = "0" + d;
 
         return year + "-" + m + "-" + d;
     }

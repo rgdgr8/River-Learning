@@ -1,6 +1,5 @@
 package com.rgdgr8.riverlearning;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +60,10 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         });
 
         actionEdit.setOnClickListener(v -> {
+            if (openTask.getStatus() != null && openTask.getStatus().equals(OpenTask.CLOSED)) {
+                Toast.makeText(v.getContext(), "Actions are disabled on closed tasks", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Bundle b = new Bundle();
             b.putSerializable(EDIT_OPEN_TASK, openTask);
             if (!hideDelBtn)
@@ -70,6 +73,10 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         });
 
         actionComment.setOnClickListener(v -> {
+            if (openTask.getStatus() != null && openTask.getStatus().equals(OpenTask.CLOSED)) {
+                Toast.makeText(v.getContext(), "Actions are disabled on closed tasks", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Bundle b = new Bundle();
             b.putInt(COMM_OPEN_TASK, openTask.getId());
 
@@ -85,25 +92,37 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
             actionDelete.setEnabled(false);
         } else {
             actionDelete.setOnClickListener(v -> {
+                if (openTask.getStatus() != null && openTask.getStatus().equals(OpenTask.CLOSED)) {
+                    Toast.makeText(v.getContext(), "Actions are disabled on closed tasks", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
                         .setTitle("Delete task?")
                         .setPositiveButton("Yes", (dialog, which) -> LoginActivity.dataFetcher.deleteTask(openTask.getId()).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 Log.d(TAG, "onDelResponse: " + response.code());
-                                if (!response.isSuccessful()) {
-                                    Toast.makeText(v.getContext(), "Problem occurred", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    int pos = getAdapterPosition();
-                                    adapter.getTasks().remove(pos);
-                                    adapter.notifyItemRemoved(pos);
+                                try {
+                                    if (!response.isSuccessful()) {
+                                        Toast.makeText(MainActivity.ctx.get(), "Problem occurred", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        int pos = getAdapterPosition();
+                                        adapter.getTasks().remove(pos);
+                                        adapter.notifyItemRemoved(pos);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(v.getContext(), "Problem occurred", Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "onFailure: ", t.getCause());
+                                try {
+                                    Toast.makeText(MainActivity.ctx.get(), "Problem occurred", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }))
                         .setNegativeButton("No", null)
@@ -125,11 +144,5 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
         allocDate.setText(tsk.getAllocation_date());
         targetDate.setText(tsk.getTarget_end());
         status.setText(tsk.getStatus());
-
-        if (tsk.getStatus() != null && tsk.getStatus().equals(OpenTask.CLOSED)) {
-            actionEdit.setEnabled(false);
-            actionComment.setEnabled(false);
-            actionDelete.setEnabled(false);
-        }
     }
 }

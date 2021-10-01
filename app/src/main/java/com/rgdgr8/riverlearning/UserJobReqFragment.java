@@ -74,24 +74,32 @@ public class UserJobReqFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<JobReq>> call, @NotNull Response<List<JobReq>> response) {
                 Log.d(TAG, "onResponse: " + response.code());
-                if (response.isSuccessful()) {
-                    List<JobReq> t = response.body();
-                    if (t == null || t.isEmpty()) {
-                        Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                try {
+                    if (response.isSuccessful()) {
+                        List<JobReq> t = response.body();
+                        if (t == null || t.isEmpty()) {
+                            Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                        } else {
+                            jobReqList.clear();
+                            jobReqList.addAll(t);
+                            setAdapter();
+                        }
                     } else {
-                        jobReqList.clear();
-                        jobReqList.addAll(t);
-                        setAdapter();
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<List<JobReq>> call, @NotNull Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

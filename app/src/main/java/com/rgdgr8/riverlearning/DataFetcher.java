@@ -14,15 +14,16 @@ import retrofit2.http.Query;
 
 public interface DataFetcher {
     String TAG = "DataFetcher";
+    String SEARCH = "search";
 
     @GET("employee-list")
     Call<List<MainActivity.Employee>> getEmployeeList();
 
     @GET("tasks")
-    Call<List<OpenTask>> getTasks(@Query("search") String params);
+    Call<List<OpenTask>> getTasks(@Query(SEARCH) String params);
 
     @GET("tasks-allocated")
-    Call<List<OpenTask>> getAllocatedTasks(@Query("search") String params);
+    Call<List<OpenTask>> getAllocatedTasks(@Query(SEARCH) String params);
 
     @POST("add-comment/{id}")
     Call<Void> submitComment(@Path("id") int id, @Body CommentTaskFragment.Comment comment);
@@ -52,7 +53,7 @@ public interface DataFetcher {
     Call<Void> updateMyTask(@Path("id") int id, @Body EditMyTaskFragment.UpdatedTask body);
 
     @GET("assess-closed-task-view")
-    Call<List<AssessTasksFragment.AssessTask>> getAssessTasks();
+    Call<List<AssessTasksFragment.AssessTask>> getAssessTasks(@Query(SEARCH) String query);
 
     @PUT("assess-task/{id}")
     Call<Void> submitTaskAssessment(@Path("id") int id, @Body AssessmentOfTaskFragment.AssessedTask assessedTask);

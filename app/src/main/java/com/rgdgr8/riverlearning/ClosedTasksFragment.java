@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,25 +73,33 @@ public class ClosedTasksFragment extends Fragment {
             @Override
             public void onResponse(Call<List<ClosedTask>> call, Response<List<ClosedTask>> response) {
                 Log.d(TAG, "onResponseClosedTasksFetcher: " + response.code() + " " + response.message());
-                if (!response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                try {
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                List<ClosedTask> t = response.body();
-                if (t != null && !t.isEmpty()) {
-                    closedTasks.clear();
-                    closedTasks.addAll(t);
-                    setAdapter();
-                } else {
-                    Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                    List<ClosedTask> t = response.body();
+                    if (t != null && !t.isEmpty()) {
+                        closedTasks.clear();
+                        closedTasks.addAll(t);
+                        setAdapter();
+                    } else {
+                        Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ClosedTask>> call, Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailureClosedTasks: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -134,7 +141,7 @@ public class ClosedTasksFragment extends Fragment {
 
             sr = itemView.findViewById(R.id.sr);
             task = itemView.findViewById(R.id.task);
-            task.setOnClickListener(v-> Toast.makeText(getActivity(), task.getText().toString(), Toast.LENGTH_SHORT).show());
+            task.setOnClickListener(v -> Toast.makeText(getActivity(), task.getText().toString(), Toast.LENGTH_SHORT).show());
             alloc = itemView.findViewById(R.id.alloc);
             alloc_date = itemView.findViewById(R.id.allocD);
             close_date = itemView.findViewById(R.id.closeD);

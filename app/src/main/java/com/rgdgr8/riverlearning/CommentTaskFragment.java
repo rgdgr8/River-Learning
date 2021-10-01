@@ -54,17 +54,25 @@ public class CommentTaskFragment extends Fragment {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     Log.d(TAG, "onResponse: " + response.code());
-                    if (!response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    try {
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     navController.navigateUp();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    navController.navigateUp();
                     Log.e(TAG, "onFailure: ", t.getCause());
+                    try {
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    navController.navigateUp();
                 }
             });
         });

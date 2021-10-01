@@ -1,7 +1,9 @@
 package com.rgdgr8.riverlearning;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -25,6 +27,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     public static List<String> spinnerEmployeeList = null;
     public static List<Integer> employeeIdList = null;
+    static WeakReference<Context> ctx = null;
 
     static class Employee implements Comparable<Employee> {
         private static class User {
@@ -131,37 +135,43 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ctx = new WeakReference<>(getApplicationContext());
+
         LoginActivity.dataFetcher.getEmployeeList().enqueue(new Callback<List<Employee>>() {
             @Override
             public void onResponse(Call<List<Employee>> call, Response<List<Employee>> response) {
                 Log.d(TAG, "onResponseEmpListFetcher: " + response.message());
-                if (response.isSuccessful()) {
-                    List<Employee> list = response.body();
-                    if (list != null) {
-                        Collections.sort(list);
+                try {
+                    if (response.isSuccessful()) {
+                        List<Employee> list = response.body();
+                        if (list != null) {
+                            Collections.sort(list);
 
-                        employeeIdList = new ArrayList<>(list.size());
+                            employeeIdList = new ArrayList<>(list.size());
 
-                        spinnerEmployeeList = new ArrayList<>(list.size() + 1);
-                        spinnerEmployeeList.add(getResources().getString(R.string.blank_spinner));
+                            spinnerEmployeeList = new ArrayList<>(list.size() + 1);
+                            spinnerEmployeeList.add(getResources().getString(R.string.blank_spinner));
 
-                        String loginEmail = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(LoginActivity.SP_EMAIL, "");
-                        String fname = "";
-                        for (Employee e : list) {
-                            Log.d(TAG, "onResponse: " + e.toString());
-                            if (e.getUser().getEmail().equals(loginEmail)) {
-                                fname = e.getUser().getFname();
+                            String loginEmail = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(LoginActivity.SP_EMAIL, "");
+                            String fname = "";
+                            for (Employee e : list) {
+                                Log.d(TAG, "onResponse: " + e.toString());
+                                if (e.getUser().getEmail().equals(loginEmail)) {
+                                    fname = e.getUser().getFname();
+                                }
+                                spinnerEmployeeList.add(e.getUser().getFname() + " " + e.getUser().getLname());
+                                employeeIdList.add(e.getUser().getId());
                             }
-                            spinnerEmployeeList.add(e.getUser().getFname() + " " + e.getUser().getLname());
-                            employeeIdList.add(e.getUser().getId());
+                            PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit()
+                                    .putString(SP_USER_FNAME, fname).apply();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Empty employee list", Toast.LENGTH_SHORT).show();
                         }
-                        PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit()
-                                .putString(SP_USER_FNAME, fname).apply();
                     } else {
-                        Toast.makeText(MainActivity.this, "Empty employee list", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Couldn't fetch employee list", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(MainActivity.this, "Couldn't fetch employee list", Toast.LENGTH_SHORT).show();
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -182,20 +192,28 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             Log.d(TAG, "onLogoutResponse: " + response.message());
 
-                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                            preferences.edit().putString(LoginActivity.TAG, null).apply();
-                            preferences.edit().putString(LoginActivity.SP_TENANT, null).apply();
-                            preferences.edit().putString(SP_USER_FNAME, null).apply();
+                            try {
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                preferences.edit().putString(LoginActivity.TAG, null).apply();
+                                preferences.edit().putString(LoginActivity.SP_TENANT, null).apply();
+                                preferences.edit().putString(SP_USER_FNAME, null).apply();
 
-                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
 
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(MainActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
                             Log.e(TAG, "onFailure: ", t.getCause());
+                            try {
+                                Toast.makeText(MainActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     return true;

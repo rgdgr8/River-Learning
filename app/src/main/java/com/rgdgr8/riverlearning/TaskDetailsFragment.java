@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,53 +54,13 @@ public class TaskDetailsFragment extends Fragment {
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setRetainInstance(true);
-
         openTask = (OpenTask) getArguments().getSerializable(OpenTaskHolder.VIEW_OPEN_TASK);
-        LoginActivity.dataFetcher.getTaskDetails(openTask.getId()).enqueue(new Callback<TaskDetails>() {
-            @Override
-            public void onResponse(Call<TaskDetails> call, Response<TaskDetails> response) {
-                Log.d(TAG, "onResponse: " + response.code());
-                if (response.isSuccessful()) {
-                    taskDetails = response.body();
-                    if (taskDetails != null) {
-                        CardView taskAssess = root.findViewById(R.id.task_ass);
-                        if (taskDetails.getComment() == null && taskDetails.getWork_quality() == null) {
-                            taskAssess.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
-                        } else {
-                            TextView score = root.findViewById(R.id.score);
-                            score.setText(String.valueOf(taskDetails.getWork_quality()));
-                            TextView comment = root.findViewById(R.id.comment);
-                            comment.setText(taskDetails.getComment());
-                        }
-
-                        CardView closingDate = root.findViewById(R.id.closing_date);
-                        if (taskDetails.getEnd_date() == null || taskDetails.getEnd_date().equals("")) {
-                            closingDate.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
-                        } else {
-                            TextView date = root.findViewById(R.id.date);
-                            date.setText(taskDetails.getEnd_date());
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<TaskDetails> call, Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onFailure: ", t.getCause());
-            }
-        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         root = inflater.inflate(R.layout.fragment_task_details, container, false);
 
         TextView desc = root.findViewById(R.id.desc);
@@ -109,6 +71,64 @@ public class TaskDetailsFragment extends Fragment {
         allocDate.setText(openTask.getAllocation_date());
         TextView status = root.findViewById(R.id.status);
         status.setText(openTask.getStatus());
+
+        LoginActivity.dataFetcher.getTaskDetails(openTask.getId()).enqueue(new Callback<TaskDetails>() {
+            @Override
+            public void onResponse(Call<TaskDetails> call, Response<TaskDetails> response) {
+                Log.d(TAG, "onResponse: " + response.code());
+                try {
+                    if (response.isSuccessful()) {
+                        taskDetails = response.body();
+                        if (taskDetails != null) {
+                            CardView taskAssess = root.findViewById(R.id.task_ass);
+                            if (taskDetails.getComment() == null && taskDetails.getWork_quality() == null) {
+                                taskAssess.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+                            } else {
+                                TextView score = root.findViewById(R.id.score);
+                                if (taskDetails.getWork_quality() != null)
+                                    score.setText(String.valueOf(taskDetails.getWork_quality()));
+                                else
+                                    score.setText(MainActivity.ctx.get().getResources().getString(R.string.blank_spinner));
+
+                                TextView comment = root.findViewById(R.id.comment);
+                                if (taskDetails.getComment() != null)
+                                    comment.setText(taskDetails.getComment());
+                                else
+                                    comment.setText(MainActivity.ctx.get().getResources().getString(R.string.blank_spinner));
+                            }
+
+                            CardView closingDate = root.findViewById(R.id.closing_date);
+                            if (taskDetails.getEnd_date() == null || taskDetails.getEnd_date().equals("")) {
+                                closingDate.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+                            } else {
+                                TextView date = root.findViewById(R.id.date);
+                                date.setText(taskDetails.getEnd_date());
+                            }
+                        } else {
+                            CardView taskAssess = root.findViewById(R.id.task_ass);
+                            taskAssess.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+
+                            CardView closingDate = root.findViewById(R.id.closing_date);
+                            closingDate.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TaskDetails> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return root;
     }

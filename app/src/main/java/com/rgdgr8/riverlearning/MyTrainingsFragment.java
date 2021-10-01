@@ -140,34 +140,42 @@ public class MyTrainingsFragment extends Fragment {
             @Override
             public void onResponse(Call<Trainings> call, Response<Trainings> response) {
                 Log.d(TAG, "onResponse: " + response.code());
-                if (response.isSuccessful()) {
-                    Trainings training = response.body();
-                    if (training == null || ((training.getEnrolled() == null || training.getEnrolled().isEmpty()) && (training.getTrainings() == null || training.getTrainings().isEmpty()))) {
-                        Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                try {
+                    if (response.isSuccessful()) {
+                        Trainings training = response.body();
+                        if (training == null || ((training.getEnrolled() == null || training.getEnrolled().isEmpty()) && (training.getTrainings() == null || training.getTrainings().isEmpty()))) {
+                            Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                        } else {
+                            trainingList.clear();
+                            for (Trainings.Training t : training.getTrainings()) {
+                                t.setEnrolled(false);
+                                trainingList.add(t);
+                            }
+
+                            for (Trainings.Training t : training.getEnrolled()) {
+                                t.setEnrolled(true);
+                                trainingList.add(t);
+                            }
+
+                            //Log.d(TAG, "onResponse: " + " " + trainingList.toString());
+                            setAdapter();
+                        }
                     } else {
-                        trainingList.clear();
-                        for (Trainings.Training t : training.getTrainings()) {
-                            t.setEnrolled(false);
-                            trainingList.add(t);
-                        }
-
-                        for (Trainings.Training t : training.getEnrolled()) {
-                            t.setEnrolled(true);
-                            trainingList.add(t);
-                        }
-
-                        //Log.d(TAG, "onResponse: " + " " + trainingList.toString());
-                        setAdapter();
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<Trainings> call, Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: " + t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -223,7 +231,7 @@ public class MyTrainingsFragment extends Fragment {
             enroll.setOnClickListener(v -> {
                 Trainings.Training training = trainingList.get(getAdapterPosition());
                 if (training.isEnrolled()) {
-                    Toast.makeText(getContext(), "Already enrolled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.ctx.get(), "Already enrolled", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

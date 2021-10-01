@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import org.jetbrains.annotations.NotNull;
@@ -68,9 +69,11 @@ public class EvaluateFragment extends Fragment {
         Button submit = root.findViewById(R.id.submit);
         submit.setOnClickListener(v -> {
             if (sscore.getSelectedItemPosition() < 1) {
-                Toast.makeText(getContext(), "Invalid self score", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.ctx.get(), "Invalid self score", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            NavController navController = Navigation.findNavController(root);
 
             Evaluation evaluation = new Evaluation(sscore.getSelectedItemPosition(), comments.getText().toString());
             LoginActivity.dataFetcher.submitMyEvaluation(myEvaluation.getId(), evaluation).enqueue(new Callback<Void>() {
@@ -78,18 +81,21 @@ public class EvaluateFragment extends Fragment {
                 public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
                     Log.d(TAG, "onResponse: " + response.code());
                     if (!response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                        return;
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
 
-                    Navigation.findNavController(root).navigateUp();
+                    navController.navigateUp();
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
                     Log.e(TAG, "onFailure: ", t.getCause());
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    Navigation.findNavController(root).navigateUp();
+                    try {
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    navController.navigateUp();
                 }
             });
         });

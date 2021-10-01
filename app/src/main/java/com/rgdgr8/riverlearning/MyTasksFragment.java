@@ -51,25 +51,33 @@ public class MyTasksFragment extends Fragment {
             @Override
             public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
                 Log.d(TAG, "onResponseTaskFetcher: " + response.code() + " " + response.message());
-                if (!response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                try {
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                List<OpenTask> t = response.body();
-                if (t != null && !t.isEmpty()) {
-                    tasks.clear();
-                    tasks.addAll(t);
-                    setAdapter();
-                } else {
-                    Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                    List<OpenTask> t = response.body();
+                    if (t != null && !t.isEmpty()) {
+                        tasks.clear();
+                        tasks.addAll(t);
+                        setAdapter();
+                    } else {
+                        Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<List<OpenTask>> call, Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onTaskFetchFailure: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -90,7 +98,7 @@ public class MyTasksFragment extends Fragment {
 
         ImageButton filter = root.findViewById(R.id.filter);
         filter.setOnClickListener(v -> {
-            SearchFragment<OpenTask> searchFragment = new SearchFragment<>(R.layout.filter_status_and_target_end, TAG);
+            SearchFragment searchFragment = new SearchFragment(R.layout.filter_status_and_target_end, TAG);
             FragmentManager fm = getParentFragmentManager();
             fm.setFragmentResultListener(SearchFragment.FILTER_RESULT, searchFragment, (requestKey, result) -> {
                 if (requestKey.equals(SearchFragment.FILTER_RESULT)) {
@@ -107,25 +115,33 @@ public class MyTasksFragment extends Fragment {
                                 @Override
                                 public void onResponse(Call<List<OpenTask>> call, Response<List<OpenTask>> response) {
                                     Log.d(TAG, "onResponseFilterMyTasks: " + response.code());
-                                    if (!response.isSuccessful()) {
-                                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
+                                    try {
+                                        if (!response.isSuccessful()) {
+                                            Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
 
-                                    List<OpenTask> t = response.body();
-                                    tasks.clear();
-                                    if (t != null && !t.isEmpty()) {
-                                        tasks.addAll(t);
-                                    } else {
-                                        Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                                        List<OpenTask> t = response.body();
+                                        tasks.clear();
+                                        if (t != null && !t.isEmpty()) {
+                                            tasks.addAll(t);
+                                        } else {
+                                            Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                                        }
+                                        setAdapter();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                    setAdapter();
                                 }
 
                                 @Override
                                 public void onFailure(Call<List<OpenTask>> call, Throwable t) {
-                                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                                     Log.e(TAG, "onFilterTaskFetchFailure: ", t.getCause());
+                                    try {
+                                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                 }

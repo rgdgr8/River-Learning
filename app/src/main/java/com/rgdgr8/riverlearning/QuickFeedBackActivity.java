@@ -80,20 +80,27 @@ public class QuickFeedBackActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     Log.d(TAG, "onResponse: " + response.code());
-                    if (!response.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "Feedback submitted", Toast.LENGTH_SHORT).show();
+                    try {
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Feedback submitted", Toast.LENGTH_SHORT).show();
+                        }
+                        finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    finish();
-                    //TODO: send back to appropriate page
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    finish();
                     Log.e(TAG, "onFailure: ", t.getCause());
+                    try {
+                        Toast.makeText(getApplicationContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         });

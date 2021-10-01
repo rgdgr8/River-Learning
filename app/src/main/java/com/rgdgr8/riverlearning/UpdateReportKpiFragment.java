@@ -12,13 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,22 +68,32 @@ public class UpdateReportKpiFragment extends Fragment {
                 return;
             }
 
+            NavController navController = Navigation.findNavController(root);
+
             UpdatedKpi updatedKpi = new UpdatedKpi(Float.parseFloat(actual.getText().toString()));
             LoginActivity.dataFetcher.submitKpiReport(kpi.getId(), updatedKpi).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
                     Log.d(TAG, "onResponse: " + response.code());
-                    if (!response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    try {
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    Navigation.findNavController(root).navigateUp();
+                    navController.navigateUp();
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "onFailure: ", t.getCause());
-                    Navigation.findNavController(root).navigateUp();
+                    try {
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    navController.navigateUp();
                 }
             });
         });

@@ -132,8 +132,8 @@ public class ProfileFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    private void setFields(Profile p) {
-        String blank = requireActivity().getResources().getString(R.string.blank_spinner);
+    private void setFields(Profile p) /*throws NullPointerException if getAcitvity is null*/ {
+        String blank = MainActivity.ctx.get().getResources().getString(R.string.blank_spinner);
         name.setText(p.getUser_name());
         email.setText(p.getUser_email());
         if (p.getPhone() != null && !p.getPhone().equals(""))
@@ -171,35 +171,42 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<Profile> call, @NotNull Response<Profile> response) {
                 Log.d(TAG, "onResponse: " + response.code());
-                if (response.isSuccessful()) {
-                    Profile p = response.body();
-                    if (p != null) {
-                        Log.d(TAG, "onNotNull: " + p.toString());
-                        while (root == null) root = getView();
-                        if (savedProfile == null || !savedProfile.equals(p)) {
-                            setFields(p);
-                            savedProfile = p;
-                            File f = new File(requireContext().getFilesDir(), TAG);
-                            try {
-                                FileOutputStream fileOutputStream = new FileOutputStream(f);
-                                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                                objectOutputStream.writeObject(p);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                try {
+                    if (response.isSuccessful()) {
+                        Profile p = response.body();
+                        if (p != null) {
+                            Log.d(TAG, "onNotNull: " + p.toString());
+                            if (savedProfile == null || !savedProfile.equals(p)) {
+                                setFields(p);
+                                savedProfile = p;
+                                File f = new File(MainActivity.ctx.get().getFilesDir(), TAG);
+                                try {
+                                    FileOutputStream fileOutputStream = new FileOutputStream(f);
+                                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                                    objectOutputStream.writeObject(p);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
+                        } else {
+                            Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<Profile> call, @NotNull Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -229,23 +236,19 @@ public class ProfileFragment extends Fragment {
         salary = root.findViewById(R.id.salary);
         mang = root.findViewById(R.id.mang);
 
-        File f = new File(requireContext().getFilesDir(), TAG);
-        if (f.exists()) {
-            try {
+        try {
+            File f = new File(MainActivity.ctx.get().getFilesDir(), TAG);
+            if (f.exists()) {
                 FileInputStream fileInputStream = new FileInputStream(f);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
                 savedProfile = (Profile) objectInputStream.readObject();
                 setFields(savedProfile);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
+            } else {
                 f.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         Button jobReqs = root.findViewById(R.id.job_req);

@@ -81,24 +81,32 @@ public class MyEvaluationFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<MyEvaluation>> call, @NotNull Response<List<MyEvaluation>> response) {
                 Log.d(TAG, "onResponse: " + response.code());
-                if (response.isSuccessful()) {
-                    List<MyEvaluation> t = response.body();
-                    if (t == null || t.isEmpty()) {
-                        Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                try {
+                    if (response.isSuccessful()) {
+                        List<MyEvaluation> t = response.body();
+                        if (t == null || t.isEmpty()) {
+                            Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                        } else {
+                            myEvaluationList.clear();
+                            myEvaluationList.addAll(t);
+                            setAdapter();
+                        }
                     } else {
-                        myEvaluationList.clear();
-                        myEvaluationList.addAll(t);
-                        setAdapter();
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<List<MyEvaluation>> call, @NotNull Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

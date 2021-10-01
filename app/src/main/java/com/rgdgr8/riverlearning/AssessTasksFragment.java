@@ -1,10 +1,12 @@
 package com.rgdgr8.riverlearning;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +37,7 @@ public class AssessTasksFragment extends Fragment {
     private AssessTaskAdapter adapter;
     private final List<AssessTask> assessTaskList = new ArrayList<>();
     private View root;
+    private String params = "";
 
     static class AssessTask implements Serializable {
         @SerializedName("task")
@@ -88,28 +92,36 @@ public class AssessTasksFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LoginActivity.dataFetcher.getAssessTasks().enqueue(new Callback<List<AssessTask>>() {
+        LoginActivity.dataFetcher.getAssessTasks(params).enqueue(new Callback<List<AssessTask>>() {
             @Override
             public void onResponse(Call<List<AssessTask>> call, Response<List<AssessTask>> response) {
                 Log.d(TAG, "onResponse: " + response.code());
-                if (response.isSuccessful()) {
-                    List<AssessTask> t = response.body();
-                    if (t == null || t.isEmpty()) {
-                        Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                try {
+                    if (response.isSuccessful()) {
+                        List<AssessTask> t = response.body();
+                        if (t == null || t.isEmpty()) {
+                            Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                        } else {
+                            assessTaskList.clear();
+                            assessTaskList.addAll(t);
+                            setAdapter();
+                        }
                     } else {
-                        assessTaskList.clear();
-                        assessTaskList.addAll(t);
-                        setAdapter();
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<List<AssessTask>> call, Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -118,6 +130,56 @@ public class AssessTasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_assess_tasks, container, false);
+
+        ImageButton filter = root.findViewById(R.id.filter);
+        filter.setOnClickListener(v -> {
+            SearchFragment searchFragment = new SearchFragment(R.layout.filter_status, TAG);
+            FragmentManager fm = getParentFragmentManager();
+            fm.setFragmentResultListener(SearchFragment.FILTER_RESULT, searchFragment, (requestKey, result) -> {
+                if (requestKey.equals(SearchFragment.FILTER_RESULT)) {
+                    String status = result.getString(TAG + SearchFragment.STATUS);
+                    params = "";
+                    if (status != null && !status.equals(getActivity().getResources().getString(R.string.blank_spinner)))
+                        params = status;
+
+                    LoginActivity.dataFetcher.getAssessTasks(params)
+                            .enqueue(new Callback<List<AssessTask>>() {
+                                @Override
+                                public void onResponse(Call<List<AssessTask>> call, Response<List<AssessTask>> response) {
+                                    Log.d(TAG, "onFilterResponse: " + response.code());
+                                    try {
+                                        if (!response.isSuccessful()) {
+                                            Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        List<AssessTask> t = response.body();
+                                        assessTaskList.clear();
+                                        if (t != null && !t.isEmpty()) {
+                                            assessTaskList.addAll(t);
+                                        } else {
+                                            Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                                        }
+                                        setAdapter();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<AssessTask>> call, Throwable t) {
+                                    Log.e(TAG, "onFilterFailure: ", t.getCause());
+                                    try {
+                                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                }
+            });
+            searchFragment.show(getParentFragmentManager(), "FilterMyTasks");
+        });
 
         RecyclerView recyclerView = root.findViewById(R.id.rv);
         LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getActivity());
@@ -199,5 +261,12 @@ public class AssessTasksFragment extends Fragment {
         public int getItemCount() {
             return assessTaskList.size();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        getActivity().getSharedPreferences(SearchFragment.TAG + TAG, Context.MODE_PRIVATE).edit().clear().apply();
     }
 }

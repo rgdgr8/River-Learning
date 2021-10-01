@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,7 +56,7 @@ public class iFeelFragment extends Fragment {
             return ffrom_name;
         }
 
-        public String  getDate_created() {
+        public String getDate_created() {
             return date_created;
         }
 
@@ -86,25 +85,33 @@ public class iFeelFragment extends Fragment {
             @Override
             public void onResponse(Call<List<iFeel>> call, Response<List<iFeel>> response) {
                 Log.d(TAG, "onResponse: " + response.code() + " " + response.message());
-                if (!response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                try {
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                List<iFeel> t = response.body();
-                if (t != null && !t.isEmpty()) {
-                    iFeels.clear();
-                    iFeels.addAll(t);
-                    setAdapter();
-                } else {
-                    Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_SHORT).show();
+                    List<iFeel> t = response.body();
+                    if (t != null && !t.isEmpty()) {
+                        iFeels.clear();
+                        iFeels.addAll(t);
+                        setAdapter();
+                    } else {
+                        Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<List<iFeel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailureClosedTasks: ", t.getCause());
+                try {
+                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
