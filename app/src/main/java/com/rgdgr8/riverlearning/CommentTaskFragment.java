@@ -49,6 +49,11 @@ public class CommentTaskFragment extends Fragment {
 
         Button done = root.findViewById(R.id.submit);
         done.setOnClickListener(v -> {
+            if(comment.getText().toString().equals("")){
+                Toast.makeText(getActivity(), "Comment cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Comment comm = new Comment(comment.getText().toString());
             LoginActivity.dataFetcher.submitComment(id, comm).enqueue(new Callback<Void>() {
                 @Override

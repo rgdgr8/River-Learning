@@ -62,8 +62,8 @@ public class TrainingFeedbackFragment extends Fragment {
 
         Button submit = root.findViewById(R.id.submit);
         submit.setOnClickListener(v -> {
-            if (score.getSelectedItemPosition() < 1) {
-                Toast.makeText(MainActivity.ctx.get(), "Invalid score", Toast.LENGTH_SHORT).show();
+            if (score.getSelectedItemPosition() < 1 || comment.getText().toString().equals("")) {
+                Toast.makeText(MainActivity.ctx.get(), "Invalid score and/or empty comment", Toast.LENGTH_SHORT).show();
                 return;
             }
 

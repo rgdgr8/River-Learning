@@ -76,6 +76,13 @@ public class CreateNewTaskFragment extends Fragment {
 
         Button submit = root.findViewById(R.id.submit);
         submit.setOnClickListener(v -> {
+            if (task.getText().toString().equals("") || desc.getText().toString().equals("")) {
+                Toast.makeText(getActivity(), "Task and/or Description cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            submit.setEnabled(false);
+
             NavController navController = Navigation.findNavController(root);
 
             NewTask newTask = new NewTask(task.getText().toString(), desc.getText().toString(), repeat.getSelectedItem().toString(),

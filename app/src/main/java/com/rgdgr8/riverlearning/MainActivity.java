@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -185,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener(item -> {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             switch (item.getItemId()) {
                 case R.id.logout:
                     LoginActivity.dataFetcher.destroyToken().enqueue(new Callback<Void>() {
@@ -214,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                            finish();
                         }
                     });
                     return true;
@@ -290,6 +293,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(botNavView, navController);
 
         feedback.setOnClickListener(v -> {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                     .edit().putInt(TAG, navController.getCurrentDestination().getId()).apply();
             startActivityForResult(new Intent(this, QuickFeedBackActivity.class), 1);
@@ -304,5 +310,6 @@ public class MainActivity extends AppCompatActivity {
             int lastFragment = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt(TAG, R.id.myTasksFragment);
             navController.navigate(lastFragment);
         }
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }

@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Invalid Tenant", Toast.LENGTH_SHORT).show();
                 return;
             }
+            login.setEnabled(false);
             user = new User(email.getText().toString(), pass.getText().toString());
             String t = ((String) tenant.getSelectedItem()).toLowerCase();
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(SP_TENANT, t).apply();

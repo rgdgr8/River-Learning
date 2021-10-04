@@ -68,8 +68,8 @@ public class QuickFeedBackActivity extends AppCompatActivity {
 
         Button submit = findViewById(R.id.submit);
         submit.setOnClickListener(v -> {
-            if (rating.getSelectedItemPosition() < 1 || feedbackFor.getSelectedItemPosition() < 1) {
-                Toast.makeText(this, "Invalid Selection(s)", Toast.LENGTH_SHORT).show();
+            if (rating.getSelectedItemPosition() < 1 || feedbackFor.getSelectedItemPosition() < 1 || ifeel.getText().toString().equals("")) {
+                Toast.makeText(this, "Invalid Selection(s) and/or empty Feedback", Toast.LENGTH_SHORT).show();
                 return;
             }
 
