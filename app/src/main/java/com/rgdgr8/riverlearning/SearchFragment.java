@@ -26,6 +26,7 @@ public class SearchFragment extends DialogFragment {
     private final int layoutId;
     public static final String FILTER_RESULT = "filter_result";
     public static final String STATUS = "stat";
+    public static final String NAME = "name";
     public static final String DATE = "date";
     private final String key;
 
@@ -44,7 +45,40 @@ public class SearchFragment extends DialogFragment {
         if (layoutId == R.layout.filter_status_and_target_end)
             return filterStatusAndDate(root);
 
-        return filterStatus(root);
+        if (key.equals(AssessTasksFragment.TAG))
+            return filterStatus(root);
+
+        return filterName(root);
+    }
+
+    private Dialog filterName(View root) {
+        String nameKey = key + NAME;
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(TAG + key, Context.MODE_PRIVATE);
+        int nameInd = sharedPreferences.getInt(nameKey, 0);
+
+        Spinner nameFilter = root.findViewById(R.id.filter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.spinnerEmployeeList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nameFilter.setAdapter(adapter);
+        nameFilter.setSelection(nameInd);
+
+        TextView header = root.findViewById(R.id.header);
+        header.setText("From");
+
+        return new AlertDialog.Builder(requireActivity())
+                .setTitle("Filter")
+                .setView(root)
+                .setPositiveButton("Search", (dialog, which) -> {
+                    sharedPreferences.edit().putInt(nameKey, nameFilter.getSelectedItemPosition()).apply();
+                    sendResult((String) nameFilter.getSelectedItem(), false);
+                })
+                .setNeutralButton("Reset", (dialog, which) -> {
+                    sharedPreferences.edit().remove(nameKey).apply();
+                    nameFilter.setSelection(0);
+                    sendResult((String) nameFilter.getSelectedItem(), false);
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
     }
 
     private Dialog filterStatus(View root) {
@@ -52,23 +86,26 @@ public class SearchFragment extends DialogFragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(TAG + key, Context.MODE_PRIVATE);
         int statusInd = sharedPreferences.getInt(statusKey, 0);
 
-        Spinner statusFilter = root.findViewById(R.id.status_filter);
+        Spinner statusFilter = root.findViewById(R.id.filter);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.assess_task_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusFilter.setAdapter(adapter);
         statusFilter.setSelection(statusInd);
+
+        TextView header = root.findViewById(R.id.header);
+        header.setText("Status");
 
         return new AlertDialog.Builder(requireActivity())
                 .setTitle("Filter")
                 .setView(root)
                 .setPositiveButton("Search", (dialog, which) -> {
                     sharedPreferences.edit().putInt(statusKey, statusFilter.getSelectedItemPosition()).apply();
-                    sendResult((String) statusFilter.getSelectedItem());
+                    sendResult((String) statusFilter.getSelectedItem(), true);
                 })
                 .setNeutralButton("Reset", (dialog, which) -> {
                     sharedPreferences.edit().remove(statusKey).apply();
                     statusFilter.setSelection(0);
-                    sendResult((String) statusFilter.getSelectedItem());
+                    sendResult((String) statusFilter.getSelectedItem(), true);
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
@@ -146,10 +183,13 @@ public class SearchFragment extends DialogFragment {
         fm.setFragmentResult(FILTER_RESULT, b);
     }
 
-    private void sendResult(String status) {
+    private void sendResult(String status, boolean statSent) {
         FragmentManager fm = getParentFragmentManager();
         Bundle b = new Bundle();
-        b.putString(key + STATUS, status.toLowerCase());
+        if (statSent)
+            b.putString(key + STATUS, status.toLowerCase());
+        else
+            b.putString(key + NAME, status.toLowerCase());
         fm.setFragmentResult(FILTER_RESULT, b);
     }
 }

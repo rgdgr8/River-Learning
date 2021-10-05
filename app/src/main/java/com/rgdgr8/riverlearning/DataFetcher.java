@@ -38,7 +38,7 @@ public interface DataFetcher {
     Call<Void> createNewTask(@Body NewTask task);
 
     @GET("quick-feedback")
-    Call<List<iFeelFragment.iFeel>> getiFeels();
+    Call<List<iFeelFragment.iFeel>> getiFeels(@Query(SEARCH) String params);
 
     @GET("tasks-closed")
     Call<List<ClosedTasksFragment.ClosedTask>> getClosedTasks();

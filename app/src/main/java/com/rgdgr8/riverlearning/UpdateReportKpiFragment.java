@@ -68,6 +68,13 @@ public class UpdateReportKpiFragment extends Fragment {
                 return;
             }
 
+            try {
+                Double.parseDouble(actual.getText().toString());
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "Invalid value", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             NavController navController = Navigation.findNavController(root);
 
             UpdatedKpi updatedKpi = new UpdatedKpi(Float.parseFloat(actual.getText().toString()));

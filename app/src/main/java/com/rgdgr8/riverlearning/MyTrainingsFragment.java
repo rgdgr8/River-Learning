@@ -19,9 +19,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -229,6 +234,11 @@ public class MyTrainingsFragment extends Fragment {
             venue = itemView.findViewById(R.id.venue);
             ImageButton enroll = itemView.findViewById(R.id.enroll);
             enroll.setOnClickListener(v -> {
+                if (daysExceeded(1)) {
+                    Toast.makeText(getActivity(), "Disabled", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Trainings.Training training = trainingList.get(getAdapterPosition());
                 if (training.isEnrolled()) {
                     Toast.makeText(MainActivity.ctx.get(), "Already enrolled", Toast.LENGTH_SHORT).show();
@@ -241,6 +251,11 @@ public class MyTrainingsFragment extends Fragment {
             });
             ImageButton feedback = itemView.findViewById(R.id.feedback);
             feedback.setOnClickListener(v -> {
+                if (daysExceeded(5)) {
+                    Toast.makeText(getActivity(), "Disabled", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Trainings.Training training = trainingList.get(getAdapterPosition());
                 Bundle b = new Bundle();
                 b.putInt(TAG, training.getId());
@@ -256,6 +271,24 @@ public class MyTrainingsFragment extends Fragment {
             startTime.setText(training.getStart_time());
             endTime.setText(training.getEnd_time());
             venue.setText(training.getVenue());
+        }
+
+        private boolean daysExceeded(int d) {
+            Date trainingDate;
+            try {
+                trainingDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.getText().toString());
+                Date currentDate = Calendar.getInstance().getTime();
+                int days = Days.daysBetween(new LocalDate(trainingDate), new LocalDate(currentDate)).getDays();
+                Log.d(TAG, "days passed: " + days);
+                if (days >= d) {
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return true;
+            }
+
+            return false;
         }
     }
 

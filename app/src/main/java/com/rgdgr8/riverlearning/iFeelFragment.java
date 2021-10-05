@@ -1,11 +1,13 @@
 package com.rgdgr8.riverlearning;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +31,7 @@ import retrofit2.Response;
 
 public class iFeelFragment extends Fragment {
     private static final String TAG = "iFeelFrag";
+    private String params = "";
 
     static class iFeel {
         private final Integer id;
@@ -81,7 +85,7 @@ public class iFeelFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LoginActivity.dataFetcher.getiFeels().enqueue(new Callback<List<iFeel>>() {
+        LoginActivity.dataFetcher.getiFeels(params).enqueue(new Callback<List<iFeel>>() {
             @Override
             public void onResponse(Call<List<iFeel>> call, Response<List<iFeel>> response) {
                 Log.d(TAG, "onResponse: " + response.code() + " " + response.message());
@@ -121,6 +125,56 @@ public class iFeelFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_i_feel, container, false);
+
+        ImageButton filter = root.findViewById(R.id.filter);
+        filter.setOnClickListener(v -> {
+            SearchFragment searchFragment = new SearchFragment(R.layout.filter_status_or_name, TAG);
+            FragmentManager fm = getParentFragmentManager();
+            fm.setFragmentResultListener(SearchFragment.FILTER_RESULT, searchFragment, (requestKey, result) -> {
+                if (requestKey.equals(SearchFragment.FILTER_RESULT)) {
+                    String name = result.getString(TAG + SearchFragment.NAME);
+                    params = "";
+                    if (name != null && !name.equals(getActivity().getResources().getString(R.string.blank_spinner)))
+                        params = name.split(" ")[0];
+
+                    LoginActivity.dataFetcher.getiFeels(params)
+                            .enqueue(new Callback<List<iFeel>>() {
+                                @Override
+                                public void onResponse(Call<List<iFeel>> call, Response<List<iFeel>> response) {
+                                    Log.d(TAG, "onFilterResponse: " + response.code());
+                                    try {
+                                        if (!response.isSuccessful()) {
+                                            Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        List<iFeel> t = response.body();
+                                        iFeels.clear();
+                                        if (t != null && !t.isEmpty()) {
+                                            iFeels.addAll(t);
+                                        } else {
+                                            Toast.makeText(MainActivity.ctx.get(), "Empty Body", Toast.LENGTH_SHORT).show();
+                                        }
+                                        setAdapter();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<iFeel>> call, Throwable t) {
+                                    Log.e(TAG, "onFilterFailure: ", t.getCause());
+                                    try {
+                                        Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                }
+            });
+            searchFragment.show(getParentFragmentManager(), "FilterMyTasks");
+        });
 
         RecyclerView recyclerView = root.findViewById(R.id.rv);
         LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getActivity());
@@ -187,5 +241,12 @@ public class iFeelFragment extends Fragment {
         public int getItemCount() {
             return iFeels.size();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        getActivity().getSharedPreferences(SearchFragment.TAG + TAG, Context.MODE_PRIVATE).edit().clear().apply();
     }
 }

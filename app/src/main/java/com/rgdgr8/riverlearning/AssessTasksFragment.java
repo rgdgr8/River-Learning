@@ -133,7 +133,7 @@ public class AssessTasksFragment extends Fragment {
 
         ImageButton filter = root.findViewById(R.id.filter);
         filter.setOnClickListener(v -> {
-            SearchFragment searchFragment = new SearchFragment(R.layout.filter_status, TAG);
+            SearchFragment searchFragment = new SearchFragment(R.layout.filter_status_or_name, TAG);
             FragmentManager fm = getParentFragmentManager();
             fm.setFragmentResultListener(SearchFragment.FILTER_RESULT, searchFragment, (requestKey, result) -> {
                 if (requestKey.equals(SearchFragment.FILTER_RESULT)) {

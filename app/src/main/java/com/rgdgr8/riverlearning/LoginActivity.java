@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(SP_TENANT, t).apply();
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(SP_EMAIL, user.getEmail()).apply();
             fetchToken(t);
+            login.setEnabled(true);
         });
 
         intent = new Intent(this, MainActivity.class);

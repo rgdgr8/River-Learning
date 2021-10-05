@@ -33,7 +33,12 @@
     </string-array>
     <string-array name="tenant_spinner">
         <item>------</item>
+        <item>alpha</item>
+        <item>beta</item>
         <item>gamma</item>
+        <item>bakelite</item>
+        <item>kleenage</item>
+        <item>smart</item>
     </string-array>
     <string-array name="task_status_spinner">
         <item>------</item>
