@@ -40,7 +40,6 @@ public class AssessTasksFragment extends Fragment {
     private String params = "";
 
     static class AssessTask implements Serializable {
-        @SerializedName("task")
         private int id;
         @SerializedName("task_name")
         private String task;

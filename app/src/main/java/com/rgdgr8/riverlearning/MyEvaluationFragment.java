@@ -41,16 +41,22 @@ public class MyEvaluationFragment extends Fragment {
         private final Integer emp_score;
         @SerializedName("emp_cmnt")
         private final String comments;
+        private final Integer mgr_score;
+
+        public Integer getMgr_score() {
+            return mgr_score;
+        }
 
         public int getId() {
             return id;
         }
 
-        public MyEvaluation(int id, String job_req, Integer emp_score, String comments) {
+        public MyEvaluation(int id, String job_req, Integer emp_score, String comments, Integer mgr_score) {
             this.id = id;
             this.job_req = job_req;
             this.emp_score = emp_score;
             this.comments = comments;
+            this.mgr_score = mgr_score;
         }
 
         public String getJob_req() {
@@ -149,6 +155,11 @@ public class MyEvaluationFragment extends Fragment {
             sr = itemView.findViewById(R.id.sr);
             jobRequirement = itemView.findViewById(R.id.job_req);
             jobRequirement.setOnClickListener(v -> {
+                if (myEvaluationList.get(getAdapterPosition()).getMgr_score() != null) {
+                    Toast.makeText(getActivity(), "Already evaluated by manager", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Bundle b = new Bundle();
                 b.putSerializable(TAG, myEvaluationList.get(getAdapterPosition()));
 

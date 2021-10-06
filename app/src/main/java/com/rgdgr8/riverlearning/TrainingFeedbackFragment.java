@@ -29,10 +29,6 @@ public class TrainingFeedbackFragment extends Fragment {
         public TrainingFeedback(Integer score, String comment) {
             this.score = score;
             this.comment = comment;
-
-            if (this.score < 1) {
-                score = null;
-            }
         }
 
         public Integer getScore() {

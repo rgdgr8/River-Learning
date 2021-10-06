@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">River Learning</string>
+    <string name="app_name">Lakshya</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="my_tasks">My Tasks</string>
@@ -43,9 +43,9 @@
     <string-array name="task_status_spinner">
         <item>------</item>
         <item>OPEN</item>
-        <item>CLOSED</item>
-        <item>WAITING</item>
         <item>IN PROGRESS</item>
+        <item>WAITING</item>
+        <item>CLOSED</item>
     </string-array>
     <string-array name="rating_spinner">
         <item>------</item>

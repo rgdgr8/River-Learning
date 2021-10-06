@@ -257,6 +257,11 @@ public class MyTrainingsFragment extends Fragment {
                 }
 
                 Trainings.Training training = trainingList.get(getAdapterPosition());
+                if(!training.isEnrolled()){
+                    Toast.makeText(getActivity(), "Not enrolled", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Bundle b = new Bundle();
                 b.putInt(TAG, training.getId());
                 Navigation.findNavController(root).navigate(R.id.action_myTrainingsFragment_to_trainingFeedbackFragment, b);

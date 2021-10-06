@@ -124,9 +124,9 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else
-                            Toast.makeText(LoginActivity.this, "Invalid Token", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Problem Occurred", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Could not fetch token", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -136,6 +136,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginToken> call, Throwable t) {
                 Log.e(TAG, "onTokenFetchFailure: ", t.getCause());
+                try {
+                    Toast.makeText(LoginActivity.this, "Problem Occurred", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
