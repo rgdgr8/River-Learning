@@ -34,49 +34,11 @@ import retrofit2.Response;
 
 public class AssessTasksFragment extends Fragment {
     public static final String TAG = "AssessTasksFrag";
-    private AssessTaskAdapter adapter;
+    public static String[] score_scale;
     private final List<AssessTask> assessTaskList = new ArrayList<>();
+    private AssessTaskAdapter adapter;
     private View root;
     private String params = "";
-
-    static class AssessTask implements Serializable {
-        private int id;
-        @SerializedName("task_name")
-        private String task;
-        private String status;
-        @SerializedName("work_quality")
-        private Integer performance;
-        @SerializedName("comment")
-        private String comments;
-
-        public int getId() {
-            return id;
-        }
-
-        public AssessTask(int id, String task, String status, Integer performance, String comments) {
-            this.id = id;
-            this.task = task;
-            this.status = status;
-            this.performance = performance;
-            this.comments = comments;
-        }
-
-        public String getTask() {
-            return task;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public Integer getPerformance() {
-            return performance;
-        }
-
-        public String getComments() {
-            return comments;
-        }
-    }
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -118,6 +80,7 @@ public class AssessTasksFragment extends Fragment {
                 Log.e(TAG, "onFailure: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -170,6 +133,7 @@ public class AssessTasksFragment extends Fragment {
                                     Log.e(TAG, "onFilterFailure: ", t.getCause());
                                     try {
                                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                        MainActivity.checkNetworkAndShowDialog(getActivity());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -199,14 +163,58 @@ public class AssessTasksFragment extends Fragment {
         }
     }
 
-    public static String[] score_scale;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        getActivity().getSharedPreferences(SearchFragment.TAG + TAG, Context.MODE_PRIVATE).edit().clear().apply();
+    }
+
+    static class AssessTask implements Serializable {
+        private final int id;
+        @SerializedName("task_name")
+        private final String task;
+        private final String status;
+        @SerializedName("work_quality")
+        private final Integer performance;
+        @SerializedName("comment")
+        private final String comments;
+
+        public AssessTask(int id, String task, String status, Integer performance, String comments) {
+            this.id = id;
+            this.task = task;
+            this.status = status;
+            this.performance = performance;
+            this.comments = comments;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getTask() {
+            return task;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public Integer getPerformance() {
+            return performance;
+        }
+
+        public String getComments() {
+            return comments;
+        }
+    }
 
     private class AssessTaskHolder extends RecyclerView.ViewHolder {
-        private TextView sr;
-        private TextView task;
-        private TextView status;
-        private TextView perf;
-        private TextView comm;
+        private final TextView sr;
+        private final TextView task;
+        private final TextView status;
+        private final TextView perf;
+        private final TextView comm;
 
         public AssessTaskHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -236,7 +244,7 @@ public class AssessTasksFragment extends Fragment {
             if (score == null || score < 1) score = score_scale.length;
             perf.setText(score_scale[score_scale.length - score]);
             if (at.getComments() == null)
-                comm.setText(getActivity().getResources().getString(R.string.blank_spinner));
+                comm.setText("");
             else
                 comm.setText(at.getComments());
         }
@@ -260,12 +268,5 @@ public class AssessTasksFragment extends Fragment {
         public int getItemCount() {
             return assessTaskList.size();
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        getActivity().getSharedPreferences(SearchFragment.TAG + TAG, Context.MODE_PRIVATE).edit().clear().apply();
     }
 }

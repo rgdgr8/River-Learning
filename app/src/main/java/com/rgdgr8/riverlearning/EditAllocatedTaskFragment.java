@@ -122,6 +122,7 @@ public class EditAllocatedTaskFragment extends Fragment {
                     Log.e(TAG, "onUpdateAllocTFailure: ", t.getCause());
                     try {
                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        MainActivity.checkNetworkAndShowDialog(getActivity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

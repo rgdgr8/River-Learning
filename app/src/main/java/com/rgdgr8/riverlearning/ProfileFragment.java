@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -33,97 +32,15 @@ import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "Profile";
-
-    static class Profile implements Serializable {
-        private final String user_name;
-        private final String user_email;
-        private final String phone;
-        @SerializedName("dept_name")
-        private final String dept;
-        @SerializedName("role_name")
-        private final String role;
-        @SerializedName("grade_name")
-        private final String grade;
-        private final String salary;
-        private final String mgr_name;
-
-        public String getUser_name() {
-            return user_name;
-        }
-
-        public String getUser_email() {
-            return user_email;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public String getDept() {
-            return dept;
-        }
-
-        public String getRole() {
-            return role;
-        }
-
-        public String getGrade() {
-            return grade;
-        }
-
-        public String getSalary() {
-            return salary;
-        }
-
-        public String getMgr_name() {
-            return mgr_name;
-        }
-
-        public Profile(String user_name, String user_email, String phone, String dept, String role, String grade, String salary, String mgr_name) {
-            this.user_name = user_name;
-            this.user_email = user_email;
-            this.phone = phone;
-            this.dept = dept;
-            this.role = role;
-            this.grade = grade;
-            this.salary = salary;
-            this.mgr_name = mgr_name;
-        }
-
-        @Override
-        public @NotNull String toString() {
-            return "Profile{" +
-                    "user_name='" + user_name + '\'' +
-                    ", user_email='" + user_email + '\'' +
-                    ", phone='" + phone + '\'' +
-                    ", dept='" + dept + '\'' +
-                    ", role='" + role + '\'' +
-                    ", grade='" + grade + '\'' +
-                    ", salary='" + salary + '\'' +
-                    ", mgr_name='" + mgr_name + '\'' +
-                    '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Profile)) return false;
-            Profile profile = (Profile) o;
-            return user_name.equals(profile.user_name) &&
-                    user_email.equals(profile.user_email) &&
-                    Objects.equals(phone, profile.phone) &&
-                    Objects.equals(dept, profile.dept) &&
-                    Objects.equals(role, profile.role) &&
-                    Objects.equals(grade, profile.grade) &&
-                    Objects.equals(salary, profile.salary) &&
-                    Objects.equals(mgr_name, profile.mgr_name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(user_name, user_email, phone, dept, role, grade, salary, mgr_name);
-        }
-    }
+    private View root;
+    private TextView name;
+    private TextView email;
+    private TextView dept;
+    private TextView phone;
+    private TextView grade;
+    private TextView salary;
+    private TextView mang;
+    private Profile savedProfile = null;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -204,22 +121,13 @@ public class ProfileFragment extends Fragment {
                 Log.e(TAG, "onFailure: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
-
-    private View root;
-    private TextView name;
-    private TextView email;
-    private TextView dept;
-    private TextView phone;
-    private TextView grade;
-    private TextView salary;
-    private TextView mang;
-    private Profile savedProfile = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -269,5 +177,96 @@ public class ProfileFragment extends Fragment {
         super.onStop();
 
         ((MainActivity) requireActivity()).setDrawerEnabled(true);
+    }
+
+    static class Profile implements Serializable {
+        private final String user_name;
+        private final String user_email;
+        private final String phone;
+        @SerializedName("dept_name")
+        private final String dept;
+        @SerializedName("role_name")
+        private final String role;
+        @SerializedName("grade_name")
+        private final String grade;
+        private final String salary;
+        private final String mgr_name;
+
+        public Profile(String user_name, String user_email, String phone, String dept, String role, String grade, String salary, String mgr_name) {
+            this.user_name = user_name;
+            this.user_email = user_email;
+            this.phone = phone;
+            this.dept = dept;
+            this.role = role;
+            this.grade = grade;
+            this.salary = salary;
+            this.mgr_name = mgr_name;
+        }
+
+        public String getUser_name() {
+            return user_name;
+        }
+
+        public String getUser_email() {
+            return user_email;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public String getDept() {
+            return dept;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public String getGrade() {
+            return grade;
+        }
+
+        public String getSalary() {
+            return salary;
+        }
+
+        public String getMgr_name() {
+            return mgr_name;
+        }
+
+        @Override
+        public @NotNull String toString() {
+            return "Profile{" +
+                    "user_name='" + user_name + '\'' +
+                    ", user_email='" + user_email + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", dept='" + dept + '\'' +
+                    ", role='" + role + '\'' +
+                    ", grade='" + grade + '\'' +
+                    ", salary='" + salary + '\'' +
+                    ", mgr_name='" + mgr_name + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Profile)) return false;
+            Profile profile = (Profile) o;
+            return user_name.equals(profile.user_name) &&
+                    user_email.equals(profile.user_email) &&
+                    Objects.equals(phone, profile.phone) &&
+                    Objects.equals(dept, profile.dept) &&
+                    Objects.equals(role, profile.role) &&
+                    Objects.equals(grade, profile.grade) &&
+                    Objects.equals(salary, profile.salary) &&
+                    Objects.equals(mgr_name, profile.mgr_name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(user_name, user_email, phone, dept, role, grade, salary, mgr_name);
+        }
     }
 }

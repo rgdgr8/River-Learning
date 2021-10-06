@@ -22,20 +22,6 @@ public class CommentTaskFragment extends Fragment {
     private NavController navController;
     private View root;
 
-    static class Comment {
-        private String data;
-
-        public String getData() {
-            return data;
-        }
-
-        public Comment(String data) {
-            if (data == null)
-                data = "";
-            this.data = data;
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,7 +35,7 @@ public class CommentTaskFragment extends Fragment {
 
         Button done = root.findViewById(R.id.submit);
         done.setOnClickListener(v -> {
-            if(comment.getText().toString().equals("")){
+            if (comment.getText().toString().equals("")) {
                 Toast.makeText(getActivity(), "Comment cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -74,6 +60,7 @@ public class CommentTaskFragment extends Fragment {
                     Log.e(TAG, "onFailure: ", t.getCause());
                     try {
                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        MainActivity.checkNetworkAndShowDialog(getActivity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -91,5 +78,19 @@ public class CommentTaskFragment extends Fragment {
 
         navController = Navigation.findNavController(root);
         //TODO: Be aware that navcontroller is not set to the root before onCreateView
+    }
+
+    static class Comment {
+        private final String data;
+
+        public Comment(String data) {
+            if (data == null)
+                data = "";
+            this.data = data;
+        }
+
+        public String getData() {
+            return data;
+        }
     }
 }

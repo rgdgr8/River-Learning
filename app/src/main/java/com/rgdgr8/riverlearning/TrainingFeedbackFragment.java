@@ -22,24 +22,6 @@ import retrofit2.Response;
 public class TrainingFeedbackFragment extends Fragment {
     private static final String TAG = "TrainingFeedBackFrag";
 
-    static class TrainingFeedback {
-        private Integer score;
-        private String comment;
-
-        public TrainingFeedback(Integer score, String comment) {
-            this.score = score;
-            this.comment = comment;
-        }
-
-        public Integer getScore() {
-            return score;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,6 +70,7 @@ public class TrainingFeedbackFragment extends Fragment {
                     Log.e(TAG, "onFailure: ", t.getCause());
                     try {
                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        MainActivity.checkNetworkAndShowDialog(getActivity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -97,5 +80,23 @@ public class TrainingFeedbackFragment extends Fragment {
         });
 
         return root;
+    }
+
+    static class TrainingFeedback {
+        private final Integer score;
+        private final String comment;
+
+        public TrainingFeedback(Integer score, String comment) {
+            this.score = score;
+            this.comment = comment;
+        }
+
+        public Integer getScore() {
+            return score;
+        }
+
+        public String getComment() {
+            return comment;
+        }
     }
 }

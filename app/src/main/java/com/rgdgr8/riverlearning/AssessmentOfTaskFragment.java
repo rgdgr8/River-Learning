@@ -23,24 +23,6 @@ import retrofit2.Response;
 public class AssessmentOfTaskFragment extends Fragment {
     private static final String TAG = "AssessmentOfTaskFrag";
 
-    static class AssessedTask {
-        private Integer work_quality;
-        private String comment;
-
-        public AssessedTask(Integer work_quality, String comment) {
-            this.work_quality = work_quality;
-            this.comment = comment;
-        }
-
-        public Integer getWork_quality() {
-            return work_quality;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,8 +72,10 @@ public class AssessmentOfTaskFragment extends Fragment {
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Log.e(TAG, "onFailure: ", t.getCause());
+
                     try {
                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        MainActivity.checkNetworkAndShowDialog(getActivity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -101,5 +85,23 @@ public class AssessmentOfTaskFragment extends Fragment {
         });
 
         return root;
+    }
+
+    static class AssessedTask {
+        private final Integer work_quality;
+        private final String comment;
+
+        public AssessedTask(Integer work_quality, String comment) {
+            this.work_quality = work_quality;
+            this.comment = comment;
+        }
+
+        public Integer getWork_quality() {
+            return work_quality;
+        }
+
+        public String getComment() {
+            return comment;
+        }
     }
 }

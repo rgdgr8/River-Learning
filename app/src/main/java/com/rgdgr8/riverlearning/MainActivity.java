@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -38,77 +40,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
     public static final String SP_USER_FNAME = "user_fname";
-
+    private static final String TAG = "MainActivity";
+    public static List<String> spinnerEmployeeList = new ArrayList<>();
+    public static List<Integer> employeeIdList = null;
+    static WeakReference<Context> ctx = null;
     private NavigationView navView;
     private NavController navController;
     private DrawerLayout drawerLayout;
-    public static List<String> spinnerEmployeeList = null;
-    public static List<Integer> employeeIdList = null;
-    static WeakReference<Context> ctx = null;
+    private Toolbar toolbar;
 
-    static class Employee implements Comparable<Employee> {
-        private static class User {
-            private final int id;
-            @SerializedName("first_name")
-            private final String fname;
-            @SerializedName("last_name")
-            private final String lname;
-            private final String email;
+    static boolean isNetworkAvailableAndConnected() {
+        ConnectivityManager manager = (ConnectivityManager) ctx.get().getSystemService(CONNECTIVITY_SERVICE);
+        boolean isNetworkAvailable = (manager.getActiveNetworkInfo() != null);
 
-            public User(int id, String fname, String lname, String email) {
-                this.id = id;
-                this.fname = fname;
-                this.lname = lname;
-                this.email = email;
-            }
+        return (isNetworkAvailable && manager.getActiveNetworkInfo().isConnected());
+    }
 
-            public String getEmail() {
-                return email;
-            }
+    static void checkNetworkAndShowDialog(Context context) {
+        if (!isNetworkAvailableAndConnected()) {
+            AlertDialog alertDialog = new AlertDialog.Builder(context)
+                    .setTitle("No internet connection")
+                    .setPositiveButton("OK", null)
+                    .show();
 
-            public int getId() {
-                return id;
-            }
-
-            public String getFname() {
-                return fname;
-            }
-
-            public String getLname() {
-                return lname;
-            }
-
-            @Override
-            public @NotNull String toString() {
-                return "User{" +
-                        "id=" + id +
-                        ", fname='" + fname + '\'' +
-                        ", lname='" + lname + '\'' +
-                        ", email='" + email + '\'' +
-                        '}';
-            }
-        }
-
-        private User user;
-
-        public User getUser() {
-            return user;
-        }
-
-        public Employee(User user) {
-            this.user = user;
-        }
-
-        @Override
-        public int compareTo(Employee o) {
-            return this.user.id - o.user.id;
-        }
-
-        @Override
-        public @NotNull String toString() {
-            return user.toString();
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.black));
         }
     }
 
@@ -119,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
         else
             super.onBackPressed();
     }
-
-    private Toolbar toolbar;
 
     public void setDrawerEnabled(boolean enabled) {
         if (enabled) {
@@ -178,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Employee>> call, Throwable t) {
+                MainActivity.checkNetworkAndShowDialog(MainActivity.this);
                 Log.e(TAG, "onEmpListFetchFailure: ", t.getCause());
             }
         });
@@ -212,11 +167,11 @@ public class MainActivity extends AppCompatActivity {
                         public void onFailure(Call<Void> call, Throwable t) {
                             Log.e(TAG, "onFailure: ", t.getCause());
                             try {
-                                Toast.makeText(MainActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                checkNetworkAndShowDialog(MainActivity.this);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            finish();
                         }
                     });
                     return true;
@@ -311,5 +266,69 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(lastFragment);
         }
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    static class Employee implements Comparable<Employee> {
+        private final User user;
+
+        public Employee(User user) {
+            this.user = user;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        @Override
+        public int compareTo(Employee o) {
+            return this.user.id - o.user.id;
+        }
+
+        @Override
+        public @NotNull String toString() {
+            return user.toString();
+        }
+
+        private static class User {
+            private final int id;
+            @SerializedName("first_name")
+            private final String fname;
+            @SerializedName("last_name")
+            private final String lname;
+            private final String email;
+
+            public User(int id, String fname, String lname, String email) {
+                this.id = id;
+                this.fname = fname;
+                this.lname = lname;
+                this.email = email;
+            }
+
+            public String getEmail() {
+                return email;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public String getFname() {
+                return fname;
+            }
+
+            public String getLname() {
+                return lname;
+            }
+
+            @Override
+            public @NotNull String toString() {
+                return "User{" +
+                        "id=" + id +
+                        ", fname='" + fname + '\'' +
+                        ", lname='" + lname + '\'' +
+                        ", email='" + email + '\'' +
+                        '}';
+            }
+        }
     }
 }

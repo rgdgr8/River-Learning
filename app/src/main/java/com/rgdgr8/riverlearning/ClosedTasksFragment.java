@@ -27,37 +27,6 @@ import retrofit2.Response;
 
 public class ClosedTasksFragment extends Fragment {
     private static final String TAG = "ClosedTasksFrag";
-
-    static class ClosedTask {
-        private String task;
-        private String allocatedby_name;
-        private String allocation_date;
-        private String end_date;
-
-        public ClosedTask(String task, String allocatedby_name, String allocation_date, String end_date) {
-            this.task = task;
-            this.allocatedby_name = allocatedby_name;
-            this.allocation_date = allocation_date;
-            this.end_date = end_date;
-        }
-
-        public String getTask() {
-            return task;
-        }
-
-        public String getAllocatedby_name() {
-            return allocatedby_name;
-        }
-
-        public String getAllocation_date() {
-            return allocation_date;
-        }
-
-        public String getEnd_date() {
-            return end_date;
-        }
-    }
-
     private ClosedTaskAdapter adapter;
     private List<ClosedTask> closedTasks;
 
@@ -97,7 +66,8 @@ public class ClosedTasksFragment extends Fragment {
                 Log.e(TAG, "onFailureClosedTasks: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                }catch (Exception e){
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -129,12 +99,42 @@ public class ClosedTasksFragment extends Fragment {
         }
     }
 
+    static class ClosedTask {
+        private final String task;
+        private final String allocatedby_name;
+        private final String allocation_date;
+        private final String end_date;
+
+        public ClosedTask(String task, String allocatedby_name, String allocation_date, String end_date) {
+            this.task = task;
+            this.allocatedby_name = allocatedby_name;
+            this.allocation_date = allocation_date;
+            this.end_date = end_date;
+        }
+
+        public String getTask() {
+            return task;
+        }
+
+        public String getAllocatedby_name() {
+            return allocatedby_name;
+        }
+
+        public String getAllocation_date() {
+            return allocation_date;
+        }
+
+        public String getEnd_date() {
+            return end_date;
+        }
+    }
+
     private class ClosedTaskHolder extends RecyclerView.ViewHolder {
-        private TextView sr;
-        private TextView task;
-        private TextView alloc;
-        private TextView alloc_date;
-        private TextView close_date;
+        private final TextView sr;
+        private final TextView task;
+        private final TextView alloc;
+        private final TextView alloc_date;
+        private final TextView close_date;
 
         public ClosedTaskHolder(@NonNull @NotNull View itemView) {
             super(itemView);

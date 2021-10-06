@@ -31,33 +31,9 @@ import retrofit2.Response;
 
 public class UserJobReqFragment extends Fragment {
     public static final String TAG = "UserJobReqFrag";
-    private JobReqAdapter adapter;
     private final List<JobReq> jobReqList = new ArrayList<>();
-
-    static class JobReq implements Serializable {
-        @SerializedName("requirement")
-        private final String job_req;
-        private final Integer weightage;
-        private final String skill_area;
-
-        public JobReq(String job_req, Integer weightage, String skill_area) {
-            this.job_req = job_req;
-            this.weightage = weightage;
-            this.skill_area = skill_area;
-        }
-
-        public String getJob_req() {
-            return job_req;
-        }
-
-        public Integer getWeightage() {
-            return weightage;
-        }
-
-        public String getSkill_area() {
-            return skill_area;
-        }
-    }
+    private JobReqAdapter adapter;
+    private View root;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -97,14 +73,13 @@ public class UserJobReqFragment extends Fragment {
                 Log.e(TAG, "onFailure: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
-
-    private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,6 +102,31 @@ public class UserJobReqFragment extends Fragment {
             adapter = new JobReqAdapter();
         } else {
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    static class JobReq implements Serializable {
+        @SerializedName("requirement")
+        private final String job_req;
+        private final Integer weightage;
+        private final String skill_area;
+
+        public JobReq(String job_req, Integer weightage, String skill_area) {
+            this.job_req = job_req;
+            this.weightage = weightage;
+            this.skill_area = skill_area;
+        }
+
+        public String getJob_req() {
+            return job_req;
+        }
+
+        public Integer getWeightage() {
+            return weightage;
+        }
+
+        public String getSkill_area() {
+            return skill_area;
         }
     }
 

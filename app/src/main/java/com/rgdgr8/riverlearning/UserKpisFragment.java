@@ -29,32 +29,9 @@ import retrofit2.Response;
 
 public class UserKpisFragment extends Fragment {
     public static final String TAG = "UserKpisFrag";
-    private KpiAdapter adapter;
     private final List<Kpi> kpiList = new ArrayList<>();
-
-    static class Kpi implements Serializable {
-        private final String kpi;
-        private String uom;
-        private final String direction;
-
-        public Kpi(String kpi, String uom, String direction) {
-            this.kpi = kpi;
-            this.uom = uom;
-            this.direction = direction;
-        }
-
-        public String getUom() {
-            return uom;
-        }
-
-        public String getKpi() {
-            return kpi;
-        }
-
-        public String getDirection() {
-            return direction;
-        }
-    }
+    private KpiAdapter adapter;
+    private View root;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -94,14 +71,13 @@ public class UserKpisFragment extends Fragment {
                 Log.e(TAG, "onFailure: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
-
-    private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,6 +100,30 @@ public class UserKpisFragment extends Fragment {
             adapter = new KpiAdapter();
         } else {
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    static class Kpi implements Serializable {
+        private final String kpi;
+        private final String direction;
+        private final String uom;
+
+        public Kpi(String kpi, String uom, String direction) {
+            this.kpi = kpi;
+            this.uom = uom;
+            this.direction = direction;
+        }
+
+        public String getUom() {
+            return uom;
+        }
+
+        public String getKpi() {
+            return kpi;
+        }
+
+        public String getDirection() {
+            return direction;
         }
     }
 

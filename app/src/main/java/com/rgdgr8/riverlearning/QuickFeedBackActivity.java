@@ -23,30 +23,6 @@ public class QuickFeedBackActivity extends AppCompatActivity {
         return true;
     }
 
-    static class Feedback {
-        private final Integer feedback_to;
-        private final Integer rating;
-        private final String details;
-
-        public Feedback(Integer feedback_to, Integer rating, String details) {
-            this.feedback_to = feedback_to;
-            this.rating = rating;
-            this.details = details;
-        }
-
-        public Integer getFeedback_to() {
-            return feedback_to;
-        }
-
-        public Integer getRating() {
-            return rating;
-        }
-
-        public String getDetails() {
-            return details;
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,12 +73,36 @@ public class QuickFeedBackActivity extends AppCompatActivity {
                     Log.e(TAG, "onFailure: ", t.getCause());
                     try {
                         Toast.makeText(getApplicationContext(), "Problem Occurred", Toast.LENGTH_SHORT).show();
-                        finish();
+                        MainActivity.checkNetworkAndShowDialog(QuickFeedBackActivity.this);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
         });
+    }
+
+    static class Feedback {
+        private final Integer feedback_to;
+        private final Integer rating;
+        private final String details;
+
+        public Feedback(Integer feedback_to, Integer rating, String details) {
+            this.feedback_to = feedback_to;
+            this.rating = rating;
+            this.details = details;
+        }
+
+        public Integer getFeedback_to() {
+            return feedback_to;
+        }
+
+        public Integer getRating() {
+            return rating;
+        }
+
+        public String getDetails() {
+            return details;
+        }
     }
 }

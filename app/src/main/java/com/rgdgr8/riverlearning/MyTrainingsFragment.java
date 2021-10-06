@@ -36,98 +36,9 @@ import retrofit2.Response;
 public class MyTrainingsFragment extends Fragment {
     public static final String TAG = "MyTrainingsFrag";
     public static final String ENROLL = "enroll";
-
-    static class Trainings {
-        static class Training implements Serializable {
-            private Integer id;
-            private String topic_name;
-            private String trainer_name;
-            private String start_time;
-            private String end_time;
-            private String date;
-            private String venue;
-            private boolean enrolled = true;
-
-            public boolean isEnrolled() {
-                return enrolled;
-            }
-
-            public void setEnrolled(boolean enrolled) {
-                this.enrolled = enrolled;
-            }
-
-            public Training(Integer id, String topic_name, String trainer_name, String start_time, String end_time, String date, String venue) {
-                this.id = id;
-                this.topic_name = topic_name;
-                this.trainer_name = trainer_name;
-                this.start_time = start_time;
-                this.end_time = end_time;
-                this.date = date;
-                this.venue = venue;
-            }
-
-            public Integer getId() {
-                return id;
-            }
-
-            public String getTopic_name() {
-                return topic_name;
-            }
-
-            public String getTrainer_name() {
-                return trainer_name;
-            }
-
-            public String getStart_time() {
-                return start_time;
-            }
-
-            public String getEnd_time() {
-                return end_time;
-            }
-
-            public String getDate() {
-                return date;
-            }
-
-            public String getVenue() {
-                return venue;
-            }
-
-            @Override
-            public String toString() {
-                return "Training{" +
-                        "id=" + id +
-                        ", topic_name='" + topic_name + '\'' +
-                        ", trainer_name='" + trainer_name + '\'' +
-                        ", start_time='" + start_time + '\'' +
-                        ", end_time='" + end_time + '\'' +
-                        ", date='" + date + '\'' +
-                        ", venue='" + venue + '\'' +
-                        ", enrolled=" + enrolled +
-                        '}';
-            }
-        }
-
-        private List<Training> trainings;
-        private List<Training> enrolled;
-
-        public Trainings(List<Training> trainings, List<Training> enrolled) {
-            this.trainings = trainings;
-            this.enrolled = enrolled;
-        }
-
-        public List<Training> getTrainings() {
-            return trainings;
-        }
-
-        public List<Training> getEnrolled() {
-            return enrolled;
-        }
-    }
-
     private TrainingAdapter adapter;
     private List<Trainings.Training> trainingList;
+    private View root;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -178,14 +89,13 @@ public class MyTrainingsFragment extends Fragment {
                 Log.e(TAG, "onFailure: " + t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
-
-    private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -211,6 +121,101 @@ public class MyTrainingsFragment extends Fragment {
             adapter = new TrainingAdapter();
         } else {
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        ((MainActivity) requireActivity()).setDrawerEnabled(true);
+    }
+
+    static class Trainings {
+        private final List<Training> trainings;
+        private final List<Training> enrolled;
+        public Trainings(List<Training> trainings, List<Training> enrolled) {
+            this.trainings = trainings;
+            this.enrolled = enrolled;
+        }
+
+        public List<Training> getTrainings() {
+            return trainings;
+        }
+
+        public List<Training> getEnrolled() {
+            return enrolled;
+        }
+
+        static class Training implements Serializable {
+            private final Integer id;
+            private final String topic_name;
+            private final String trainer_name;
+            private final String start_time;
+            private final String end_time;
+            private final String date;
+            private final String venue;
+            private boolean enrolled = true;
+
+            public Training(Integer id, String topic_name, String trainer_name, String start_time, String end_time, String date, String venue) {
+                this.id = id;
+                this.topic_name = topic_name;
+                this.trainer_name = trainer_name;
+                this.start_time = start_time;
+                this.end_time = end_time;
+                this.date = date;
+                this.venue = venue;
+            }
+
+            public boolean isEnrolled() {
+                return enrolled;
+            }
+
+            public void setEnrolled(boolean enrolled) {
+                this.enrolled = enrolled;
+            }
+
+            public Integer getId() {
+                return id;
+            }
+
+            public String getTopic_name() {
+                return topic_name;
+            }
+
+            public String getTrainer_name() {
+                return trainer_name;
+            }
+
+            public String getStart_time() {
+                return start_time;
+            }
+
+            public String getEnd_time() {
+                return end_time;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public String getVenue() {
+                return venue;
+            }
+
+            @Override
+            public String toString() {
+                return "Training{" +
+                        "id=" + id +
+                        ", topic_name='" + topic_name + '\'' +
+                        ", trainer_name='" + trainer_name + '\'' +
+                        ", start_time='" + start_time + '\'' +
+                        ", end_time='" + end_time + '\'' +
+                        ", date='" + date + '\'' +
+                        ", venue='" + venue + '\'' +
+                        ", enrolled=" + enrolled +
+                        '}';
+            }
         }
     }
 
@@ -257,7 +262,7 @@ public class MyTrainingsFragment extends Fragment {
                 }
 
                 Trainings.Training training = trainingList.get(getAdapterPosition());
-                if(!training.isEnrolled()){
+                if (!training.isEnrolled()) {
                     Toast.makeText(getActivity(), "Not enrolled", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -316,12 +321,5 @@ public class MyTrainingsFragment extends Fragment {
         public int getItemCount() {
             return trainingList.size();
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        ((MainActivity) requireActivity()).setDrawerEnabled(true);
     }
 }

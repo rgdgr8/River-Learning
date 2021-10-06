@@ -26,19 +26,6 @@ import retrofit2.Response;
 public class UpdateReportKpiFragment extends Fragment {
     private static final String TAG = "UpdateReportFrag";
 
-    static class UpdatedKpi {
-        @SerializedName("actual_value")
-        private final Float actual;
-
-        public Float getActual() {
-            return actual;
-        }
-
-        public UpdatedKpi(Float actual) {
-            this.actual = actual;
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,6 +84,7 @@ public class UpdateReportKpiFragment extends Fragment {
                     Log.e(TAG, "onFailure: ", t.getCause());
                     try {
                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        MainActivity.checkNetworkAndShowDialog(getActivity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -106,5 +94,18 @@ public class UpdateReportKpiFragment extends Fragment {
         });
 
         return root;
+    }
+
+    static class UpdatedKpi {
+        @SerializedName("actual_value")
+        private final Float actual;
+
+        public UpdatedKpi(Float actual) {
+            this.actual = actual;
+        }
+
+        public Float getActual() {
+            return actual;
+        }
     }
 }

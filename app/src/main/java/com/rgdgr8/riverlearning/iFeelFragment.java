@@ -32,43 +32,6 @@ import retrofit2.Response;
 public class iFeelFragment extends Fragment {
     private static final String TAG = "iFeelFrag";
     private String params = "";
-
-    static class iFeel {
-        private final Integer id;
-        private final String fto_name;
-        private final String ffrom_name;
-        private final String date_created;
-        private final String details;
-
-        public iFeel(Integer id, String fto_name, String ffrom_name, String date_created, String details) {
-            this.id = id;
-            this.fto_name = fto_name;
-            this.ffrom_name = ffrom_name;
-            this.date_created = date_created;
-            this.details = details;
-        }
-
-        public Integer getId() {
-            return id;
-        }
-
-        public String getFto_name() {
-            return fto_name;
-        }
-
-        public String getFfrom_name() {
-            return ffrom_name;
-        }
-
-        public String getDate_created() {
-            return date_created;
-        }
-
-        public String getDetails() {
-            return details;
-        }
-    }
-
     private iFeelAdapter adapter;
     private List<iFeel> iFeels;
 
@@ -113,6 +76,7 @@ public class iFeelFragment extends Fragment {
                 Log.e(TAG, "onFailureClosedTasks: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -166,6 +130,7 @@ public class iFeelFragment extends Fragment {
                                     Log.e(TAG, "onFilterFailure: ", t.getCause());
                                     try {
                                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                        MainActivity.checkNetworkAndShowDialog(getActivity());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -192,6 +157,49 @@ public class iFeelFragment extends Fragment {
             adapter = new iFeelAdapter();
         } else {
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        getActivity().getSharedPreferences(SearchFragment.TAG + TAG, Context.MODE_PRIVATE).edit().clear().apply();
+    }
+
+    static class iFeel {
+        private final Integer id;
+        private final String fto_name;
+        private final String ffrom_name;
+        private final String date_created;
+        private final String details;
+
+        public iFeel(Integer id, String fto_name, String ffrom_name, String date_created, String details) {
+            this.id = id;
+            this.fto_name = fto_name;
+            this.ffrom_name = ffrom_name;
+            this.date_created = date_created;
+            this.details = details;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getFto_name() {
+            return fto_name;
+        }
+
+        public String getFfrom_name() {
+            return ffrom_name;
+        }
+
+        public String getDate_created() {
+            return date_created;
+        }
+
+        public String getDetails() {
+            return details;
         }
     }
 
@@ -241,12 +249,5 @@ public class iFeelFragment extends Fragment {
         public int getItemCount() {
             return iFeels.size();
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        getActivity().getSharedPreferences(SearchFragment.TAG + TAG, Context.MODE_PRIVATE).edit().clear().apply();
     }
 }

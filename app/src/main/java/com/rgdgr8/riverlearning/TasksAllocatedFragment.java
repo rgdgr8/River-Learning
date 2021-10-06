@@ -31,8 +31,8 @@ import retrofit2.Response;
 
 public class TasksAllocatedFragment extends Fragment {
     private static final String TAG = "TasksAllocatedFrag";
-    private OpenTasksAdapter adapter;
     private final List<OpenTask> tasks = new ArrayList<>();
+    private OpenTasksAdapter adapter;
     private View root;
     private String params = "";
 
@@ -75,6 +75,7 @@ public class TasksAllocatedFragment extends Fragment {
                 Log.e(TAG, "onFailureAllocTasks: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -134,6 +135,7 @@ public class TasksAllocatedFragment extends Fragment {
                                     Log.e(TAG, "onFilterAllocTaskFetchFailure: ", t.getCause());
                                     try {
                                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                        MainActivity.checkNetworkAndShowDialog(getActivity());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }

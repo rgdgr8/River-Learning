@@ -23,11 +23,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class SearchFragment extends DialogFragment {
     public static final String TAG = "SearchFrag";
-    private final int layoutId;
     public static final String FILTER_RESULT = "filter_result";
     public static final String STATUS = "stat";
     public static final String NAME = "name";
     public static final String DATE = "date";
+    private final int layoutId;
     private final String key;
 
     public SearchFragment(int contentLayoutId, String key) {

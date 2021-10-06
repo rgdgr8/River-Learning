@@ -22,18 +22,6 @@ import retrofit2.Response;
 public class TrainingEnrollFragment extends Fragment {
     private static final String TAG = "EnrollFrag";
 
-    static class Enrollment {
-        private Integer employee;
-
-        public Integer getEmployee() {
-            return employee;
-        }
-
-        public Enrollment(Integer employee) {
-            this.employee = employee;
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_training_enroll, container, false);
@@ -83,6 +71,7 @@ public class TrainingEnrollFragment extends Fragment {
                     Log.e(TAG, "onFailure: ", t.getCause());
                     try {
                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        MainActivity.checkNetworkAndShowDialog(getActivity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -92,5 +81,17 @@ public class TrainingEnrollFragment extends Fragment {
         });
 
         return root;
+    }
+
+    static class Enrollment {
+        private final Integer employee;
+
+        public Enrollment(Integer employee) {
+            this.employee = employee;
+        }
+
+        public Integer getEmployee() {
+            return employee;
+        }
     }
 }

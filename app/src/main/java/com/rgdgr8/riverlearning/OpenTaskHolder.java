@@ -20,10 +20,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OpenTaskHolder extends RecyclerView.ViewHolder {
-    private static final String TAG = "OpenTaskHolder";
     public static final String EDIT_OPEN_TASK = "edit_task";
     public static final String VIEW_OPEN_TASK = "view_task";
     public static final String COMM_OPEN_TASK = "comm_task";
+    private static final String TAG = "OpenTaskHolder";
     private final TextView sr;
     private final TextView task;
     private final TextView alloc;
@@ -119,7 +119,8 @@ public class OpenTaskHolder extends RecyclerView.ViewHolder {
                             public void onFailure(Call<Void> call, Throwable t) {
                                 Log.e(TAG, "onFailure: ", t.getCause());
                                 try {
-                                    Toast.makeText(MainActivity.ctx.get(), "Problem occurred", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                    MainActivity.checkNetworkAndShowDialog(view.getContext());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

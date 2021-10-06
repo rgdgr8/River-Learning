@@ -22,33 +22,6 @@ import retrofit2.Response;
 public class EditMyTaskFragment extends Fragment {
     private static final String TAG = "EditMyTaskFrag";
 
-    static class UpdatedTask {
-        private String task;
-        private String description;
-        private String status;
-
-        public String getTask() {
-            return task;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public UpdatedTask(String task, String description, String status) {
-            this.task = task;
-            this.description = description;
-            this.status = status;
-
-            if (this.status.charAt(0) == '-')
-                this.status = null;
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,6 +69,7 @@ public class EditMyTaskFragment extends Fragment {
                     Log.e(TAG, "onFailure: ", t.getCause());
                     try {
                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        MainActivity.checkNetworkAndShowDialog(getActivity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -105,5 +79,32 @@ public class EditMyTaskFragment extends Fragment {
         });
 
         return root;
+    }
+
+    static class UpdatedTask {
+        private final String task;
+        private final String description;
+        private String status;
+
+        public UpdatedTask(String task, String description, String status) {
+            this.task = task;
+            this.description = description;
+            this.status = status;
+
+            if (this.status.charAt(0) == '-')
+                this.status = null;
+        }
+
+        public String getTask() {
+            return task;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getStatus() {
+            return status;
+        }
     }
 }

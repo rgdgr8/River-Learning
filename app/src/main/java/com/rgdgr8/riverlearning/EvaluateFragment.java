@@ -25,24 +25,6 @@ import retrofit2.Response;
 public class EvaluateFragment extends Fragment {
     private static final String TAG = "EvaluateFrag";
 
-    static class Evaluation {
-        private final Integer emp_score;
-        private final String emp_cmnt;
-
-        public Evaluation(Integer emp_score, String emp_cmnt) {
-            this.emp_score = emp_score;
-            this.emp_cmnt = emp_cmnt;
-        }
-
-        public Integer getEmp_score() {
-            return emp_score;
-        }
-
-        public String getEmp_cmnt() {
-            return emp_cmnt;
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,6 +74,7 @@ public class EvaluateFragment extends Fragment {
                     Log.e(TAG, "onFailure: ", t.getCause());
                     try {
                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                        MainActivity.checkNetworkAndShowDialog(getActivity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -101,5 +84,23 @@ public class EvaluateFragment extends Fragment {
         });
 
         return root;
+    }
+
+    static class Evaluation {
+        private final Integer emp_score;
+        private final String emp_cmnt;
+
+        public Evaluation(Integer emp_score, String emp_cmnt) {
+            this.emp_score = emp_score;
+            this.emp_cmnt = emp_cmnt;
+        }
+
+        public Integer getEmp_score() {
+            return emp_score;
+        }
+
+        public String getEmp_cmnt() {
+            return emp_cmnt;
+        }
     }
 }

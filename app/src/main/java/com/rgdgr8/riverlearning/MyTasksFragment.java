@@ -32,8 +32,8 @@ import retrofit2.Response;
 
 public class MyTasksFragment extends Fragment {
     private static final String TAG = "MyTasksFragment";
-    private OpenTasksAdapter adapter;
     private final List<OpenTask> tasks = new ArrayList<>();
+    private OpenTasksAdapter adapter;
     private String params = "";
 
     @Override
@@ -75,6 +75,7 @@ public class MyTasksFragment extends Fragment {
                 Log.e(TAG, "onTaskFetchFailure: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -139,6 +140,7 @@ public class MyTasksFragment extends Fragment {
                                     Log.e(TAG, "onFilterTaskFetchFailure: ", t.getCause());
                                     try {
                                         Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                                        MainActivity.checkNetworkAndShowDialog(getActivity());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }

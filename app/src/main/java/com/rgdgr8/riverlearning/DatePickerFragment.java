@@ -23,6 +23,57 @@ public class DatePickerFragment extends DialogFragment {
     public static final String ARG_DATE = "date";
     public static final String RESULT_DATE = "result_date";
 
+    public static String getFormattedDate(int day, int month, int year) {
+        String m = month + "";
+        if (month < 10)
+            m = "0" + m;
+        String d = day + "";
+        if (day < 10)
+            d = "0" + d;
+
+        return year + "-" + m + "-" + d;
+    }
+
+    public static String getMonth(int month) {
+        while (true)
+            switch (month) {
+                case 1:
+                    return "Jan";
+                case 2:
+                    return "Feb";
+                case 3:
+                    return "Mar";
+                case 4:
+                    return "April";
+                case 5:
+                    return "May";
+                case 6:
+                    return "June";
+                case 7:
+                    return "July";
+                case 8:
+                    return "Aug";
+                case 9:
+                    return "Sept";
+                case 10:
+                    return "Oct";
+                case 11:
+                    return "Nov";
+                case 12:
+                    return "Dec";
+                default:
+                    month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+            }
+    }
+
+    public static DatePickerFragment newInstance(String date) {
+        Bundle b = new Bundle();
+        b.putString(ARG_DATE, date);
+        DatePickerFragment dpf = new DatePickerFragment();
+        dpf.setArguments(b);
+        return dpf;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -77,61 +128,10 @@ public class DatePickerFragment extends DialogFragment {
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
-    public static String getFormattedDate(int day, int month, int year) {
-        String m = month + "";
-        if (month < 10)
-            m = "0" + m;
-        String d = day + "";
-        if (day < 10)
-            d = "0" + d;
-
-        return year + "-" + m + "-" + d;
-    }
-
-    public static String getMonth(int month) {
-        while (true)
-            switch (month) {
-                case 1:
-                    return "Jan";
-                case 2:
-                    return "Feb";
-                case 3:
-                    return "Mar";
-                case 4:
-                    return "April";
-                case 5:
-                    return "May";
-                case 6:
-                    return "June";
-                case 7:
-                    return "July";
-                case 8:
-                    return "Aug";
-                case 9:
-                    return "Sept";
-                case 10:
-                    return "Oct";
-                case 11:
-                    return "Nov";
-                case 12:
-                    return "Dec";
-                default:
-                    month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-            }
-    }
-
     private void sendResult(String date) {
         FragmentManager fm = getParentFragmentManager();
         Bundle b = new Bundle();
         b.putString(ARG_DATE, date);
         fm.setFragmentResult(RESULT_DATE, b);
-    }
-
-    public static DatePickerFragment newInstance(String date) {
-        Bundle b = new Bundle();
-        b.putString(ARG_DATE, date);
-        DatePickerFragment dpf = new DatePickerFragment();
-        dpf.setArguments(b);
-        return dpf;
     }
 }

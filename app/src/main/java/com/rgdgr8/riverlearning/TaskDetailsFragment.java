@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,31 +20,6 @@ import retrofit2.Response;
 public class TaskDetailsFragment extends Fragment {
 
     private static final String TAG = "TaskDeetsFrag";
-
-    static class TaskDetails {
-        private Integer work_quality;
-        private String comment;
-        private String end_date;
-
-        public Integer getWork_quality() {
-            return work_quality;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-
-        public String getEnd_date() {
-            return end_date;
-        }
-
-        public TaskDetails(Integer work_quality, String comment, String end_date) {
-            this.work_quality = work_quality;
-            this.comment = comment;
-            this.end_date = end_date;
-        }
-    }
-
     private OpenTask openTask;
     private TaskDetails taskDetails;
     private View root;
@@ -124,6 +98,7 @@ public class TaskDetailsFragment extends Fragment {
                 Log.e(TAG, "onFailure: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -131,5 +106,29 @@ public class TaskDetailsFragment extends Fragment {
         });
 
         return root;
+    }
+
+    static class TaskDetails {
+        private final Integer work_quality;
+        private final String comment;
+        private final String end_date;
+
+        public TaskDetails(Integer work_quality, String comment, String end_date) {
+            this.work_quality = work_quality;
+            this.comment = comment;
+            this.end_date = end_date;
+        }
+
+        public Integer getWork_quality() {
+            return work_quality;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public String getEnd_date() {
+            return end_date;
+        }
     }
 }

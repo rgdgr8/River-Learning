@@ -38,66 +38,58 @@ public class OpenTask implements Serializable {
             this.status = null;*/
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
         return "OpenTask{" +
                 "id=" + id +
-                ", task='" + task + '\'' + (task==null) +
-                ", description='" + description + '\'' + (description==null) +
-                ", repeat='" + repeat + '\'' + (repeat==null) +
-                ", alloc='" + alloc + '\'' + (alloc==null) +
-                ", allocation_date='" + allocation_date + '\'' + (allocation_date==null) +
-                ", target_end='" + target_end + '\'' + (target_end==null) +
-                ", status='" + status + '\'' + (status==null) +
+                ", task='" + task + '\'' + (task == null) +
+                ", description='" + description + '\'' + (description == null) +
+                ", repeat='" + repeat + '\'' + (repeat == null) +
+                ", alloc='" + alloc + '\'' + (alloc == null) +
+                ", allocation_date='" + allocation_date + '\'' + (allocation_date == null) +
+                ", target_end='" + target_end + '\'' + (target_end == null) +
+                ", status='" + status + '\'' + (status == null) +
                 '}';
-    }
-
-    public void setRepeat(String repeat) {
-        this.repeat = repeat;
-    }
-
-    public void setTask(String task) {
-        this.task = task;
-    }
-
-    public void setAlloc(String alloc) {
-        this.alloc = alloc;
-    }
-
-    public void setAllocation_date(String allocation_date) {
-        this.allocation_date = allocation_date;
-    }
-
-    public void setTarget_end(String target_end) {
-        this.target_end = target_end;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getTask() {
         return task;
     }
 
+    public void setTask(String task) {
+        this.task = task;
+    }
+
     public String getAlloc() {
         return alloc;
+    }
+
+    public void setAlloc(String alloc) {
+        this.alloc = alloc;
     }
 
     public String getAllocation_date() {
         return allocation_date;
     }
 
+    public void setAllocation_date(String allocation_date) {
+        this.allocation_date = allocation_date;
+    }
+
     public String getTarget_end() {
         return target_end;
     }
 
+    public void setTarget_end(String target_end) {
+        this.target_end = target_end;
+    }
+
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Integer getId() {
@@ -108,7 +100,15 @@ public class OpenTask implements Serializable {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getRepeat() {
         return repeat;
+    }
+
+    public void setRepeat(String repeat) {
+        this.repeat = repeat;
     }
 }

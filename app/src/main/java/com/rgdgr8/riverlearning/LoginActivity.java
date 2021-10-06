@@ -28,10 +28,10 @@ public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
     public static final String SP_TENANT = "login_tenant";
     public static final String SP_EMAIL = "login_email";
+    public static DataFetcher dataFetcher;
     public String BASE_URL = "";
     private User user;
     private String token;
-    public static DataFetcher dataFetcher;
     private Intent intent;
 
     @Override
@@ -138,6 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG, "onTokenFetchFailure: ", t.getCause());
                 try {
                     Toast.makeText(LoginActivity.this, "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    if (!MainActivity.isNetworkAvailableAndConnected())
+                        Toast.makeText(LoginActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

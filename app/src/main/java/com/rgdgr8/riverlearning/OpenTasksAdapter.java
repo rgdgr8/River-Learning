@@ -18,15 +18,15 @@ public class OpenTasksAdapter extends RecyclerView.Adapter<OpenTaskHolder> {
     private final int layoutId;
     private final boolean hideDelBtn;
 
-    public List<OpenTask> getTasks() {
-        return tasks;
-    }
-
     public OpenTasksAdapter(Fragment fragment, List<OpenTask> tasks, int layoutId, boolean hideDelBtn) {
         this.tasks = tasks;
         this.fragment = fragment;
         this.layoutId = layoutId;
         this.hideDelBtn = hideDelBtn;
+    }
+
+    public List<OpenTask> getTasks() {
+        return tasks;
     }
 
     @NonNull

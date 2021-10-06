@@ -30,57 +30,9 @@ import retrofit2.Response;
 
 public class ReportKpiFragment extends Fragment {
     public static final String TAG = "ReportKpiFrag";
-
-    static class Kpi implements Serializable {
-        private final Integer id;
-        private final String kpi_name;
-        private final String uom_name;
-        private final String direction_name;
-        private final String month_name;
-        private final Float actual_value;
-        private final Float target_value;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public String getKpi_name() {
-            return kpi_name;
-        }
-
-        public String getUom_name() {
-            return uom_name;
-        }
-
-        public String getDirection_name() {
-            return direction_name;
-        }
-
-        public String getMonth_name() {
-            return month_name;
-        }
-
-        public Float getActual_value() {
-            return actual_value;
-        }
-
-        public Float getTarget_value() {
-            return target_value;
-        }
-
-        public Kpi(Integer id, String kpi_name, String uom_name, String direction_name, String month_name, Float actual_value, Float target_value) {
-            this.id = id;
-            this.kpi_name = kpi_name;
-            this.uom_name = uom_name;
-            this.direction_name = direction_name;
-            this.month_name = month_name;
-            this.actual_value = actual_value;
-            this.target_value = target_value;
-        }
-    }
-
     private KpiAdapter adapter;
     private List<Kpi> kpis;
+    private View root;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -122,14 +74,13 @@ public class ReportKpiFragment extends Fragment {
                 Log.e(TAG, "onFailure: ", t.getCause());
                 try {
                     Toast.makeText(MainActivity.ctx.get(), "Problem Occurred", Toast.LENGTH_SHORT).show();
+                    MainActivity.checkNetworkAndShowDialog(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
-
-    private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -153,6 +104,54 @@ public class ReportKpiFragment extends Fragment {
             adapter = new KpiAdapter();
         } else {
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    static class Kpi implements Serializable {
+        private final Integer id;
+        private final String kpi_name;
+        private final String uom_name;
+        private final String direction_name;
+        private final String month_name;
+        private final Float actual_value;
+        private final Float target_value;
+
+        public Kpi(Integer id, String kpi_name, String uom_name, String direction_name, String month_name, Float actual_value, Float target_value) {
+            this.id = id;
+            this.kpi_name = kpi_name;
+            this.uom_name = uom_name;
+            this.direction_name = direction_name;
+            this.month_name = month_name;
+            this.actual_value = actual_value;
+            this.target_value = target_value;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getKpi_name() {
+            return kpi_name;
+        }
+
+        public String getUom_name() {
+            return uom_name;
+        }
+
+        public String getDirection_name() {
+            return direction_name;
+        }
+
+        public String getMonth_name() {
+            return month_name;
+        }
+
+        public Float getActual_value() {
+            return actual_value;
+        }
+
+        public Float getTarget_value() {
+            return target_value;
         }
     }
 
