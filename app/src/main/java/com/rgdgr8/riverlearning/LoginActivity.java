@@ -5,10 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,21 +40,13 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText email = findViewById(R.id.login_email);
         EditText pass = findViewById(R.id.login_pass);
-
-        Spinner tenant = findViewById(R.id.tenant);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tenant_spinner, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tenant.setAdapter(adapter);
+        EditText tenant = findViewById(R.id.tenant);
 
         Button login = findViewById(R.id.login);
         login.setOnClickListener(v -> {
-            if (tenant.getSelectedItemPosition() < 1) {
-                Toast.makeText(this, "Invalid Tenant", Toast.LENGTH_SHORT).show();
-                return;
-            }
             login.setEnabled(false);
             user = new User(email.getText().toString(), pass.getText().toString());
-            String t = ((String) tenant.getSelectedItem()).toLowerCase();
+            String t = tenant.getText().toString().toLowerCase();
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(SP_TENANT, t).apply();
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(SP_EMAIL, user.getEmail()).apply();
             fetchToken(t);

@@ -62,13 +62,15 @@
                 android:padding="5dp"
                 android:textColor="@color/black" />
 
-            <Spinner
+            <EditText
                 android:id="@+id/tenant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
                 android:background="@color/white"
-                android:padding="5dp" />
+                android:hint="Tenant"
+                android:padding="5dp"
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/login"
