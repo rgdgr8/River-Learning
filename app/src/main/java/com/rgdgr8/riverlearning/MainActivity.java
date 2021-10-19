@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String SP_USER_FNAME = "user_fname";
     private static final String TAG = "MainActivity";
     public static List<String> spinnerEmployeeList = new ArrayList<>();
-    public static List<Integer> employeeIdList = null;
+    public static List<Integer> employeeIdList = new ArrayList<>();
     static WeakReference<Context> ctx = null;
     private NavigationView navView;
     private NavController navController;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                         if (list != null) {
                             Collections.sort(list);
 
-                            employeeIdList = new ArrayList<>(list.size());
+                            //employeeIdList = new ArrayList<>(list.size());
 
                             spinnerEmployeeList = new ArrayList<>(list.size() + 1);
                             spinnerEmployeeList.add(getResources().getString(R.string.blank_spinner));

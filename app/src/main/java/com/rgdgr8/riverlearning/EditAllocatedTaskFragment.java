@@ -101,7 +101,7 @@ public class EditAllocatedTaskFragment extends Fragment {
             NavController navController = Navigation.findNavController(root);
 
             NewTask newTask = new NewTask(task.getText().toString(), desc.getText().toString(), repeat.getSelectedItem().toString()
-                    , date.getText().toString(), alloc.getSelectedItemPosition(), status.getSelectedItem().toString());
+                    , date.getText().toString(), MainActivity.employeeIdList.get(alloc.getSelectedItemPosition() - 1), status.getSelectedItem().toString());
 
             LoginActivity.dataFetcher.updateAllocatedTask(id, newTask).enqueue(new Callback<Void>() {
                 @Override
